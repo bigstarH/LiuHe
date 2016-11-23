@@ -7,12 +7,15 @@
 //
 
 #import "HomeViewController.h"
+#import "XQFasciatePageControl.h"
 #import "XQCycleImageView.h"
 #import "MenuItem.h"
 
 @interface HomeViewController () <XQCycleImageViewDelegate>
 
 @property (nonatomic, weak) XQCycleImageView *cycleImageView;
+
+@property (nonatomic, weak) XQFasciatePageControl *pageControl;
 
 @end
 
@@ -38,13 +41,13 @@
 
 - (UIColor *)setBarTintColor
 {
-    return [UIColor orangeColor];
+    return MAIN_COLORL;
 }
 
 - (UILabel *)setTitleView
 {
     UILabel *titleLab      = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
-    titleLab.text          = @"菜单";
+    titleLab.text          = @"首頁";
     titleLab.font          = [UIFont boldSystemFontOfSize:18];
     titleLab.textColor     = [UIColor whiteColor];
     titleLab.textAlignment = NSTextAlignmentCenter;
@@ -58,37 +61,44 @@
                         [UIImage imageNamed:@"tara"],
                         [UIImage imageNamed:@"tara"]];
     
-    CGFloat width = [UIScreen mainScreen].bounds.size.width;
     XQCycleImageView *cycleImage = [XQCycleImageView cycleImageView];
-    cycleImage.frame             = CGRectMake(0, 0, width, HEIGHT(110));
+    cycleImage.frame             = CGRectMake(0, 0, SCREEN_WIDTH, HEIGHT(130));
     cycleImage.images            = images;
     cycleImage.delegate          = self;
-    cycleImage.repeatSecond      = 2;
+    cycleImage.repeatSecond      = 3;
     cycleImage.autoDragging      = YES;
     self.cycleImageView          = cycleImage;
     [self.view addSubview:cycleImage];
+    
+    CGFloat pageY      = CGRectGetMaxY(cycleImage.frame) - HEIGHT(30);
+    XQFasciatePageControl *page  = [XQFasciatePageControl pageControl];
+    page.frame         = CGRectMake(0, pageY, SCREEN_WIDTH, HEIGHT(30));
+    page.numberOfPages = images.count;
+    self.pageControl   = page;
+    [page setBackgroundColor:RGBACOLOR(0, 0, 0, 0.5)];
+    [page setPageIndicatorTintColor:[UIColor whiteColor]];
+    [page setCurrentPageIndicatorTintColor:[UIColor orangeColor]];
+    [self.view addSubview:page];
 }
 
 - (void)createBottomButton
 {
-    CGFloat width  = [UIScreen mainScreen].bounds.size.width;
-    CGFloat height = [UIScreen mainScreen].bounds.size.height;
     CGFloat hSpace = WIDTH(5);
     CGFloat vSpace = HEIGHT(8);
     
-    NSArray *array      = @[@"视频开奖", @"六合大全", @"彩票专区", @"时时彩",
-                            @"足球比分", @"娱乐城", @"百家乐", @"皇冠网"];
-    NSArray *bgColorArr = @[RGBCOLOR(237, 110, 112), RGBCOLOR(139, 49, 226),
-                            RGBCOLOR(42, 77, 157)  , RGBCOLOR(47, 171, 137),
-                            RGBCOLOR(67, 180, 237) , RGBCOLOR(255, 131, 250),
-                            RGBCOLOR(237, 163, 45) , RGBCOLOR(42, 192, 94)];
+    NSArray *array      = @[@"視頻開獎", @"六合大全", @"彩票專區", @"時時彩",
+                            @"足球比分", @"娛樂城", @"百家樂", @"皇冠網"];
+    NSArray *bgColorArr = @[RGBCOLOR(237, 110, 112), RGBCOLOR(194, 153, 194),
+                            RGBCOLOR(195, 163, 159), RGBCOLOR(194, 153, 194),
+                            RGBCOLOR(192, 175, 152), RGBCOLOR(237, 163, 130),
+                            RGBCOLOR(237, 163, 45) , RGBCOLOR(67, 180, 237)];
     
     CGFloat originY   = CGRectGetMaxY(self.cycleImageView.frame) + vSpace;
-    CGFloat mHeight   = (height - originY - 113 - 3 * vSpace) / 3;
+    CGFloat mHeight   = (SCREEN_HEIGHT - originY - 113 - 3 * vSpace) / 3;
     for (int i = 0; i < 8; i++) {
         CGFloat itemX = hSpace;
         CGFloat itemY = originY;
-        CGFloat itemW = (width - 3 * hSpace) * 0.5;
+        CGFloat itemW = (SCREEN_WIDTH - 3 * hSpace) * 0.5;
         CGFloat itemH = (i == 2 || i == 3 || i == 4) ? mHeight + HEIGHT(20) : mHeight - HEIGHT(10);
         if (i == 6 || i == 7) {
             CGFloat tempW = itemW;
@@ -108,7 +118,7 @@
         }
         MenuItem *item = [[MenuItem alloc] initWithFrame:CGRectMake(itemX, itemY, itemW, itemH)];
         item.tag       = i;
-        [item setMenuTitle:array[i] font:[UIFont systemFontOfSize:14]];
+        [item setMenuTitle:array[i] font:[UIFont systemFontOfSize:fontSize(14)]];
         [item.label setTextColor:[UIColor whiteColor]];
         [item setMenuImage:[UIImage imageNamed:array[i]]];
         [item setMenuClickBlock:^(NSInteger tag) {
@@ -150,7 +160,7 @@
 
 - (void)cycleImageViewDidScrollingAnimation:(XQCycleImageView *)cycleImageView atIndex:(int)index
 {
-    
+    self.pageControl.currentPage = index;
 }
 #pragma mark end XQCycleImageViewDelegate
 

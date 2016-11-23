@@ -36,11 +36,11 @@
                                                          image:[UIImage imageNamed:@"tabbar_menu"]
                                                  selectedImage:[UIImage imageNamed:@"tabbar_menu_press"]];
     
-    forumVC.tabBarItem   = [[UITabBarItem alloc] initWithTitle:@"论坛"
+    forumVC.tabBarItem   = [[UITabBarItem alloc] initWithTitle:@"論壇"
                                                          image:[UIImage imageNamed:@"tabbar_forum"]
                                                  selectedImage:[UIImage imageNamed:@"tabbar_forum_press"]];
     
-    userVC.tabBarItem    = [[UITabBarItem alloc] initWithTitle:@"用户"
+    userVC.tabBarItem    = [[UITabBarItem alloc] initWithTitle:@"我的"
                                                          image:[UIImage imageNamed:@"tabbar_user"]
                                                  selectedImage:[UIImage imageNamed:@"tabbar_user_press"]];
     

@@ -2,7 +2,7 @@
 //  XQCycleImageView.m
 //  Example
 //
-//  Created by NB-022 on 16/5/14.
+//  Created by 胡兴钦 on 16/5/14.
 //  Copyright © 2016年 ufuns. All rights reserved.
 //
 
@@ -25,7 +25,7 @@
 /**
  *  计时器
  */
-@property (nonatomic, strong) CADisplayLink *timer;
+@property (nonatomic, strong) NSTimer *timer;
 /**
  *  是否正在拖拽
  */
@@ -99,7 +99,6 @@
     [self addBottomConstraintWithItem:scrollView toView:self attribute:NSLayoutAttributeBottom];
     
     UIImageView *previousView = [[UIImageView alloc] init];
-    previousView.contentMode  = UIViewContentModeScaleAspectFill;
     self.previousImageView    = previousView;
     [self.scrollView addSubview:previousView];
     previousView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -111,7 +110,6 @@
     [self addBottomConstraintWithItem:previousView toView:self.scrollView attribute:NSLayoutAttributeBottom];
     
     UIImageView *currentView  = [[UIImageView alloc] init];
-    currentView.contentMode   = UIViewContentModeScaleAspectFill;
     self.currentImageView     = currentView;
     [self.scrollView addSubview:currentView];
     currentView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -122,7 +120,6 @@
     [self addBottomConstraintWithItem:currentView toView:self.scrollView attribute:NSLayoutAttributeBottom];
     
     UIImageView *nextView     = [[UIImageView alloc] initWithFrame:CGRectZero];
-    nextView.contentMode      = UIViewContentModeScaleAspectFill;
     self.nextImageView        = nextView;
     [self.scrollView addSubview:nextView];
     nextView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -132,6 +129,7 @@
     [self addLeftConstraintWithItem:nextView toView:currentView attribute:NSLayoutAttributeTrailing];
     [self addRightConstraintWithItem:nextView toView:self.scrollView attribute:NSLayoutAttributeTrailing];
     [self addBottomConstraintWithItem:nextView toView:self.scrollView attribute:NSLayoutAttributeBottom];
+    [self setContentMode:UIViewContentModeScaleAspectFill];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(circleViewWasClick)];
     [self addGestureRecognizer:tap];
@@ -152,11 +150,10 @@
 /**
  *  懒加载，创建计时器
  */
-- (CADisplayLink *)timer
+- (NSTimer *)timer
 {
     if (_timer == nil) {
-        _timer = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateImageView)];
-        _timer.frameInterval = 60 * self.repeatSecond;
+        _timer = [NSTimer scheduledTimerWithTimeInterval:self.repeatSecond target:self selector:@selector(updateImageView) userInfo:nil repeats:YES];
     }
     return _timer;
 }
@@ -167,7 +164,7 @@
 - (void)startPlayImageView
 {
     if (!self.autoDragging) return;
-    [self.timer addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [self.timer fire];
 }
 
 /**
@@ -194,6 +191,14 @@
         contentOffset.x = self.scrollView.bounds.size.width;
     }
     [self.scrollView setContentOffset:contentOffset animated:YES];
+}
+
+- (void)setContentMode:(UIViewContentMode)contentMode
+{
+    _contentMode = contentMode;
+    self.previousImageView.contentMode = contentMode;
+    self.currentImageView.contentMode  = contentMode;
+    self.nextImageView.contentMode     = contentMode;
 }
 
 - (void)setImages:(NSArray *)images

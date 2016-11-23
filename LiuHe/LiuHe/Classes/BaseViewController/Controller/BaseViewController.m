@@ -19,11 +19,15 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.edgesForExtendedLayout   = UIRectEdgeNone;
+    [self setNavigationBarStyle];
+}
+
+- (void)setNavigationBarStyle
+{
     self.navigationItem.titleView = [self setTitleView];
     self.navigationController.navigationBar.barStyle     = [self setStatuBar];
     self.navigationController.navigationBar.barTintColor = [self setBarTintColor];
     self.navigationController.navigationBar.tintColor    = [self setTintColor];
-    self.navigationController.navigationBar.translucent  = [self setBarTranslucent];
     self.navigationBar.delegate = self;
 }
 
@@ -45,11 +49,6 @@
 - (UILabel *)setTitleView
 {
     return nil;
-}
-
-- (BOOL)setBarTranslucent
-{
-    return NO;
 }
 
 /**
@@ -81,6 +80,11 @@
     _navigationBar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 64);
     [_navigationBar setBarTintColor:[self setBarTintColor]];
     [self.view addSubview:navigationBar];
+}
+
+- (void)goBackWithNavigationBar:(XQNavigationBar *)navigationBar
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

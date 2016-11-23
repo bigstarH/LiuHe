@@ -25,6 +25,9 @@
 		483AC6021DE5276A009E0E64 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6011DE5276A009E0E64 /* HomeViewController.m */; };
 		483AC6051DE52830009E0E64 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6041DE52830009E0E64 /* MenuItem.m */; };
 		483AC6081DE52CFB009E0E64 /* tara.png in Resources */ = {isa = PBXBuildFile; fileRef = 483AC6071DE52CFB009E0E64 /* tara.png */; };
+		483AC60C1DE533F8009E0E64 /* XQFasciatePageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC60B1DE533F8009E0E64 /* XQFasciatePageControl.m */; };
+		483AC6111DE54080009E0E64 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6101DE54080009E0E64 /* NetworkManager.m */; };
+		483AC6171DE541F3009E0E64 /* NSString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6161DE541F3009E0E64 /* NSString+Extension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +85,14 @@
 		483AC6041DE52830009E0E64 /* MenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItem.m; sourceTree = "<group>"; };
 		483AC6061DE528BE009E0E64 /* LiuHe.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiuHe.pch; sourceTree = "<group>"; };
 		483AC6071DE52CFB009E0E64 /* tara.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tara.png; sourceTree = "<group>"; };
+		483AC60A1DE533F8009E0E64 /* XQFasciatePageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQFasciatePageControl.h; sourceTree = "<group>"; };
+		483AC60B1DE533F8009E0E64 /* XQFasciatePageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQFasciatePageControl.m; sourceTree = "<group>"; };
+		483AC60F1DE54080009E0E64 /* NetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
+		483AC6101DE54080009E0E64 /* NetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManager.m; sourceTree = "<group>"; };
+		483AC6131DE5413E009E0E64 /* NetworkUrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkUrl.h; sourceTree = "<group>"; };
+		483AC6151DE541F3009E0E64 /* NSString+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extension.h"; sourceTree = "<group>"; };
+		483AC6161DE541F3009E0E64 /* NSString+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extension.m"; sourceTree = "<group>"; };
+		483AC6181DE54593009E0E64 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		6889F03AADAB6FAF8C717B85 /* libPods-LiuHe.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LiuHe.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B2EB7F459E36B4FE011C7F /* Pods-LiuHe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiuHe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiuHe/Pods-LiuHe.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -153,6 +164,7 @@
 				483AC59A1DE525AF009E0E64 /* Info.plist */,
 				483AC58A1DE525AF009E0E64 /* main.m */,
 				483AC6061DE528BE009E0E64 /* LiuHe.pch */,
+				483AC6181DE54593009E0E64 /* Common.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -183,6 +195,7 @@
 				483AC5EB1DE52749009E0E64 /* ForumViewController */,
 				483AC5F51DE52749009E0E64 /* UserViewController */,
 				483AC5E11DE526CB009E0E64 /* CustomView */,
+				483AC60D1DE54051009E0E64 /* UtilityObject */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -223,6 +236,7 @@
 		483AC5E11DE526CB009E0E64 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
+				483AC6091DE533F8009E0E64 /* XQFasciatePageControl */,
 				483AC5E21DE526CB009E0E64 /* CycleImageView */,
 			);
 			path = CustomView;
@@ -338,6 +352,43 @@
 				483AC5FC1DE52749009E0E64 /* MineHeadView.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		483AC6091DE533F8009E0E64 /* XQFasciatePageControl */ = {
+			isa = PBXGroup;
+			children = (
+				483AC60A1DE533F8009E0E64 /* XQFasciatePageControl.h */,
+				483AC60B1DE533F8009E0E64 /* XQFasciatePageControl.m */,
+			);
+			path = XQFasciatePageControl;
+			sourceTree = "<group>";
+		};
+		483AC60D1DE54051009E0E64 /* UtilityObject */ = {
+			isa = PBXGroup;
+			children = (
+				483AC6141DE541C9009E0E64 /* Category */,
+				483AC60E1DE54051009E0E64 /* Network */,
+			);
+			path = UtilityObject;
+			sourceTree = "<group>";
+		};
+		483AC60E1DE54051009E0E64 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				483AC60F1DE54080009E0E64 /* NetworkManager.h */,
+				483AC6101DE54080009E0E64 /* NetworkManager.m */,
+				483AC6131DE5413E009E0E64 /* NetworkUrl.h */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		483AC6141DE541C9009E0E64 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				483AC6151DE541F3009E0E64 /* NSString+Extension.h */,
+				483AC6161DE541F3009E0E64 /* NSString+Extension.m */,
+			);
+			path = Category;
 			sourceTree = "<group>";
 		};
 		6C267AB83E089C8449D82B56 /* Frameworks */ = {
@@ -553,6 +604,9 @@
 				483AC5FF1DE52749009E0E64 /* MineHeadView.m in Sources */,
 				483AC5E91DE526CB009E0E64 /* XQNavigationBar.m in Sources */,
 				483AC6021DE5276A009E0E64 /* HomeViewController.m in Sources */,
+				483AC6111DE54080009E0E64 /* NetworkManager.m in Sources */,
+				483AC60C1DE533F8009E0E64 /* XQFasciatePageControl.m in Sources */,
+				483AC6171DE541F3009E0E64 /* NSString+Extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

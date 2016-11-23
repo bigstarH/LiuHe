@@ -8,6 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@class MineHeadView;
+@protocol MineHeadViewDelegate <NSObject>
+
+@optional
+/**
+ *  头像被点击
+ */
+- (void)mineHeadView:(MineHeadView *)header didLogin:(BOOL)login;
+
+- (void)modifyUserInfoWithMineHeadView:(MineHeadView *)header;
+
+@end
+
 @interface MineHeadView : UIView
 
 @property (nonatomic, weak) UIImageView *headView;
@@ -17,5 +30,7 @@
 @property (nonatomic, weak) UILabel *integralLab;
 
 @property (nonatomic, weak) UILabel *gradeLab;
+
+@property (nonatomic, weak) id <MineHeadViewDelegate> delegate;
 
 @end

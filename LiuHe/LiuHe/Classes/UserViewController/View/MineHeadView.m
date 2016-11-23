@@ -16,6 +16,8 @@
 
 @property (nonatomic, weak) UILabel *rankLab;
 
+@property (nonatomic, weak) UIButton *modifyBtn;
+
 @end
 
 @implementation MineHeadView
@@ -23,7 +25,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor redColor];
+        self.backgroundColor = MAIN_COLORL;
         [self createView];
     }
     return self;
@@ -35,52 +37,60 @@
     self.headView         = headView;
     headView.backgroundColor = [UIColor whiteColor];
     [headView.layer setMasksToBounds:YES];
+    [headView setUserInteractionEnabled:YES];
+    [headView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(headerDidClick:)]];
     [self addSubview:headView];
     
     UILabel *label = [[UILabel alloc] init];
     self.userLab   = label;
     label.text     = @"用户名";
-    label.font     = [UIFont systemFontOfSize:16];
+    label.font     = [UIFont systemFontOfSize:fontSize(16)];
     [label setTextColor:[UIColor whiteColor]];
     [label setTextAlignment:NSTextAlignmentCenter];
     [self addSubview:label];
     
     UIView *bottomView = [[UIView alloc] init];
     self.bottomView    = bottomView;
-    [bottomView setBackgroundColor:[UIColor orangeColor]];
+    [bottomView setBackgroundColor:RGBACOLOR(0, 0, 0, 0.3)];
     [self addSubview:bottomView];
     
     label         = [[UILabel alloc] init];
-    label.text    = @"积分";
-    label.font    = [UIFont systemFontOfSize:13];
+    label.text    = @"積分";
+    label.font    = [UIFont systemFontOfSize:fontSize(13)];
     [label setTextAlignment:NSTextAlignmentCenter];
     [label setTextColor:[UIColor whiteColor]];
     self.totalLab = label;
     [bottomView addSubview:label];
     
     label         = [[UILabel alloc] init];
-    label.text    = @"1992";
-    label.font    = [UIFont systemFontOfSize:13];
+    label.text    = @"0";
+    label.font    = [UIFont systemFontOfSize:fontSize(13)];
     [label setTextAlignment:NSTextAlignmentCenter];
     [label setTextColor:[UIColor whiteColor]];
     self.integralLab = label;
     [bottomView addSubview:label];
     
     label         = [[UILabel alloc] init];
-    label.text    = @"等级";
-    label.font    = [UIFont systemFontOfSize:13];
+    label.text    = @"等級";
+    label.font    = [UIFont systemFontOfSize:fontSize(13)];
     [label setTextAlignment:NSTextAlignmentCenter];
     [label setTextColor:[UIColor whiteColor]];
     self.rankLab  = label;
     [bottomView addSubview:label];
     
     label         = [[UILabel alloc] init];
-    label.text    = @"8";
-    label.font    = [UIFont systemFontOfSize:13];
+    label.text    = @"0";
+    label.font    = [UIFont systemFontOfSize:fontSize(13)];
     [label setTextAlignment:NSTextAlignmentCenter];
     [label setTextColor:[UIColor whiteColor]];
     self.gradeLab = label;
     [bottomView addSubview:label];
+    
+    UIButton *btn  = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.modifyBtn = btn;
+    [btn setBackgroundColor:[UIColor whiteColor]];
+    [btn addTarget:self action:@selector(modifyUserInfo:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:btn];
 }
 
 - (void)layoutSubviews
@@ -100,6 +110,11 @@
     CGFloat labelY  = CGRectGetMaxY(self.headView.frame) + HEIGHT(5);
     self.userLab.frame = CGRectMake(0, labelY, width, labelH);
     
+    CGFloat btnH    = WIDTH(25);
+    CGFloat btnX    = width - btnH - WIDTH(20);
+    CGFloat btnY    = headerY - HEIGHT(3);
+    self.modifyBtn.frame = CGRectMake(btnX, btnY, btnH, btnH);
+    
     CGFloat bottomH = HEIGHT(50);
     CGFloat bottomY = height - bottomH;
     self.bottomView.frame = CGRectMake(0, bottomY, width, bottomH);
@@ -107,12 +122,21 @@
     CGFloat totalH  = bottomH * 0.5;
     CGFloat totalY  = bottomH - totalH - HEIGHT(3);
     self.totalLab.frame    = CGRectMake(0, totalY, width * 0.5, totalH);
-    
     self.integralLab.frame = CGRectMake(0, HEIGHT(3), width * 0.5, totalH);
-    
     self.rankLab.frame     = CGRectMake(width * 0.5, totalY, width * 0.5, totalH);
-    
     self.gradeLab.frame    = CGRectMake(width * 0.5, HEIGHT(3), width * 0.5, totalH);
 }
 
+- (void)headerDidClick:(UITapGestureRecognizer *)tap
+{
+    BOOL didLogin = [UserDefaults boolForKey:USER_DIDLOGIN];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(mineHeadView:didLogin:)]) {
+        [self.delegate mineHeadView:self didLogin:didLogin];
+    }
+}
+
+- (void)modifyUserInfo:(UIButton *)sender
+{
+    NSLog(@"modifyUserInfo");
+}
 @end

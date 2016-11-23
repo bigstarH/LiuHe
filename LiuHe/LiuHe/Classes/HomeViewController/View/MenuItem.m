@@ -7,6 +7,7 @@
 //
 
 #import "MenuItem.h"
+#import "NSString+Extension.h"
 
 @interface MenuItem ()
 
@@ -24,7 +25,7 @@
         UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
         _backgroundView        = backgroundView;
         backgroundView.hidden  = YES;
-        [backgroundView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.4]];
+        [backgroundView setBackgroundColor:RGBACOLOR(0, 0, 0, 0.4)];
         [self addSubview:backgroundView];
         
         [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selfDidClick:)]];
@@ -70,7 +71,7 @@
     }
     _label.text = title;
     _label.font = font ? font : [UIFont systemFontOfSize:17];
-    _titleSize  = [self caculateSizeForTitle:title];
+    _titleSize  = [title realSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) font:font];
 }
 
 - (void)setMenuImage:(UIImage *)image
@@ -96,15 +97,6 @@
     
     NSInteger tag = [tap view].tag;
     self.block(tag);
-}
-
-- (CGSize)caculateSizeForTitle:(NSString *)title
-{
-    CGSize maxSize = CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX);
-    CGRect frame = [title boundingRectWithSize:maxSize
-                                       options:NSStringDrawingUsesLineFragmentOrigin
-                                    attributes:@{NSFontAttributeName : self.label.font} context:nil];
-    return CGSizeMake(frame.size.width + 6, frame.size.height + 4);
 }
 
 @end

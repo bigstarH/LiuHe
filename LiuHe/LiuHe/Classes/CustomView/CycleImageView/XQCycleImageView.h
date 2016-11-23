@@ -2,7 +2,7 @@
 //  XQCycleImageView.h
 //  Example
 //
-//  Created by NB-022 on 16/5/14.
+//  Created by 胡兴钦 on 16/5/14.
 //  Copyright © 2016年 ufuns. All rights reserved.
 //
 
@@ -40,6 +40,8 @@
  *  图片数组
  */
 @property (nonatomic, strong) NSArray *images;
+
+@property (nonatomic) UIViewContentMode contentMode;
 
 /**
  *  创建一个实例

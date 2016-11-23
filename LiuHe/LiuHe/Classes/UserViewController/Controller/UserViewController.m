@@ -10,7 +10,7 @@
 #import "ForumViewController.h"
 #import "MineHeadView.h"
 
-@interface UserViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface UserViewController () <UITableViewDelegate, UITableViewDataSource, MineHeadViewDelegate>
 
 @property (nonatomic, weak) UITableView *tableView;
 
@@ -23,13 +23,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self setNavigationBar];
     [self createView];
 }
 
-- (void)setNavigationBar
+- (void)setNavigationBarStyle
 {
+    [super setNavigationBarStyle];
     self.navigationController.navigationBar.hidden = YES;
     self.needsCustomNavigationBar      = YES;
     self.title = @"我的";
@@ -37,57 +36,48 @@
     self.navigationBar.imageView.alpha = 0;
     self.navigationBar.mOpaque         = 64;
     
-    XQBarButtonItem *rightBtn1 = [[XQBarButtonItem alloc] initWithTitle:@"修改信息"];
-    [rightBtn1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [rightBtn1 setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    XQBarButtonItem *rightBtn2 = [[XQBarButtonItem alloc] initWithTitle:@"发帖"];
-    [rightBtn2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [rightBtn2 setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    self.navigationBar.rightBarButtonItems = @[rightBtn1, rightBtn2];
+    XQBarButtonItem *rightBtn = [[XQBarButtonItem alloc] initWithTitle:@"發帖"];
+    [rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [rightBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+    self.navigationBar.rightBarButtonItems = @[rightBtn];
     
-    XQBarButtonItem *leftBtn   = [[XQBarButtonItem alloc] initWithTitle:@"签到"];
+    XQBarButtonItem *leftBtn   = [[XQBarButtonItem alloc] initWithTitle:@"簽到"];
     [leftBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [leftBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     self.navigationBar.leftBarButtonItem = leftBtn;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    self.navigationController.navigationBar.hidden = YES;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    self.navigationController.navigationBar.hidden = NO;
-}
-
 - (UIColor *)setBarTintColor
 {
-    return [UIColor redColor];
+    return MAIN_COLORL;
 }
 
 - (void)createView
 {
-    self.array = @[@"我的资料", @"我的收藏", @"我的帖子", @"我的回复", @"设置"];
+    self.array = @[@"我的資料", @"我的收藏", @"我的帖子", @"我的回復", @"設置"];
     
     CGFloat buttonH        = HEIGHT(40);
     MineHeadView *header   = [[MineHeadView alloc] initWithFrame:CGRectMake(0, 0, 0, HEIGHT(235))];
+    header.delegate        = self;
     UIView *footer         = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, buttonH + HEIGHT(20))];
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - 49)];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 49)];
     _tableView             = tableView;
     tableView.delegate     = self;
     tableView.dataSource   = self;
     tableView.rowHeight    = HEIGHT(50);
     [tableView setTableHeaderView:header];
     [tableView setTableFooterView:footer];
+    [tableView setShowsVerticalScrollIndicator:NO];
     [self.view insertSubview:tableView belowSubview:self.navigationBar];
     
     UIButton *logout = [UIButton buttonWithType:UIButtonTypeCustom];
-    [logout setFrame:CGRectMake(WIDTH(15), HEIGHT(10), self.view.bounds.size.width - WIDTH(30), buttonH)];
+    [logout setFrame:CGRectMake(WIDTH(15), HEIGHT(10), SCREEN_WIDTH - WIDTH(30), buttonH)];
     [logout setTitle:@"註銷登錄" forState:UIControlStateNormal];
     [logout setTitleColor:[UIColor yellowColor] forState:UIControlStateHighlighted];
-    [logout setBackgroundColor:[UIColor redColor]];
+    [logout.layer setMasksToBounds:YES];
+    [logout.layer setCornerRadius:HEIGHT(5)];
+    [logout setBackgroundColor:MAIN_COLORL];
     [logout addTarget:self action:@selector(logoutEvent:) forControlEvents:UIControlEventTouchUpInside];
     [footer addSubview:logout];
 }
@@ -97,6 +87,7 @@
     NSLog(@"logoutEvent");
 }
 
+#pragma mark - start UITableViewDelegate, UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.array.count;
@@ -105,13 +96,32 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellID = @"UITableViewCellID";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCellID"];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     cell.textLabel.text = self.array[indexPath.row];
     return cell;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+#pragma mark end UITableViewDelegate, UITableViewDataSource
+
+#pragma mark - start MineHeadViewDelegate
+/** 头像点击事件 */
+- (void)mineHeadView:(MineHeadView *)header didLogin:(BOOL)login
+{
+    if (login) {  // 已经登录了
+        
+    }else {  // 还没有登录
+        
+    }
+}
+#pragma mark end MineHeadViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
