@@ -1,0 +1,29 @@
+//
+//  LiuHe.pch
+//  LiuHe
+//
+//  Created by huxingqin on 2016/11/23.
+//  Copyright © 2016年 huxingqin. All rights reserved.
+//
+
+#ifndef LiuHe_pch
+#define LiuHe_pch
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#endif
+
+#define SCREEN_WIDTH  [UIScreen mainScreen].bounds.size.width
+#define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
+#define WIDTH(w)      (w) * SCREEN_WIDTH / 320
+#define HEIGHT(h)     (h) * SCREEN_WIDTH / 320
+#define fontSize(s)   (s) * SCREEN_WIDTH / 320
+
+#define RGBACOLOR(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a]
+#define RGBCOLOR(r, g, b)     [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+
+#define UserDefaults       [NSUserDefaults standardUserDefaults]
+#define NotificationCenter [NSNotificationCenter defaultCenter]
+
+#endif /* LiuHe_pch */
