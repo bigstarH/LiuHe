@@ -98,9 +98,10 @@
 /** 添加UIView的约束 */
 - (void)addConstraint:(UIView *)btn toView:(UIView *)toView attribute:(NSLayoutAttribute)attr constant:(CGFloat)constant width:(CGFloat)width height:(CGFloat)height
 {
+    CGFloat top = 43 - height * 0.5;
     [btn setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self addLeftConstraintWithItem:btn toView:toView attribute:attr constant:constant];
-    [self addTopConstraintWithItem:btn toView:self attribute:NSLayoutAttributeTop constant:28];
+    [self addTopConstraintWithItem:btn toView:self attribute:NSLayoutAttributeTop constant:top];
     [self addWidthConstraintItem:btn width:width];
     [self addHeightConstraintItem:btn height:height];
 }
@@ -243,18 +244,18 @@
             [btn setImageEdgeInsets:UIEdgeInsetsMake(0, -1, 0, 1)];
             [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, 1, 0, -1)];
         }
-        CGFloat btnW = [btn barButtonItemWidth];
+        CGSize btnSize = [btn barButtonItemSize];
         [array addObject:btn];
         [self addSubview:btn];
         if (i == 0) {
             [self addConstraint:btn toView:self attribute:NSLayoutAttributeLeading constant:barButtonItemsDistance
-                          width:btnW height:30];
+                          width:btnSize.width height:btnSize.height];
         }else {
             XQBarButtonItem *lastbtn = [leftBarButtonItems objectAtIndex:i - 1];
             [self addConstraint:btn toView:lastbtn attribute:NSLayoutAttributeTrailing constant:barButtonItemsDistance
-                          width:btnW height:30];
+                          width:btnSize.width height:btnSize.height];
         }
-        _titleLX += (btnW + barButtonItemsDistance);
+        _titleLX += (btnSize.width + barButtonItemsDistance);
     }
     _leftBarButtonItems = array;
     _leftBarButtonItem  = [_leftBarButtonItems firstObject];
@@ -297,15 +298,15 @@
             [btn setImageEdgeInsets:UIEdgeInsetsMake(0, -1, 0, 1)];
             [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, 1, 0, -1)];
         }
-        CGFloat btnW      = [btn barButtonItemWidth];
-        CGFloat buttonDis = -(barButtonItemsDistance + btnW);
+        CGSize  btnSize   = [btn barButtonItemSize];
+        CGFloat buttonDis = -(barButtonItemsDistance + btnSize.width);
         [array addObject:btn];
         [self addSubview:btn];
         if (i == 0) {
-            [self addConstraint:btn toView:self attribute:NSLayoutAttributeTrailing constant:buttonDis width:btnW height:30];
+            [self addConstraint:btn toView:self attribute:NSLayoutAttributeTrailing constant:buttonDis width:btnSize.width height:btnSize.height];
         }else {
             XQBarButtonItem *lastbtn = [rightBarButtonItems objectAtIndex:i - 1];
-            [self addConstraint:btn toView:lastbtn attribute:NSLayoutAttributeLeading constant:buttonDis width:btnW height:30];
+            [self addConstraint:btn toView:lastbtn attribute:NSLayoutAttributeLeading constant:buttonDis width:btnSize.width height:btnSize.height];
         }
         _titleRX += buttonDis;
     }
@@ -319,26 +320,27 @@
     _backButtonHidden  = backButtonHidden;
     if (backButtonHidden) return;
     [_backBarButtonItem removeFromSuperview]; 
-    XQBarButtonItem *button = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_normal"]
+    XQBarButtonItem *button = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]
                                                     highlightedImage:[UIImage imageNamed:@"back_press"]
                                                                title:@"返回"
                                                     titleNormalColor:RGBCOLOR(14, 107, 255)
                                                titleHighlightedColor:RGBCOLOR(131, 174, 237)];
-    CGFloat backBtnW   = [button barButtonItemWidth];
+    CGSize backBtnSize = [button barButtonItemSize];
     _backBarButtonItem = button;
     [button setImageEdgeInsets:UIEdgeInsetsMake(0, -1, 0, 1)];
     [button setTitleEdgeInsets:UIEdgeInsetsMake(0, 1, 0, -1)];
     [button addTarget:self action:@selector(goBack:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button];
-    [self addConstraint:button toView:self attribute:NSLayoutAttributeLeading constant:barButtonItemsDistance width:backBtnW height:30];
+    [self addConstraint:button toView:self attribute:NSLayoutAttributeLeading constant:barButtonItemsDistance width:backBtnSize.width height:backBtnSize.height];
 }
 
 /** 设置返回按钮 */
 - (void)setBackBarButtonItem:(XQBarButtonItem *)backBarButtonItem
 {
     if (self.isBackButtonHidden) return;
-    UIImage *mImage  = [UIImage imageNamed:@"back_normal"];
-    CGFloat backBtnW = [backBarButtonItem barButtonItemWidth];
+    UIImage *mImage    = [UIImage imageNamed:@"back_normal"];
+    CGSize backBtnSize = [backBarButtonItem barButtonItemSize];
+    CGFloat backBtnW   = backBtnSize.width;
     if (backBarButtonItem.imageView.image == nil) {
         [backBarButtonItem setImage:mImage forState:UIControlStateNormal];
         backBtnW = backBtnW + mImage.size.width;
@@ -355,7 +357,7 @@
     [_backBarButtonItem removeFromSuperview];
     _backBarButtonItem = backBarButtonItem;
     [self addSubview:_backBarButtonItem];
-    [self addConstraint:backBarButtonItem toView:self attribute:NSLayoutAttributeLeading constant:barButtonItemsDistance width:backBtnW height:30];
+    [self addConstraint:backBarButtonItem toView:self attribute:NSLayoutAttributeLeading constant:barButtonItemsDistance width:backBtnW height:backBtnSize.height];
 }
 #pragma mark end 对外提供的API接口
 

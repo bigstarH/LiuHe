@@ -14,6 +14,14 @@
 
 @implementation BaseViewController
 
+- (instancetype)initWithHidesBottomBar:(BOOL)hide
+{
+    if (self = [super init]) {
+        self.hidesBottomBarWhenPushed = hide;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -28,7 +36,6 @@
     self.navigationController.navigationBar.barStyle     = [self setStatuBar];
     self.navigationController.navigationBar.barTintColor = [self setBarTintColor];
     self.navigationController.navigationBar.tintColor    = [self setTintColor];
-    self.navigationBar.delegate = self;
 }
 
 - (UIBarStyle)setStatuBar
@@ -76,8 +83,9 @@
     if (!needsCustomNavigationBar) return;
     
     XQNavigationBar *navigationBar = [[XQNavigationBar alloc] init];
-    _navigationBar = navigationBar;
-    _navigationBar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 64);
+    _navigationBar          = navigationBar;
+    _navigationBar.delegate = self;
+    _navigationBar.frame    = CGRectMake(0, 0, SCREEN_WIDTH, 64);
     [_navigationBar setBarTintColor:[self setBarTintColor]];
     [self.view addSubview:navigationBar];
 }

@@ -15,6 +15,7 @@
 /** 是否需要自定义navigationBar */
 @property (nonatomic) BOOL needsCustomNavigationBar;
 
+- (instancetype)initWithHidesBottomBar:(BOOL)hide;
 /**
  *  设置导航栏
  */

@@ -7,6 +7,7 @@
 //
 
 #import "XQCycleImageView.h"
+#import <UIImageView+WebCache.h>
 
 @interface XQCycleImageView ()
 @property (nonatomic, weak) UIScrollView *scrollView;
@@ -164,6 +165,7 @@
 - (void)startPlayImageView
 {
     if (!self.autoDragging) return;
+    if (self.images.count <= 1) return;
     [self.timer fire];
 }
 
@@ -207,9 +209,36 @@
     _images = images;
     if (_images == nil) return;
     
-    self.previousImageView.image = [images objectAtIndex:images.count - 1];
-    self.currentImageView.image  = [images objectAtIndex:0];
-    self.nextImageView.image     = [images objectAtIndex:1];
+    if (images.count <= 0) {
+        self.scrollView.scrollEnabled = NO;
+//        self.currentImageView.image   = [UIImage imageNamed:@""];
+        return;
+    }
+    
+    id item1 = [images objectAtIndex:0];
+    if ([item1 isKindOfClass:[NSString class]]) {
+        [self.currentImageView sd_setImageWithURL:[NSURL URLWithString:item1] placeholderImage:nil];
+    }else {
+        self.currentImageView.image = item1;
+    }
+    if (images.count <= 1) {
+        self.scrollView.scrollEnabled = NO;
+        return;
+    }
+    
+    id item0 = [images objectAtIndex:images.count - 1];
+    id item2 = [images objectAtIndex:1];
+    
+    if ([item0 isKindOfClass:[NSString class]]) {
+        [self.previousImageView sd_setImageWithURL:[NSURL URLWithString:item0] placeholderImage:nil];
+    }else {
+        self.previousImageView.image = item0;
+    }
+    if ([item2 isKindOfClass:[NSString class]]) {
+        [self.nextImageView sd_setImageWithURL:[NSURL URLWithString:item2] placeholderImage:nil];
+    }else {
+        self.nextImageView.image = item2;
+    }
 }
 
 #pragma mark - start 实现UIScrollViewDelegate协议
@@ -222,14 +251,27 @@
 {
     CGFloat contentOffsetX = scrollView.contentOffset.x;
     if (self.previousImageView.image == nil || self.nextImageView.image == nil) {
-        UIImage *previousImage = [self.images objectAtIndex:(i == 0 ? self.images.count - 1 : i - 1)];
-        self.previousImageView.image = previousImage;
-        UIImage *nextImage     = [self.images objectAtIndex:(i == self.images.count - 1 ? 0 : i + 1)];
-        self.nextImageView.image     = nextImage;
+        id preImage  = [self.images objectAtIndex:(i == 0 ? self.images.count - 1 : i - 1)];
+        if ([preImage isKindOfClass:[UIImage class]]) {
+            self.previousImageView.image = preImage;
+        }else {
+            [self.previousImageView sd_setImageWithURL:[NSURL URLWithString:preImage] placeholderImage:nil];
+        }
+        id nextImage = [self.images objectAtIndex:(i == self.images.count - 1 ? 0 : i + 1)];
+        if ([nextImage isKindOfClass:[UIImage class]]) {
+            self.nextImageView.image = nextImage;
+        }else {
+            [self.nextImageView sd_setImageWithURL:[NSURL URLWithString:nextImage] placeholderImage:nil];
+        }
     }
     
     if (contentOffsetX == 0) {
-        self.currentImageView.image  = self.previousImageView.image;
+        id preImage  = [self.images objectAtIndex:(i == 0 ? self.images.count - 1 : i - 1)];
+        if ([preImage isKindOfClass:[UIImage class]]) {
+            self.currentImageView.image = preImage;
+        }else {
+            [self.currentImageView sd_setImageWithURL:[NSURL URLWithString:preImage] placeholderImage:nil];
+        }
         [scrollView setContentOffset:CGPointMake(scrollView.bounds.size.width, 0)];
         self.previousImageView.image = nil;
         
@@ -238,7 +280,12 @@
     }
     
     if (contentOffsetX == scrollView.bounds.size.width * 2) {
-        self.currentImageView.image  = self.nextImageView.image;
+        id nextImage   = [self.images objectAtIndex:(i == self.images.count - 1 ? 0 : i + 1)];
+        if ([nextImage isKindOfClass:[UIImage class]]) {
+            self.currentImageView.image = nextImage;
+        }else {
+            [self.currentImageView sd_setImageWithURL:[NSURL URLWithString:nextImage] placeholderImage:nil];
+        }
         [scrollView setContentOffset:CGPointMake(scrollView.bounds.size.width, 0)];
         self.nextImageView.image     = nil;
         

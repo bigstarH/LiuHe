@@ -8,6 +8,7 @@
 
 #import "HomeViewController.h"
 #import "XQFasciatePageControl.h"
+#import "NetworkManager.h"
 #import "XQCycleImageView.h"
 #import "MenuItem.h"
 
@@ -25,7 +26,13 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self createCycleImageView];
+    
+    [[NetworkManager shareManager] getHomeADWithSuccess:^(NSArray *imagesArray) {
+        [self createCycleImageViewWithImages:imagesArray];
+        [self.cycleImageView startPlayImageView];
+    } failure:^(NSString *error) {
+        NSLog(@"error = %@", error);
+    }];
     [self createBottomButton];
 }
 
@@ -36,12 +43,12 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self.cycleImageView startPlayImageView];
+    [self.cycleImageView stopPlayImageView];
 }
 
 - (UIColor *)setBarTintColor
 {
-    return MAIN_COLORL;
+    return MAIN_COLOR;
 }
 
 - (UILabel *)setTitleView
@@ -55,17 +62,13 @@
 }
 
 /** 创建图片轮播 */
-- (void)createCycleImageView
+- (void)createCycleImageViewWithImages:(NSArray *)images
 {
-    NSArray *images = @[[UIImage imageNamed:@"tara"],
-                        [UIImage imageNamed:@"tara"],
-                        [UIImage imageNamed:@"tara"]];
-    
     XQCycleImageView *cycleImage = [XQCycleImageView cycleImageView];
     cycleImage.frame             = CGRectMake(0, 0, SCREEN_WIDTH, HEIGHT(130));
     cycleImage.images            = images;
     cycleImage.delegate          = self;
-    cycleImage.repeatSecond      = 3;
+    cycleImage.repeatSecond      = 5;
     cycleImage.autoDragging      = YES;
     self.cycleImageView          = cycleImage;
     [self.view addSubview:cycleImage];
@@ -93,7 +96,7 @@
                             RGBCOLOR(192, 175, 152), RGBCOLOR(237, 163, 130),
                             RGBCOLOR(237, 163, 45) , RGBCOLOR(67, 180, 237)];
     
-    CGFloat originY   = CGRectGetMaxY(self.cycleImageView.frame) + vSpace;
+    CGFloat originY   = HEIGHT(130) + vSpace;
     CGFloat mHeight   = (SCREEN_HEIGHT - originY - 113 - 3 * vSpace) / 3;
     for (int i = 0; i < 8; i++) {
         CGFloat itemX = hSpace;
@@ -123,6 +126,8 @@
         [item setMenuImage:[UIImage imageNamed:array[i]]];
         [item setMenuClickBlock:^(NSInteger tag) {
             NSLog(@"tag = %zd", tag);
+            UIViewController *vc = [[UIViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
         }];
         [self setMenuTitleAndImageFrame:item];
         [item setBackgroundColor:bgColorArr[i]];
@@ -141,11 +146,11 @@
         item.imageView.frame = CGRectMake(width - WIDTH(18) - WIDTH(55), (height - WIDTH(55)) * 0.5, WIDTH(55), WIDTH(55));
     }else if (item.tag == 2 || item.tag == 3) {
         item.label.frame     = CGRectMake(width * 0.5, (height - labSize.height) * 0.5, labSize.width, labSize.height);
-        item.imageView.frame = CGRectMake(WIDTH(22), (height - WIDTH(28)) * 0.5, WIDTH(28), WIDTH(28));
+        item.imageView.frame = CGRectMake(WIDTH(24), (height - WIDTH(28)) * 0.5, WIDTH(28), WIDTH(28));
     }else if (item.tag == 1 || item.tag == 4) {
         CGFloat imageW = WIDTH(55) * (item.tag == 4 ? 1.3 : 1.0);
         item.imageView.frame = CGRectMake(WIDTH(10), (height - imageW) * 0.5, imageW, imageW);
-        item.label.frame     = CGRectMake(width - WIDTH(10) - labSize.width, HEIGHT(20), labSize.width, labSize.height);
+        item.label.frame     = CGRectMake(width - WIDTH(12) - labSize.width, HEIGHT(20), labSize.width, labSize.height);
     }else {
         item.imageView.frame = CGRectMake((width - WIDTH(45)) * 0.5, HEIGHT(10), WIDTH(45), WIDTH(45));
         item.label.frame     = CGRectMake(0, height - HEIGHT(10) - labSize.height, width, labSize.height);

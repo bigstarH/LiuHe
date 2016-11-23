@@ -16,8 +16,8 @@
 /**
  *  获取首页广告图
  */
-- (void)getHomeADWithSuccess:(void (^)(NSDictionary *))successBlock
-                     failure:(void (^)(NSString *))failureBlock;
+- (void)getHomeADWithSuccess:(void (^)(NSArray *imagesArray))successBlock
+                     failure:(void (^)(NSString *error))failureBlock;
 #pragma mark end 网络请求
 
 @end

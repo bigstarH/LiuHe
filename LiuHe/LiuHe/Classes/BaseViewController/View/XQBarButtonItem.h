@@ -78,9 +78,9 @@
         titleHighlightedColor:(UIColor *)titleHighlightedColor;
 
 /**
- *  BarButtonItem的宽度
+ *  BarButtonItem的尺寸
  */
-- (CGFloat)barButtonItemWidth;
+- (CGSize)barButtonItemSize;
 /**
  *  文字的宽度
  */

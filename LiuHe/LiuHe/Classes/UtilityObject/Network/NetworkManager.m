@@ -45,11 +45,19 @@ static id networkInstance;
     return _manager;
 }
 
-- (void)getHomeADWithSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
+- (void)getHomeADWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     [self.manager GET:GET_INDEXAD_URL parameters:nil progress:nil
               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                  NSArray *responseArr = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                  NSMutableArray *images = [NSMutableArray array];
+                  for (int i = 0; i < responseArr.count; i++) {
+                      NSDictionary *dict = responseArr[i];
+                      [images addObject:dict[@"titlepic"]];
+                  }
+                  successBlock ? successBlock(images) : nil;
               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                  failureBlock ? failureBlock(error.domain) : nil;
               }];
 }
 

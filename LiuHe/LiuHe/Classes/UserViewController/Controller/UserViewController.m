@@ -7,7 +7,7 @@
 //
 
 #import "UserViewController.h"
-#import "ForumViewController.h"
+#import "LoginViewController.h"
 #import "MineHeadView.h"
 
 @interface UserViewController () <UITableViewDelegate, UITableViewDataSource, MineHeadViewDelegate>
@@ -49,7 +49,7 @@
 
 - (UIColor *)setBarTintColor
 {
-    return MAIN_COLORL;
+    return MAIN_COLOR;
 }
 
 - (void)createView
@@ -77,7 +77,7 @@
     [logout setTitleColor:[UIColor yellowColor] forState:UIControlStateHighlighted];
     [logout.layer setMasksToBounds:YES];
     [logout.layer setCornerRadius:HEIGHT(5)];
-    [logout setBackgroundColor:MAIN_COLORL];
+    [logout setBackgroundColor:MAIN_COLOR];
     [logout addTarget:self action:@selector(logoutEvent:) forControlEvents:UIControlEventTouchUpInside];
     [footer addSubview:logout];
 }
@@ -118,7 +118,8 @@
     if (login) {  // 已经登录了
         
     }else {  // 还没有登录
-        
+        LoginViewController *loginVC = [[LoginViewController alloc] initWithHidesBottomBar:YES];
+        [self.navigationController pushViewController:loginVC animated:YES];
     }
 }
 #pragma mark end MineHeadViewDelegate

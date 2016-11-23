@@ -95,9 +95,10 @@
     return self;
 }
 
-- (CGFloat)barButtonItemWidth
+- (CGSize)barButtonItemSize
 {
     CGFloat width   = 0;
+    CGFloat height  = 0;
     NSString *title = self.titleLabel.text;
     if (title) {
         NSDictionary *dict = @{NSFontAttributeName : self.titleLabel.font};
@@ -105,13 +106,15 @@
                                           options:NSStringDrawingUsesLineFragmentOrigin
                                        attributes:dict
                                           context:nil];
-        width = width + rect.size.width;
+        width  = width + rect.size.width;
+        height = height + rect.size.height;
     }
     UIImageView *imageView = self.imageView;
     if (imageView) {
-        width = width + imageView.image.size.width;
+        width  = width  + imageView.image.size.width;
+        height = height + imageView.image.size.height;
     }
-    return width + XQEdgeInsertW;
+    return CGSizeMake(width + XQEdgeInsertW, height + XQEdgeInsertW);
 }
 
 - (CGFloat)titleLabelWidth
@@ -138,4 +141,5 @@
     }
     return width;
 }
+
 @end

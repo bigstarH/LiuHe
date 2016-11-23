@@ -25,7 +25,7 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = MAIN_COLORL;
+        self.backgroundColor = MAIN_COLOR;
         [self createView];
     }
     return self;
@@ -88,7 +88,7 @@
     
     UIButton *btn  = [UIButton buttonWithType:UIButtonTypeCustom];
     self.modifyBtn = btn;
-    [btn setBackgroundColor:[UIColor whiteColor]];
+    [btn setBackgroundImage:[UIImage imageNamed:@"btn_edit"] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(modifyUserInfo:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:btn];
 }
@@ -110,9 +110,9 @@
     CGFloat labelY  = CGRectGetMaxY(self.headView.frame) + HEIGHT(5);
     self.userLab.frame = CGRectMake(0, labelY, width, labelH);
     
-    CGFloat btnH    = WIDTH(25);
-    CGFloat btnX    = width - btnH - WIDTH(20);
-    CGFloat btnY    = headerY - HEIGHT(3);
+    CGFloat btnH    = WIDTH(30);
+    CGFloat btnX    = width - btnH - WIDTH(15);
+    CGFloat btnY    = headerY - HEIGHT(10);
     self.modifyBtn.frame = CGRectMake(btnX, btnY, btnH, btnH);
     
     CGFloat bottomH = HEIGHT(50);
