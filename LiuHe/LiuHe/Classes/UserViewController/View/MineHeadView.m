@@ -35,7 +35,7 @@
 {
     UIImageView *headView = [[UIImageView alloc] initWithFrame:CGRectZero];
     self.headView         = headView;
-    headView.backgroundColor = [UIColor whiteColor];
+    headView.image        = [UIImage imageNamed:@"user_head"];
     [headView.layer setMasksToBounds:YES];
     [headView setUserInteractionEnabled:YES];
     [headView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(headerDidClick:)]];

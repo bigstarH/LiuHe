@@ -36,15 +36,14 @@
     self.navigationBar.imageView.alpha = 0;
     self.navigationBar.mOpaque         = 64;
     
-    XQBarButtonItem *rightBtn = [[XQBarButtonItem alloc] initWithTitle:@"發帖"];
-    [rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [rightBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    self.navigationBar.rightBarButtonItems = @[rightBtn];
+    XQBarButtonItem *rightBtn1 = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SignIn"]];
+    [rightBtn1 setTag:1];
+    [rightBtn1 addTarget:self action:@selector(barButtonItemEvent:) forControlEvents:UIControlEventTouchUpInside];
     
-    XQBarButtonItem *leftBtn   = [[XQBarButtonItem alloc] initWithTitle:@"簽到"];
-    [leftBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [leftBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    self.navigationBar.leftBarButtonItem = leftBtn;
+    XQBarButtonItem *rightBtn2 = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"post_forum"]];
+    [rightBtn2 setTag:2];
+    [rightBtn2 addTarget:self action:@selector(barButtonItemEvent:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationBar.rightBarButtonItems = @[rightBtn1, rightBtn2];
 }
 
 - (UIColor *)setBarTintColor
@@ -85,6 +84,15 @@
 - (void)logoutEvent:(UIButton *)sender
 {
     NSLog(@"logoutEvent");
+}
+
+- (void)barButtonItemEvent:(XQBarButtonItem *)sender
+{
+    if (sender.tag == 1) {  // 签到
+        
+    }else {  // 发帖
+        
+    }
 }
 
 #pragma mark - start UITableViewDelegate, UITableViewDataSource

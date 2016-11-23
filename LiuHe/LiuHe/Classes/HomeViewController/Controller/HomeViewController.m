@@ -147,8 +147,14 @@
     }else if (item.tag == 2 || item.tag == 3) {
         item.label.frame     = CGRectMake(width * 0.5, (height - labSize.height) * 0.5, labSize.width, labSize.height);
         item.imageView.frame = CGRectMake(WIDTH(24), (height - WIDTH(28)) * 0.5, WIDTH(28), WIDTH(28));
+        if (item.tag == 3) {
+            item.imageView.frame = CGRectMake(WIDTH(20), HEIGHT(5), height - WIDTH(10), height - WIDTH(10));
+            item.imageView.layer.masksToBounds = YES;
+            item.imageView.layer.cornerRadius  = (height - WIDTH(10)) * 0.5;
+            [item.imageView setBackgroundColor:[UIColor whiteColor]];
+        }
     }else if (item.tag == 1 || item.tag == 4) {
-        CGFloat imageW = WIDTH(55) * (item.tag == 4 ? 1.3 : 1.0);
+        CGFloat imageW = WIDTH(55) * (item.tag == 4 ? 1.2 : 1.0);
         item.imageView.frame = CGRectMake(WIDTH(10), (height - imageW) * 0.5, imageW, imageW);
         item.label.frame     = CGRectMake(width - WIDTH(12) - labSize.width, HEIGHT(20), labSize.width, labSize.height);
     }else {
