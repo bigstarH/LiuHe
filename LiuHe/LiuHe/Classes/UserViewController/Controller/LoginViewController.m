@@ -6,10 +6,12 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import "LoginViewController.h"
-#import "XQTextField.h"
-#import "UIImage+Extension.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 #import "RegisteViewController.h"
+#import "LoginViewController.h"
+#import "UIImage+Extension.h"
+#import "NetworkManager.h"
+#import "XQTextField.h"
 
 @interface LoginViewController ()
 
@@ -41,6 +43,11 @@
     self.navigationBar.leftBarButtonItem = leftBtn;
 }
 
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
+}
+
 - (void)createBackgroundView
 {
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
@@ -59,7 +66,7 @@
     XQTextField *accountTF = [[XQTextField alloc] initWithFrame:CGRectMake(accountTFX, accountTFY, accountTFW, tfH)];
     self.accountTF         = accountTF;
     accountTF.borderStyle  = UITextBorderStyleNone;
-    accountTF.placeholder  = @"賬戶";
+    accountTF.placeholder  = @"請輸入用户名";
     accountTF.textColor    = [UIColor whiteColor];
     accountTF.font         = [UIFont systemFontOfSize:fontSize(15)];
     accountTF.leftViewMode = UITextFieldViewModeAlways;
@@ -76,7 +83,7 @@
     XQTextField *pswTF = [[XQTextField alloc] initWithFrame:CGRectMake(accountTFX, pswTFY, accountTFW, tfH)];
     self.passwordTF    = pswTF;
     pswTF.borderStyle  = UITextBorderStyleNone;
-    pswTF.placeholder  = @"密碼";
+    pswTF.placeholder  = @"請輸入密碼";
     pswTF.textColor    = [UIColor whiteColor];
     pswTF.font         = [UIFont systemFontOfSize:fontSize(15)];
     pswTF.leftViewMode = UITextFieldViewModeAlways;
@@ -97,10 +104,12 @@
     loginBtn.frame     = CGRectMake(accountTFX, loginBtnY, accountTFW, buttonH);
     [loginBtn setTitle:@"登錄" forState:UIControlStateNormal];
     [loginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [loginBtn setBackgroundImage:[UIImage imageWithColor:MAIN_COLOR] forState:UIControlStateNormal];
+    [loginBtn setBackgroundImage:[UIImage imageWithColor:MAIN_COLOR] forState:UIControlStateHighlighted];
     [loginBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize(15)]];
     [loginBtn.layer setMasksToBounds:YES];
     [loginBtn.layer setCornerRadius:buttonH * 0.5];
+    [loginBtn.layer setBorderColor:[UIColor whiteColor].CGColor];
+    [loginBtn.layer setBorderWidth:1];
     [loginBtn addTarget:self action:@selector(loginEvent:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:loginBtn];
     
@@ -110,19 +119,42 @@
     regBtn.frame     = CGRectMake(accountTFX, regBtnY, accountTFW, buttonH);
     [regBtn setTitle:@"註冊賬號" forState:UIControlStateNormal];
     [regBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [regBtn setBackgroundImage:[UIImage imageWithColor:MAIN_COLOR] forState:UIControlStateNormal];
+    [regBtn setBackgroundImage:[UIImage imageWithColor:MAIN_COLOR] forState:UIControlStateHighlighted];
     [regBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize(15)]];
     [regBtn.layer setMasksToBounds:YES];
     [regBtn.layer setCornerRadius:buttonH * 0.5];
+    [regBtn.layer setBorderColor:[UIColor whiteColor].CGColor];
+    [regBtn.layer setBorderWidth:1];
     [regBtn addTarget:self action:@selector(registeEvent:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:regBtn];
 }
 
+/** 登录事件 */
 - (void)loginEvent:(UIButton *)sender
 {
-    NSLog(@"loginEvent");
+    [self.view endEditing:YES];
+    
+    NSString *userName = self.accountTF.text;
+    NSString *password = self.passwordTF.text;
+    if ((!userName) || [userName isEqualToString:@""]) {
+        [SVProgressHUD showErrorWithStatus:@"請填寫用户名"];
+        return;
+    }
+    if ((!password) || [password isEqualToString:@""]) {
+        [SVProgressHUD showErrorWithStatus:@"請填寫密碼"];
+        return;
+    }
+    
+    [SVProgressHUD showWithStatus:@"正在登录中"];
+    [[NetworkManager shareManager] userLoginWithUsername:userName password:password success:^{
+        [SVProgressHUD dismiss];
+        [self.navigationController popViewControllerAnimated:YES];
+    } failure:^(NSString *error) {
+        [SVProgressHUD showErrorWithStatus:error];
+    }];
 }
 
+/** 注册 */
 - (void)registeEvent:(UIButton *)sender
 {
     RegisteViewController *regVC = [[RegisteViewController alloc] init];

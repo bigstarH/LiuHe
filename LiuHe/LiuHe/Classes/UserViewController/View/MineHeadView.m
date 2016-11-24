@@ -7,6 +7,7 @@
 //
 
 #import "MineHeadView.h"
+#import <UIImageView+WebCache.h>
 
 @interface MineHeadView ()
 
@@ -43,7 +44,7 @@
     
     UILabel *label = [[UILabel alloc] init];
     self.userLab   = label;
-    label.text     = @"用户名";
+    label.text     = @"請先點擊頭像登錄";
     label.font     = [UIFont systemFontOfSize:fontSize(16)];
     [label setTextColor:[UIColor whiteColor]];
     [label setTextAlignment:NSTextAlignmentCenter];
@@ -79,7 +80,7 @@
     [bottomView addSubview:label];
     
     label         = [[UILabel alloc] init];
-    label.text    = @"0";
+    label.text    = @"无";
     label.font    = [UIFont systemFontOfSize:fontSize(13)];
     [label setTextAlignment:NSTextAlignmentCenter];
     [label setTextColor:[UIColor whiteColor]];
@@ -125,6 +126,22 @@
     self.integralLab.frame = CGRectMake(0, HEIGHT(3), width * 0.5, totalH);
     self.rankLab.frame     = CGRectMake(width * 0.5, totalY, width * 0.5, totalH);
     self.gradeLab.frame    = CGRectMake(width * 0.5, HEIGHT(3), width * 0.5, totalH);
+}
+
+- (void)refreshHeaderDataWithModel:(UserModel *)model
+{
+    [self.headView sd_setImageWithURL:[NSURL URLWithString:model.headUrlStr] placeholderImage:[UIImage imageNamed:@"user_head"]];
+    [self.userLab setText:model.userName];
+    [self.integralLab setText:model.integral];
+    [self.gradeLab setText:model.rank];
+}
+
+- (void)resetHeaderData
+{
+    self.headView.image = [UIImage imageNamed:@"user_head"];
+    [self.userLab setText:@"請先點擊頭像登錄"];
+    [self.integralLab setText:@"0"];
+    [self.gradeLab setText:@"无"];
 }
 
 - (void)headerDidClick:(UITapGestureRecognizer *)tap

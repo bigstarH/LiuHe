@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UserModel.h"
 
 @class MineHeadView;
 @protocol MineHeadViewDelegate <NSObject>
@@ -32,5 +33,11 @@
 @property (nonatomic, weak) UILabel *gradeLab;
 
 @property (nonatomic, weak) id <MineHeadViewDelegate> delegate;
+
+/** 设置用户信息 */
+- (void)refreshHeaderDataWithModel:(UserModel *)model;
+
+/** 重置信息显示 */
+- (void)resetHeaderData;
 
 @end

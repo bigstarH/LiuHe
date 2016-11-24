@@ -9,6 +9,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import "NetworkManager.h"
 #import "NetworkUrl.h"
+#import "UserModel.h"
 
 static id networkInstance;
 
@@ -45,6 +46,43 @@ static id networkInstance;
     return _manager;
 }
 
+- (void)userLoginWithUsername:(NSString *)userName password:(NSString *)password success:(void (^)())successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews" : @"login", @"username" : userName, @"password" : password};
+    [self.manager POST:USER_LOGIN_LOGOUT_REGISTER_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
+                   if (code == 1) {
+                       [UserDefaults setBool:YES forKey:USER_DIDLOGIN];
+                       UserModel *model = [UserModel userModelWithDict:responseDict];
+                       model.password   = password;
+                       [model saveUserInfo];
+                       successBlock ? successBlock() : nil;
+                       [NotificationCenter postNotificationName:USER_LOGIIN_SUCCESS object:nil userInfo:@{@"userInfo" : model}];
+                   }else {
+                       NSString *error  = [responseDict objectForKey:@"ts"];
+                       failureBlock ? failureBlock(error) : nil;
+                   }
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
+
+- (void)userLogoutWithUserID:(NSString *)userID userName:(NSString *)userName rnd:(NSString *)rnd success:(void (^)())successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews" : @"exit", @"userid" : userID, @"username" : userName, @"rnd" : rnd};
+    [self.manager POST:USER_LOGIN_LOGOUT_REGISTER_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSLog(@"注销成功  responseDict = %@", responseDict);
+                   successBlock ? successBlock() : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   NSLog(@"注销失败");
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
+
 - (void)getHomeADWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     [self.manager GET:GET_INDEXAD_URL parameters:nil progress:nil
@@ -60,26 +98,6 @@ static id networkInstance;
                   failureBlock ? failureBlock(error.domain) : nil;
               }];
 }
-
-//- (void)loginWithAccount:(NSString *)account password:(NSString *)password success:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
-//{
-//    NSDictionary *param = @{@"account" : account, @"password" : password};
-//    [self.manager GET:Login_URL parameters:param progress:nil
-//              success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//                  NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-//                  NSInteger code       = [[responseDict objectForKey:@"code"] integerValue];
-//                  NSDictionary *result = [responseDict objectForKey:@"data"];
-//                  if (code == 0) {
-//                      successBlock ? successBlock(result) : nil;
-//                  }else {
-//                      failureBlock ? failureBlock([responseDict objectForKey:@"Detail"]) : nil;
-//                  }
-//                  
-//              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//                  failureBlock ? failureBlock(error.domain) : nil;
-//              }];
-//}
-//
 //- (void)logoutWithSuccess:(void (^)())successBlock failure:(void (^)(NSString *))failureBlock
 //{
 //    NSDictionary *param = @{ @"account" : [UserModel userInfo].account };
