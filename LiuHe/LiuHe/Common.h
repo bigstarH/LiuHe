@@ -9,6 +9,10 @@
 #ifndef Common_h
 #define Common_h
 
+// NSUserDefaults 键值
 #define USER_DIDLOGIN   @"user_didLogin"
+
+// 通知名
+#define USER_LOGIIN_SUCCESS  @"USER_LOGIIN_SUCCESS"  // 用户登录成功
 
 #endif /* Common_h */

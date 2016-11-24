@@ -22,7 +22,7 @@
     [super viewDidLoad];
     
     NSDictionary *attr       = @{NSForegroundColorAttributeName : [UIColor lightGrayColor]};
-    NSDictionary *attrSelect = @{NSForegroundColorAttributeName : [UIColor colorWithRed:209/255.0 green:192/255.0 blue:166/255.0 alpha:1.0]};
+    NSDictionary *attrSelect = @{NSForegroundColorAttributeName : MAIN_COLOR};
     
     UITabBarItem *tabBarItem = [UITabBarItem appearance];
     [tabBarItem setTitleTextAttributes:attr forState:UIControlStateNormal];

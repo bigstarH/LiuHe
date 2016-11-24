@@ -8,6 +8,8 @@
 
 #import "UserViewController.h"
 #import "LoginViewController.h"
+#import "SettingViewController.h"
+#import "NetworkManager.h"
 #import "MineHeadView.h"
 
 @interface UserViewController () <UITableViewDelegate, UITableViewDataSource, MineHeadViewDelegate>
@@ -16,16 +18,30 @@
 
 @property (nonatomic, strong) NSArray *array;
 
+@property (nonatomic, strong) NSArray *imageArray;
+
+@property (nonatomic, weak) UIButton *logoutBtn;
+
 @end
 
 @implementation UserViewController
 
+- (void)dealloc
+{
+    [NotificationCenter removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // 登录成功时通知
+    [NotificationCenter addObserver:self selector:@selector(userDidLoginSuccess:) name:USER_LOGIIN_SUCCESS object:nil];
+    
     [self createView];
 }
 
+#pragma mark - start 设置导航栏
 - (void)setNavigationBarStyle
 {
     [super setNavigationBarStyle];
@@ -36,7 +52,7 @@
     self.navigationBar.imageView.alpha = 0;
     self.navigationBar.mOpaque         = 64;
     
-    XQBarButtonItem *rightBtn1 = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"SignIn"]];
+    XQBarButtonItem *rightBtn1 = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"signIn"]];
     [rightBtn1 setTag:1];
     [rightBtn1 addTarget:self action:@selector(barButtonItemEvent:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -50,10 +66,12 @@
 {
     return MAIN_COLOR;
 }
+#pragma mark end 设置导航栏
 
 - (void)createView
 {
     self.array = @[@"我的資料", @"我的收藏", @"我的帖子", @"我的回復", @"設置"];
+    self.imageArray = @[@"user_data", @"user_collection", @"user_post", @"user_reply", @"user_setting"];
     
     CGFloat buttonH        = HEIGHT(40);
     MineHeadView *header   = [[MineHeadView alloc] initWithFrame:CGRectMake(0, 0, 0, HEIGHT(235))];
@@ -71,6 +89,8 @@
     [self.view insertSubview:tableView belowSubview:self.navigationBar];
     
     UIButton *logout = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.logoutBtn   = logout;
+    [logout setHidden:YES];
     [logout setFrame:CGRectMake(WIDTH(15), HEIGHT(10), SCREEN_WIDTH - WIDTH(30), buttonH)];
     [logout setTitle:@"註銷登錄" forState:UIControlStateNormal];
     [logout setTitleColor:[UIColor yellowColor] forState:UIControlStateHighlighted];
@@ -79,11 +99,39 @@
     [logout setBackgroundColor:MAIN_COLOR];
     [logout addTarget:self action:@selector(logoutEvent:) forControlEvents:UIControlEventTouchUpInside];
     [footer addSubview:logout];
+    
+    UserModel *model = [UserModel getCurrentUser];
+    if (model) {
+        [header refreshHeaderDataWithModel:model];
+        [logout setHidden:NO];
+    }
 }
 
+/** 用户登录成功时通知回调 */
+- (void)userDidLoginSuccess:(NSNotification *)notification
+{
+    UserModel *model = (UserModel *)[[notification userInfo] objectForKey:@"userInfo"];
+    MineHeadView *header = (MineHeadView *)[self.tableView tableHeaderView];
+    [header refreshHeaderDataWithModel:model];
+    [self.logoutBtn setHidden:NO];
+}
+
+#pragma mark - start 按钮事件监听
+/** 注销事件 */
 - (void)logoutEvent:(UIButton *)sender
 {
-    NSLog(@"logoutEvent");
+    [UserDefaults setBool:NO forKey:USER_DIDLOGIN];
+    [self.logoutBtn setHidden:YES];
+    MineHeadView *header = (MineHeadView *)[self.tableView tableHeaderView];
+    [header resetHeaderData];
+    UserModel *model = [UserModel getCurrentUser];
+    if (model) {
+        [[NetworkManager shareManager] userLogoutWithUserID:model.uid
+                                                   userName:model.userName
+                                                        rnd:model.rnd
+                                                    success:nil failure:nil];
+    }
+    [UserModel removeCurrentUser];
 }
 
 - (void)barButtonItemEvent:(XQBarButtonItem *)sender
@@ -94,6 +142,7 @@
         
     }
 }
+#pragma mark - end 按钮事件监听
 
 #pragma mark - start UITableViewDelegate, UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -109,13 +158,40 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    cell.textLabel.text = self.array[indexPath.row];
+    cell.textLabel.text  = self.array[indexPath.row];
+    cell.imageView.image = [UIImage imageNamed:self.imageArray[indexPath.row]];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    switch (indexPath.row) {
+        case 0:  // 我的资料
+        {
+            break;
+        }
+        case 1:  // 我的收藏
+        {
+            break;
+        }
+        case 2:  // 我的帖子
+        {
+            break;
+        }
+        case 3:  // 我的回复
+        {
+            break;
+        }
+        case 4:  // 设置
+        {
+            SettingViewController *setVC = [[SettingViewController alloc] initWithHidesBottomBar:YES];
+            [self.navigationController pushViewController:setVC animated:YES];
+            break;
+        }
+        default:
+            break;
+    }
 }
 #pragma mark end UITableViewDelegate, UITableViewDataSource
 
@@ -124,7 +200,7 @@
 - (void)mineHeadView:(MineHeadView *)header didLogin:(BOOL)login
 {
     if (login) {  // 已经登录了
-        
+    
     }else {  // 还没有登录
         LoginViewController *loginVC = [[LoginViewController alloc] initWithHidesBottomBar:YES];
         [self.navigationController pushViewController:loginVC animated:YES];

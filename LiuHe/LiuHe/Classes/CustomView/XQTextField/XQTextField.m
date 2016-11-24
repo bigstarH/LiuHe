@@ -18,6 +18,8 @@
 
 @implementation XQTextField
 
+@synthesize text = _text;
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
@@ -66,6 +68,12 @@
     self.label.frame     = CGRectMake(originX, 0, labelW, height);
 }
 
+#pragma mark - start getter
+- (NSString *)text
+{
+    return self.textField.text;
+}
+#pragma mark end getter
 
 #pragma mark - start setter
 - (void)setText:(NSString *)text
@@ -166,6 +174,12 @@
 {
     _secureTextEntry = secureTextEntry;
     self.textField.secureTextEntry = secureTextEntry;
+}
+
+- (void)setTag:(NSInteger)tag
+{
+    [super setTag:tag];
+    self.textField.tag = tag;
 }
 #pragma mark end setter
 - (void)textfieldDidChange:(UITextField *)textField

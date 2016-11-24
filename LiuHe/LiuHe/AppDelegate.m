@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "NetworkManager.h"
+#import "UserModel.h"
 
 @interface AppDelegate ()
 
@@ -21,6 +23,9 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     [self initTabBarController];
+    
+    // 用户登录
+    [self userLogin];
     return YES;
 }
 
@@ -28,6 +33,16 @@
 {
     _tabBarController = [[BaseTabBarController alloc] init];
     self.window.rootViewController = _tabBarController;
+}
+
+- (void)userLogin
+{
+    UserModel *model = [UserModel getCurrentUser];
+    if (model) {
+        [[NetworkManager shareManager] userLoginWithUsername:model.userName
+                                                    password:model.password
+                                                     success:nil failure:nil];
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

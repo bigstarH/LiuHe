@@ -31,6 +31,9 @@
 		483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6201DE5B1BA009E0E64 /* XQTextField.m */; };
 		483AC6291DE5C240009E0E64 /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6281DE5C240009E0E64 /* UIImage+Extension.m */; };
 		483AC6381DE5D715009E0E64 /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6371DE5D715009E0E64 /* RegisteViewController.m */; };
+		488F1A0E1DE69A8E005C6882 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488F1A0D1DE69A8E005C6882 /* SettingViewController.m */; };
+		488F1A111DE6B563005C6882 /* SettingHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 488F1A101DE6B563005C6882 /* SettingHeadView.m */; };
+		488F1A151DE6CB4B005C6882 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 488F1A141DE6CB4B005C6882 /* UserModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +106,12 @@
 		483AC6281DE5C240009E0E64 /* UIImage+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extension.m"; sourceTree = "<group>"; };
 		483AC6361DE5D715009E0E64 /* RegisteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisteViewController.h; sourceTree = "<group>"; };
 		483AC6371DE5D715009E0E64 /* RegisteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisteViewController.m; sourceTree = "<group>"; };
+		488F1A0C1DE69A8E005C6882 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		488F1A0D1DE69A8E005C6882 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		488F1A0F1DE6B563005C6882 /* SettingHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingHeadView.h; sourceTree = "<group>"; };
+		488F1A101DE6B563005C6882 /* SettingHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingHeadView.m; sourceTree = "<group>"; };
+		488F1A131DE6CB4B005C6882 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
+		488F1A141DE6CB4B005C6882 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
 		6889F03AADAB6FAF8C717B85 /* libPods-LiuHe.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LiuHe.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B2EB7F459E36B4FE011C7F /* Pods-LiuHe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiuHe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiuHe/Pods-LiuHe.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -333,7 +342,7 @@
 			isa = PBXGroup;
 			children = (
 				483AC5F61DE52749009E0E64 /* Controller */,
-				483AC5F91DE52749009E0E64 /* Model */,
+				488F1A121DE6CB3E005C6882 /* Model */,
 				483AC5FA1DE52749009E0E64 /* View */,
 			);
 			path = UserViewController;
@@ -348,15 +357,10 @@
 				483AC61A1DE580F5009E0E64 /* LoginViewController.m */,
 				483AC6361DE5D715009E0E64 /* RegisteViewController.h */,
 				483AC6371DE5D715009E0E64 /* RegisteViewController.m */,
+				488F1A0C1DE69A8E005C6882 /* SettingViewController.h */,
+				488F1A0D1DE69A8E005C6882 /* SettingViewController.m */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		483AC5F91DE52749009E0E64 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		483AC5FA1DE52749009E0E64 /* View */ = {
@@ -364,6 +368,8 @@
 			children = (
 				483AC5FB1DE52749009E0E64 /* MineHeadView.h */,
 				483AC5FC1DE52749009E0E64 /* MineHeadView.m */,
+				488F1A0F1DE6B563005C6882 /* SettingHeadView.h */,
+				488F1A101DE6B563005C6882 /* SettingHeadView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -414,6 +420,15 @@
 				483AC6201DE5B1BA009E0E64 /* XQTextField.m */,
 			);
 			path = XQTextField;
+			sourceTree = "<group>";
+		};
+		488F1A121DE6CB3E005C6882 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				488F1A131DE6CB4B005C6882 /* UserModel.h */,
+				488F1A141DE6CB4B005C6882 /* UserModel.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		6C267AB83E089C8449D82B56 /* Frameworks */ = {
@@ -575,7 +590,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		AF058A7CC8AF06704AACB1A8 /* [CP] Copy Pods Resources */ = {
@@ -620,10 +635,12 @@
 				483AC5E71DE526CB009E0E64 /* BaseViewController.m in Sources */,
 				483AC58E1DE525AF009E0E64 /* AppDelegate.m in Sources */,
 				483AC5E81DE526CB009E0E64 /* XQBarButtonItem.m in Sources */,
+				488F1A111DE6B563005C6882 /* SettingHeadView.m in Sources */,
 				483AC5FD1DE52749009E0E64 /* ForumViewController.m in Sources */,
 				483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */,
 				483AC6291DE5C240009E0E64 /* UIImage+Extension.m in Sources */,
 				483AC5EA1DE526CB009E0E64 /* XQCycleImageView.m in Sources */,
+				488F1A151DE6CB4B005C6882 /* UserModel.m in Sources */,
 				483AC61B1DE580F5009E0E64 /* LoginViewController.m in Sources */,
 				483AC6051DE52830009E0E64 /* MenuItem.m in Sources */,
 				483AC58B1DE525AF009E0E64 /* main.m in Sources */,
@@ -632,6 +649,7 @@
 				483AC5E91DE526CB009E0E64 /* XQNavigationBar.m in Sources */,
 				483AC6021DE5276A009E0E64 /* HomeViewController.m in Sources */,
 				483AC6381DE5D715009E0E64 /* RegisteViewController.m in Sources */,
+				488F1A0E1DE69A8E005C6882 /* SettingViewController.m in Sources */,
 				483AC6111DE54080009E0E64 /* NetworkManager.m in Sources */,
 				483AC60C1DE533F8009E0E64 /* XQFasciatePageControl.m in Sources */,
 				483AC6171DE541F3009E0E64 /* NSString+Extension.m in Sources */,

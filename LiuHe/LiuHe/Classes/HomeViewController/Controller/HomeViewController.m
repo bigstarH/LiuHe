@@ -6,10 +6,11 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
+#import <SVProgressHUD/SVProgressHUD.h>
 #import "HomeViewController.h"
 #import "XQFasciatePageControl.h"
-#import "NetworkManager.h"
 #import "XQCycleImageView.h"
+#import "NetworkManager.h"
 #import "MenuItem.h"
 
 @interface HomeViewController () <XQCycleImageViewDelegate>
@@ -31,7 +32,7 @@
         [self createCycleImageViewWithImages:imagesArray];
         [self.cycleImageView startPlayImageView];
     } failure:^(NSString *error) {
-        NSLog(@"error = %@", error);
+        [SVProgressHUD showErrorWithStatus:error];
     }];
     [self createBottomButton];
 }
@@ -93,7 +94,7 @@
                             @"足球比分", @"娛樂城", @"百家樂", @"皇冠網"];
     NSArray *bgColorArr = @[RGBCOLOR(237, 110, 112), RGBCOLOR(194, 153, 194),
                             RGBCOLOR(195, 163, 159), RGBCOLOR(194, 153, 194),
-                            RGBCOLOR(192, 175, 152), RGBCOLOR(237, 163, 130),
+                            RGBCOLOR(60, 179, 113) , RGBCOLOR(237, 163, 130),
                             RGBCOLOR(237, 163, 45) , RGBCOLOR(67, 180, 237)];
     
     CGFloat originY   = HEIGHT(130) + vSpace;
@@ -126,8 +127,6 @@
         [item setMenuImage:[UIImage imageNamed:array[i]]];
         [item setMenuClickBlock:^(NSInteger tag) {
             NSLog(@"tag = %zd", tag);
-            UIViewController *vc = [[UIViewController alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
         }];
         [self setMenuTitleAndImageFrame:item];
         [item setBackgroundColor:bgColorArr[i]];
