@@ -23,6 +23,11 @@
 
 @implementation LoginViewController
 
+- (void)dealloc
+{
+    [SVProgressHUD dismiss];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -146,9 +151,10 @@
     }
     
     [SVProgressHUD showWithStatus:@"正在登录中"];
+    __weak typeof(self) ws = self;
     [[NetworkManager shareManager] userLoginWithUsername:userName password:password success:^{
         [SVProgressHUD dismiss];
-        [self.navigationController popViewControllerAnimated:YES];
+        [ws.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
         [SVProgressHUD showErrorWithStatus:error];
     }];

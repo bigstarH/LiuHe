@@ -1,5 +1,5 @@
 //
-//  SettingViewController.h
+//  MyDataViewController.h
 //  LiuHe
 //
 //  Created by huxingqin on 2016/11/24.
@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 
-@interface SettingViewController : BaseViewController
+/** 我的资料 */
+@interface MyDataViewController : BaseViewController
 
 @end

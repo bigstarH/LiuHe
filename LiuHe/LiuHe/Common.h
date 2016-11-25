@@ -13,6 +13,7 @@
 #define USER_DIDLOGIN   @"user_didLogin"
 
 // 通知名
-#define USER_LOGIIN_SUCCESS  @"USER_LOGIIN_SUCCESS"  // 用户登录成功
+#define USER_LOGIN_SUCCESS   @"USER_LOGIN_SUCCESS"  // 用户登录成功
+#define USER_LOGOUT_SUCCESS  @"USER_LOGOUT_SUCCESS"  // 用户登录成功
 
 #endif /* Common_h */

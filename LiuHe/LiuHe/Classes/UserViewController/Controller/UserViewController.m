@@ -6,9 +6,11 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
+#import <SVProgressHUD/SVProgressHUD.h>
 #import "UserViewController.h"
 #import "LoginViewController.h"
 #import "SettingViewController.h"
+#import "MyDataViewController.h"
 #import "NetworkManager.h"
 #import "MineHeadView.h"
 
@@ -19,8 +21,6 @@
 @property (nonatomic, strong) NSArray *array;
 
 @property (nonatomic, strong) NSArray *imageArray;
-
-@property (nonatomic, weak) UIButton *logoutBtn;
 
 @end
 
@@ -36,7 +36,9 @@
     [super viewDidLoad];
     
     // 登录成功时通知
-    [NotificationCenter addObserver:self selector:@selector(userDidLoginSuccess:) name:USER_LOGIIN_SUCCESS object:nil];
+    [NotificationCenter addObserver:self selector:@selector(userDidLoginSuccess:) name:USER_LOGIN_SUCCESS object:nil];
+    // 注销成功时通知
+    [NotificationCenter addObserver:self selector:@selector(userDidLogoutSuccess:) name:USER_LOGOUT_SUCCESS object:nil];
     
     [self createView];
 }
@@ -73,10 +75,8 @@
     self.array = @[@"我的資料", @"我的收藏", @"我的帖子", @"我的回復", @"設置"];
     self.imageArray = @[@"user_data", @"user_collection", @"user_post", @"user_reply", @"user_setting"];
     
-    CGFloat buttonH        = HEIGHT(40);
     MineHeadView *header   = [[MineHeadView alloc] initWithFrame:CGRectMake(0, 0, 0, HEIGHT(235))];
     header.delegate        = self;
-    UIView *footer         = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, buttonH + HEIGHT(20))];
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 49)];
     _tableView             = tableView;
@@ -84,44 +84,29 @@
     tableView.dataSource   = self;
     tableView.rowHeight    = HEIGHT(50);
     [tableView setTableHeaderView:header];
-    [tableView setTableFooterView:footer];
+    [tableView setTableFooterView:[[UIView alloc] init]];
     [tableView setShowsVerticalScrollIndicator:NO];
+    [tableView setScrollEnabled:NO];
     [self.view insertSubview:tableView belowSubview:self.navigationBar];
-    
-    UIButton *logout = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.logoutBtn   = logout;
-    [logout setHidden:YES];
-    [logout setFrame:CGRectMake(WIDTH(15), HEIGHT(10), SCREEN_WIDTH - WIDTH(30), buttonH)];
-    [logout setTitle:@"註銷登錄" forState:UIControlStateNormal];
-    [logout setTitleColor:[UIColor yellowColor] forState:UIControlStateHighlighted];
-    [logout.layer setMasksToBounds:YES];
-    [logout.layer setCornerRadius:HEIGHT(5)];
-    [logout setBackgroundColor:MAIN_COLOR];
-    [logout addTarget:self action:@selector(logoutEvent:) forControlEvents:UIControlEventTouchUpInside];
-    [footer addSubview:logout];
     
     UserModel *model = [UserModel getCurrentUser];
     if (model) {
         [header refreshHeaderDataWithModel:model];
-        [logout setHidden:NO];
     }
 }
 
+#pragma mark - start 通知事件
 /** 用户登录成功时通知回调 */
 - (void)userDidLoginSuccess:(NSNotification *)notification
 {
     UserModel *model = (UserModel *)[[notification userInfo] objectForKey:@"userInfo"];
     MineHeadView *header = (MineHeadView *)[self.tableView tableHeaderView];
     [header refreshHeaderDataWithModel:model];
-    [self.logoutBtn setHidden:NO];
 }
 
-#pragma mark - start 按钮事件监听
-/** 注销事件 */
-- (void)logoutEvent:(UIButton *)sender
+/** 用户注销成功时通知回调 */
+- (void)userDidLogoutSuccess:(NSNotification *)notification
 {
-    [UserDefaults setBool:NO forKey:USER_DIDLOGIN];
-    [self.logoutBtn setHidden:YES];
     MineHeadView *header = (MineHeadView *)[self.tableView tableHeaderView];
     [header resetHeaderData];
     UserModel *model = [UserModel getCurrentUser];
@@ -133,7 +118,9 @@
     }
     [UserModel removeCurrentUser];
 }
+#pragma mark end 通知事件
 
+#pragma mark - start 按钮事件监听
 - (void)barButtonItemEvent:(XQBarButtonItem *)sender
 {
     if (sender.tag == 1) {  // 签到
@@ -157,6 +144,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [cell.textLabel setFont:[UIFont systemFontOfSize:fontSize(16)]];
     }
     cell.textLabel.text  = self.array[indexPath.row];
     cell.imageView.image = [UIImage imageNamed:self.imageArray[indexPath.row]];
@@ -165,22 +153,41 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    BOOL didLogin = [UserDefaults boolForKey:USER_DIDLOGIN];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
         case 0:  // 我的资料
         {
+//            if (!didLogin) {
+//                [SVProgressHUD showErrorWithStatus:@"請先登錄"];
+//                return;
+//            }
+            MyDataViewController *vc = [[MyDataViewController alloc] initWithHidesBottomBar:YES];
+            [self.navigationController pushViewController:vc animated:YES];
             break;
         }
         case 1:  // 我的收藏
         {
+            if (!didLogin) {
+                [SVProgressHUD showErrorWithStatus:@"請先登錄"];
+                return;
+            }
             break;
         }
         case 2:  // 我的帖子
         {
+            if (!didLogin) {
+                [SVProgressHUD showErrorWithStatus:@"請先登錄"];
+                return;
+            }
             break;
         }
         case 3:  // 我的回复
         {
+            if (!didLogin) {
+                [SVProgressHUD showErrorWithStatus:@"請先登錄"];
+                return;
+            }
             break;
         }
         case 4:  // 设置
@@ -200,7 +207,8 @@
 - (void)mineHeadView:(MineHeadView *)header didLogin:(BOOL)login
 {
     if (login) {  // 已经登录了
-    
+        MyDataViewController *vc = [[MyDataViewController alloc] initWithHidesBottomBar:YES];
+        [self.navigationController pushViewController:vc animated:YES];
     }else {  // 还没有登录
         LoginViewController *loginVC = [[LoginViewController alloc] initWithHidesBottomBar:YES];
         [self.navigationController pushViewController:loginVC animated:YES];

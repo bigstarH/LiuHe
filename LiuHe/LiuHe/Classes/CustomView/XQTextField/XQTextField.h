@@ -38,5 +38,7 @@
 @property (nonatomic, weak) UIView *rightView;
 /** 密文模式 */
 @property (nonatomic, getter=isSecureTextEntry) BOOL secureTextEntry;
+/** 代理 */
+@property (nonatomic, weak) id <UITextFieldDelegate> delegate;
 
 @end

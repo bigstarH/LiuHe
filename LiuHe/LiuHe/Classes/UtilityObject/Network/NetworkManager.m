@@ -59,7 +59,7 @@ static id networkInstance;
                        model.password   = password;
                        [model saveUserInfo];
                        successBlock ? successBlock() : nil;
-                       [NotificationCenter postNotificationName:USER_LOGIIN_SUCCESS object:nil userInfo:@{@"userInfo" : model}];
+                       [NotificationCenter postNotificationName:USER_LOGIN_SUCCESS object:nil userInfo:@{@"userInfo" : model}];
                    }else {
                        NSString *error  = [responseDict objectForKey:@"ts"];
                        failureBlock ? failureBlock(error) : nil;

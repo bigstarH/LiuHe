@@ -191,6 +191,58 @@
     }
 }
 #pragma mark - start UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(textFieldShouldReturn:)]) {
+        return [self.delegate textFieldShouldReturn:textField];
+    }
+    return YES;
+}
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(textFieldDidBeginEditing:)]) {
+        [self.delegate textFieldDidBeginEditing:textField];
+    }
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(textFieldDidEndEditing:)]) {
+        [self.delegate textFieldDidEndEditing:textField];
+    }
+}
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(textFieldShouldClear:)]) {
+        return [self.delegate textFieldShouldClear:textField];
+    }
+    return YES;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(textFieldShouldBeginEditing:)]) {
+        return [self.delegate textFieldShouldBeginEditing:textField];
+    }
+    return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(textFieldShouldEndEditing:)]) {
+        return [self.delegate textFieldShouldEndEditing:textField];
+    }
+    return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)]) {
+        return [self textField:textField shouldChangeCharactersInRange:range replacementString:string];
+    }
+    return YES;
+}
 #pragma mark end UITextFieldDelegate
 @end
