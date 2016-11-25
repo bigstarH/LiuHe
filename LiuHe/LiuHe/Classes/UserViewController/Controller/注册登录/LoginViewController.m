@@ -26,11 +26,14 @@
 - (void)dealloc
 {
     [SVProgressHUD dismiss];
+    [NotificationCenter removeObserver:self];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [NotificationCenter addObserver:self selector:@selector(userRegisterSuccess:) name:USER_REGISTER_SUCCESS object:nil];
     
     [self createBackgroundView];
     [self createView];
@@ -132,6 +135,13 @@
     [regBtn.layer setBorderWidth:1];
     [regBtn addTarget:self action:@selector(registeEvent:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:regBtn];
+}
+
+- (void)userRegisterSuccess:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    NSString *username     = [userInfo objectForKey:@"username"];
+    self.accountTF.text    = username;
 }
 
 /** 登录事件 */

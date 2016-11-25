@@ -27,11 +27,12 @@
 		483AC60C1DE533F8009E0E64 /* XQFasciatePageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC60B1DE533F8009E0E64 /* XQFasciatePageControl.m */; };
 		483AC6111DE54080009E0E64 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6101DE54080009E0E64 /* NetworkManager.m */; };
 		483AC6171DE541F3009E0E64 /* NSString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6161DE541F3009E0E64 /* NSString+Extension.m */; };
-		483AC61B1DE580F5009E0E64 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC61A1DE580F5009E0E64 /* LoginViewController.m */; };
 		483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6201DE5B1BA009E0E64 /* XQTextField.m */; };
 		483AC6291DE5C240009E0E64 /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6281DE5C240009E0E64 /* UIImage+Extension.m */; };
-		483AC6381DE5D715009E0E64 /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6371DE5D715009E0E64 /* RegisteViewController.m */; };
 		488F1A151DE6CB4B005C6882 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 488F1A141DE6CB4B005C6882 /* UserModel.m */; };
+		488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF2F1DE863C50061E9EF /* LoginViewController.m */; };
+		488FFF331DE863C50061E9EF /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF311DE863C50061E9EF /* RegisteViewController.m */; };
+		488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF351DE8645A0061E9EF /* ModifyPswViewController.m */; };
 		48E271D31DE708A200CA3F4D /* MyDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271D21DE708A200CA3F4D /* MyDataViewController.m */; };
 		48E271D71DE708FC00CA3F4D /* XQActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271D61DE708FC00CA3F4D /* XQActionSheet.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271DA1DE7253200CA3F4D /* SettingViewController.m */; };
@@ -99,16 +100,18 @@
 		483AC6151DE541F3009E0E64 /* NSString+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extension.h"; sourceTree = "<group>"; };
 		483AC6161DE541F3009E0E64 /* NSString+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extension.m"; sourceTree = "<group>"; };
 		483AC6181DE54593009E0E64 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
-		483AC6191DE580F5009E0E64 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		483AC61A1DE580F5009E0E64 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		483AC61F1DE5B1BA009E0E64 /* XQTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQTextField.h; sourceTree = "<group>"; };
 		483AC6201DE5B1BA009E0E64 /* XQTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQTextField.m; sourceTree = "<group>"; };
 		483AC6271DE5C240009E0E64 /* UIImage+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extension.h"; sourceTree = "<group>"; };
 		483AC6281DE5C240009E0E64 /* UIImage+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extension.m"; sourceTree = "<group>"; };
-		483AC6361DE5D715009E0E64 /* RegisteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisteViewController.h; sourceTree = "<group>"; };
-		483AC6371DE5D715009E0E64 /* RegisteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisteViewController.m; sourceTree = "<group>"; };
 		488F1A131DE6CB4B005C6882 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
 		488F1A141DE6CB4B005C6882 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
+		488FFF2E1DE863C50061E9EF /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		488FFF2F1DE863C50061E9EF /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		488FFF301DE863C50061E9EF /* RegisteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisteViewController.h; sourceTree = "<group>"; };
+		488FFF311DE863C50061E9EF /* RegisteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisteViewController.m; sourceTree = "<group>"; };
+		488FFF341DE8645A0061E9EF /* ModifyPswViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyPswViewController.h; sourceTree = "<group>"; };
+		488FFF351DE8645A0061E9EF /* ModifyPswViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyPswViewController.m; sourceTree = "<group>"; };
 		48E271D11DE708A200CA3F4D /* MyDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDataViewController.h; sourceTree = "<group>"; };
 		48E271D21DE708A200CA3F4D /* MyDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDataViewController.m; sourceTree = "<group>"; };
 		48E271D51DE708FC00CA3F4D /* XQActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQActionSheet.h; sourceTree = "<group>"; };
@@ -357,12 +360,11 @@
 			children = (
 				483AC5F71DE52749009E0E64 /* UserViewController.h */,
 				483AC5F81DE52749009E0E64 /* UserViewController.m */,
-				483AC6191DE580F5009E0E64 /* LoginViewController.h */,
-				483AC61A1DE580F5009E0E64 /* LoginViewController.m */,
-				483AC6361DE5D715009E0E64 /* RegisteViewController.h */,
-				483AC6371DE5D715009E0E64 /* RegisteViewController.m */,
+				488FFF341DE8645A0061E9EF /* ModifyPswViewController.h */,
+				488FFF351DE8645A0061E9EF /* ModifyPswViewController.m */,
 				48E271D11DE708A200CA3F4D /* MyDataViewController.h */,
 				48E271D21DE708A200CA3F4D /* MyDataViewController.m */,
+				488FFF2D1DE863C50061E9EF /* 注册登录 */,
 				48E271D81DE7253200CA3F4D /* 设置 */,
 			);
 			path = Controller;
@@ -432,6 +434,17 @@
 				488F1A141DE6CB4B005C6882 /* UserModel.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		488FFF2D1DE863C50061E9EF /* 注册登录 */ = {
+			isa = PBXGroup;
+			children = (
+				488FFF2E1DE863C50061E9EF /* LoginViewController.h */,
+				488FFF2F1DE863C50061E9EF /* LoginViewController.m */,
+				488FFF301DE863C50061E9EF /* RegisteViewController.h */,
+				488FFF311DE863C50061E9EF /* RegisteViewController.m */,
+			);
+			path = "注册登录";
 			sourceTree = "<group>";
 		};
 		48E271D41DE708FC00CA3F4D /* XQActionSheet */ = {
@@ -652,9 +665,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				483AC5E61DE526CB009E0E64 /* BaseTabBarController.m in Sources */,
+				488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */,
 				483AC5FE1DE52749009E0E64 /* UserViewController.m in Sources */,
 				483AC5E71DE526CB009E0E64 /* BaseViewController.m in Sources */,
 				483AC58E1DE525AF009E0E64 /* AppDelegate.m in Sources */,
+				488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */,
 				483AC5E81DE526CB009E0E64 /* XQBarButtonItem.m in Sources */,
 				483AC5FD1DE52749009E0E64 /* ForumViewController.m in Sources */,
 				483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */,
@@ -662,7 +677,7 @@
 				483AC6291DE5C240009E0E64 /* UIImage+Extension.m in Sources */,
 				483AC5EA1DE526CB009E0E64 /* XQCycleImageView.m in Sources */,
 				488F1A151DE6CB4B005C6882 /* UserModel.m in Sources */,
-				483AC61B1DE580F5009E0E64 /* LoginViewController.m in Sources */,
+				488FFF331DE863C50061E9EF /* RegisteViewController.m in Sources */,
 				483AC6051DE52830009E0E64 /* MenuItem.m in Sources */,
 				48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */,
 				483AC58B1DE525AF009E0E64 /* main.m in Sources */,
@@ -671,7 +686,6 @@
 				483AC5FF1DE52749009E0E64 /* MineHeadView.m in Sources */,
 				483AC5E91DE526CB009E0E64 /* XQNavigationBar.m in Sources */,
 				483AC6021DE5276A009E0E64 /* HomeViewController.m in Sources */,
-				483AC6381DE5D715009E0E64 /* RegisteViewController.m in Sources */,
 				483AC6111DE54080009E0E64 /* NetworkManager.m in Sources */,
 				483AC60C1DE533F8009E0E64 /* XQFasciatePageControl.m in Sources */,
 				483AC6171DE541F3009E0E64 /* NSString+Extension.m in Sources */,

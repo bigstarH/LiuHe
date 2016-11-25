@@ -17,8 +17,10 @@
  *  头像被点击
  */
 - (void)mineHeadView:(MineHeadView *)header didLogin:(BOOL)login;
-
-- (void)modifyUserInfoWithMineHeadView:(MineHeadView *)header;
+/**
+ *  修改用户密码
+ */
+- (void)mineHeadView:(MineHeadView *)header modifyPasswordAndDidLogin:(BOOL)login;
 
 @end
 

@@ -49,7 +49,7 @@ static id networkInstance;
 - (void)userLoginWithUsername:(NSString *)userName password:(NSString *)password success:(void (^)())successBlock failure:(void (^)(NSString *))failureBlock
 {
     NSDictionary *param = @{@"enews" : @"login", @"username" : userName, @"password" : password};
-    [self.manager POST:USER_LOGIN_LOGOUT_REGISTER_URL parameters:param progress:nil
+    [self.manager POST:USER_RELATION_URL parameters:param progress:nil
                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                    NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
                    NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
@@ -57,7 +57,7 @@ static id networkInstance;
                        [UserDefaults setBool:YES forKey:USER_DIDLOGIN];
                        UserModel *model = [UserModel userModelWithDict:responseDict];
                        model.password   = password;
-                       [model saveUserInfo];
+                       [model saveUserInfoWhenLogin];
                        successBlock ? successBlock() : nil;
                        [NotificationCenter postNotificationName:USER_LOGIN_SUCCESS object:nil userInfo:@{@"userInfo" : model}];
                    }else {
@@ -69,18 +69,117 @@ static id networkInstance;
                }];
 }
 
-- (void)userLogoutWithUserID:(NSString *)userID userName:(NSString *)userName rnd:(NSString *)rnd success:(void (^)())successBlock failure:(void (^)(NSString *))failureBlock
+- (void)userLogoutWithSuccess:(void (^)())successBlock failure:(void (^)(NSString *))failureBlock
 {
-    NSDictionary *param = @{@"enews" : @"exit", @"userid" : userID, @"username" : userName, @"rnd" : rnd};
-    [self.manager POST:USER_LOGIN_LOGOUT_REGISTER_URL parameters:param progress:nil
+    UserModel *model    = [UserModel getCurrentUser];
+    NSDictionary *param = @{@"enews"    : @"exit",
+                            @"userid"   : model.uid ? model.uid : @"",
+                            @"username" : model.userName ? model.userName : @"",
+                            @"rnd"      : model.rnd ? model.rnd : @""};
+    [self.manager POST:USER_RELATION_URL parameters:param progress:nil
                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-                   NSLog(@"注销成功  responseDict = %@", responseDict);
                    successBlock ? successBlock() : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   NSLog(@"注销失败");
                    failureBlock ? failureBlock(error.domain) : nil;
                }];
+}
+
+- (void)userRegisterWithUserName:(NSString *)userName password:(NSString *)password repassword:(NSString *)repassword phone:(NSString *)phone email:(NSString *)email success:(void (^)())successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews" : @"register", @"username" : userName, @"password" : password,
+                            @"repassword" : repassword, @"phone" : phone};
+    [self.manager POST:USER_RELATION_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
+                   if (code == 1) {
+                       successBlock ? successBlock() : nil;
+                   }else {
+                       NSString *error = [responseDict objectForKey:@"ts"];
+                       failureBlock ? failureBlock(error) : nil;
+                   }
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+               }];
+}
+
+- (void)userInfoWithSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    UserModel *model    = [UserModel getCurrentUser];
+    NSDictionary *param = @{@"enews"    : @"Info",
+                            @"userid"   : model.uid ? model.uid : @"",
+                            @"username" : model.userName ? model.userName : @"",
+                            @"rnd"      : model.rnd ? model.rnd : @""};
+    [self.manager POST:USER_RELATION_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
+                   if (code == 1){
+                       successBlock ? successBlock(responseDict) : nil;
+                   }else {
+                       NSString *error  = [responseDict objectForKey:@"ts"];
+                       failureBlock ? failureBlock(error) : nil;
+                   }
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
+
+- (void)modifyPswWithOldPsw:(NSString *)oldPsw psw:(NSString *)psw confirmPsw:(NSString *)confirmPsw success:(void (^)(NSString *, NSString *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    UserModel *model    = [UserModel getCurrentUser];
+    NSDictionary *param = @{@"enews"    : @"EditSafeInfo",
+                            @"userid"   : model.uid,
+                            @"username" : model.userName,
+                            @"rnd"      : model.rnd,
+                            @"oldpassword" : oldPsw,
+                            @"password"    : psw,
+                            @"repassword"  : confirmPsw};
+    [self.manager POST:USER_RELATION_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSLog(@"responseDict = %@", responseDict);
+                   NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
+                   NSString *str  = [responseDict objectForKey:@"ts"];
+                   if (code == 1) {
+                       successBlock ? successBlock(model.userName, str) : nil;
+                   }else {
+                       failureBlock ? failureBlock(str) : nil;
+                   }
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
+
+- (void)modifyUserInfoWithTrueName:(NSString *)trueName phone:(NSString *)phone QQNumber:(NSString *)QQ weChatNumber:(NSString *)weChat headImage:(UIImage *)image success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    UserModel *model    = [UserModel getCurrentUser];
+    NSDictionary *param = @{@"enews"    : @"EditInfo",
+                            @"userid"   : model.uid,
+                            @"username" : model.userName,
+                            @"rnd"      : model.rnd,
+                            @"truename" : trueName,
+                            @"phone"    : phone,
+                            @"oicq"     : QQ,
+                            @"weixin" : weChat};
+    
+    [self.manager POST:USER_RELATION_URL parameters:param constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData)
+     {
+         if (image) {
+             NSData *data = UIImageJPEGRepresentation(image, 0.5);
+             [formData appendPartWithFileData:data name:@"userpicfile" fileName:@"userpicfile.jpg" mimeType:@"image/jpg"];
+         }
+     } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+         NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+         NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
+         NSString *ts   = [responseDict objectForKey:@"ts"];
+         if (code == 1) {
+             successBlock ? successBlock(ts) : nil;
+         }else {
+             failureBlock ? failureBlock(ts) : nil;
+         }
+     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+         failureBlock ? failureBlock(error.domain) : nil;
+     }];
 }
 
 - (void)getHomeADWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
@@ -98,34 +197,5 @@ static id networkInstance;
                   failureBlock ? failureBlock(error.domain) : nil;
               }];
 }
-//- (void)logoutWithSuccess:(void (^)())successBlock failure:(void (^)(NSString *))failureBlock
-//{
-//    NSDictionary *param = @{ @"account" : [UserModel userInfo].account };
-//    [self.manager GET:Logout_URL parameters:param progress:nil
-//              success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//                  [[UserModel userInfo] removeUserInfomation];
-//                  [UserDefaults setBool:NO forKey:didLogin];
-//                  successBlock ? successBlock() : nil;
-//              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//                  failureBlock ? failureBlock(error.domain) : nil;
-//              }];
-//}
-
-//- (void)modifyUserInfo
-//{
-//    NSDictionary *dict = @{@"username" : @"huxingqin"};
-//    
-//    [self.manager POST:ModifyUserInfo parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData)
-//     {
-//         //添加Data类型的参数
-//         NSData *data = UIImagePNGRepresentation([UIImage imageNamed:@"tara"]);
-//         [formData appendPartWithFileData:data name:@"headData" fileName:[NSString stringWithFormat:@"%@.png", @"01"] mimeType:@"image/png"];
-//     } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//         NSLog(@"responseObject = %@\nstr = %@",responseObject, str);
-//     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//         
-//     }];
-//}
 
 @end

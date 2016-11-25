@@ -90,7 +90,7 @@
     UIButton *btn  = [UIButton buttonWithType:UIButtonTypeCustom];
     self.modifyBtn = btn;
     [btn setBackgroundImage:[UIImage imageNamed:@"btn_edit"] forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(modifyUserInfo:) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(modifyPassword:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:btn];
 }
 
@@ -111,9 +111,9 @@
     CGFloat labelY  = CGRectGetMaxY(self.headView.frame) + HEIGHT(5);
     self.userLab.frame = CGRectMake(0, labelY, width, labelH);
     
-    CGFloat btnH    = WIDTH(30);
-    CGFloat btnX    = width - btnH - WIDTH(15);
-    CGFloat btnY    = headerY - HEIGHT(10);
+    CGFloat btnH    = WIDTH(22);
+    CGFloat btnX    = width - btnH - WIDTH(12);
+    CGFloat btnY    = headerY - HEIGHT(5);
     self.modifyBtn.frame = CGRectMake(btnX, btnY, btnH, btnH);
     
     CGFloat bottomH = HEIGHT(50);
@@ -152,8 +152,11 @@
     }
 }
 
-- (void)modifyUserInfo:(UIButton *)sender
+- (void)modifyPassword:(UIButton *)sender
 {
-    NSLog(@"modifyUserInfo");
+    BOOL didLogin = [UserDefaults boolForKey:USER_DIDLOGIN];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(mineHeadView:modifyPasswordAndDidLogin:)]) {
+        [self.delegate mineHeadView:self modifyPasswordAndDidLogin:didLogin];
+    }
 }
 @end

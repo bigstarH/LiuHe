@@ -9,6 +9,6 @@
 #import "BaseViewController.h"
 
 /** 我的资料 */
-@interface MyDataViewController : BaseViewController
+@interface MyDataViewController : BaseViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @end

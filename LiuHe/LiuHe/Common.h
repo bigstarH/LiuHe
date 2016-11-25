@@ -13,7 +13,10 @@
 #define USER_DIDLOGIN   @"user_didLogin"
 
 // 通知名
-#define USER_LOGIN_SUCCESS   @"USER_LOGIN_SUCCESS"  // 用户登录成功
-#define USER_LOGOUT_SUCCESS  @"USER_LOGOUT_SUCCESS"  // 用户登录成功
+#define USER_LOGIN_SUCCESS     @"USER_LOGIN_SUCCESS"     // 用户登录成功
+#define USER_LOGOUT_SUCCESS    @"USER_LOGOUT_SUCCESS"    // 用户注销成功
+#define USER_REGISTER_SUCCESS  @"USER_REGISTER_SUCCESS"  // 用户注册成功
+#define USER_MODIFY_SUCCESS    @"USER_MODIFY_SUCCESS"    // 用户修改信息成功
+#define USER_MODIFYPSW_SUCCESS @"USER_MODIFYPSW_SUCCESS" // 用户修改密码成功
 
 #endif /* Common_h */

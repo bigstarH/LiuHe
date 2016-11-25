@@ -33,6 +33,7 @@
     UITextField *textField = [[UITextField alloc] init];
     self.textField         = textField;
     textField.delegate     = self;
+    [textField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     [textField addTarget:self action:@selector(textfieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self addSubview:textField];
     
@@ -80,6 +81,9 @@
 {
     _text = text;
     self.textField.text = text;
+    if (text && ![text isEqualToString:@""]) {
+        self.label.text = @"";
+    }
 }
 
 - (void)setPlaceholder:(NSString *)placeholder
@@ -112,6 +116,12 @@
     _textAlignment = textAlignment;
     self.label.textAlignment     = textAlignment;
     self.textField.textAlignment = textAlignment;
+}
+
+- (void)setAutocapitalizationType:(UITextAutocapitalizationType)autocapitalizationType
+{
+    _autocapitalizationType = autocapitalizationType;
+    self.textField.autocapitalizationType = autocapitalizationType;
 }
 
 - (void)setLeftViewMode:(UITextFieldViewMode)leftViewMode

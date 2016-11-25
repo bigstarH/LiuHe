@@ -7,10 +7,11 @@
 //
 
 #import <SVProgressHUD/SVProgressHUD.h>
-#import "UserViewController.h"
-#import "LoginViewController.h"
+#import "ModifyPswViewController.h"
 #import "SettingViewController.h"
 #import "MyDataViewController.h"
+#import "LoginViewController.h"
+#import "UserViewController.h"
 #import "NetworkManager.h"
 #import "MineHeadView.h"
 
@@ -39,6 +40,10 @@
     [NotificationCenter addObserver:self selector:@selector(userDidLoginSuccess:) name:USER_LOGIN_SUCCESS object:nil];
     // 注销成功时通知
     [NotificationCenter addObserver:self selector:@selector(userDidLogoutSuccess:) name:USER_LOGOUT_SUCCESS object:nil];
+    // 修改用户信息成功时通知
+    [NotificationCenter addObserver:self selector:@selector(userDidModifySuccess:) name:USER_MODIFY_SUCCESS object:nil];
+    // 修改用户密码成功时通知
+    [NotificationCenter addObserver:self selector:@selector(userDidModifyPswSuccess:) name:USER_MODIFYPSW_SUCCESS object:nil];
     
     [self createView];
 }
@@ -52,7 +57,6 @@
     self.title = @"我的";
     self.navigationBar.shadowHidden    = YES;
     self.navigationBar.imageView.alpha = 0;
-    self.navigationBar.mOpaque         = 64;
     
     XQBarButtonItem *rightBtn1 = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"signIn"]];
     [rightBtn1 setTag:1];
@@ -111,12 +115,27 @@
     [header resetHeaderData];
     UserModel *model = [UserModel getCurrentUser];
     if (model) {
-        [[NetworkManager shareManager] userLogoutWithUserID:model.uid
-                                                   userName:model.userName
-                                                        rnd:model.rnd
-                                                    success:nil failure:nil];
+        [[NetworkManager shareManager] userLogoutWithSuccess:nil failure:nil];
     }
     [UserModel removeCurrentUser];
+}
+
+/** 用户修改信息成功时通知回调 */
+- (void)userDidModifySuccess:(NSNotification *)notification
+{
+    NSDictionary *dict = [notification userInfo];
+    UIImage *image     = [dict objectForKey:@"headImage"];
+    if (image) {
+        MineHeadView *header  = (MineHeadView *)[self.tableView tableHeaderView];
+        header.headView.image = image;
+    }
+}
+
+/** 用户修改密码成功时通知回调 */
+- (void)userDidModifyPswSuccess:(NSNotification *)notification
+{
+    [UserDefaults setBool:NO forKey:USER_DIDLOGIN];
+    [NotificationCenter postNotificationName:USER_LOGOUT_SUCCESS object:nil];
 }
 #pragma mark end 通知事件
 
@@ -158,10 +177,10 @@
     switch (indexPath.row) {
         case 0:  // 我的资料
         {
-//            if (!didLogin) {
-//                [SVProgressHUD showErrorWithStatus:@"請先登錄"];
-//                return;
-//            }
+            if (!didLogin) {
+                [SVProgressHUD showErrorWithStatus:@"請先登錄"];
+                return;
+            }
             MyDataViewController *vc = [[MyDataViewController alloc] initWithHidesBottomBar:YES];
             [self.navigationController pushViewController:vc animated:YES];
             break;
@@ -214,15 +233,16 @@
         [self.navigationController pushViewController:loginVC animated:YES];
     }
 }
-#pragma mark end MineHeadViewDelegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+/** 修改密码 */
+- (void)mineHeadView:(MineHeadView *)header modifyPasswordAndDidLogin:(BOOL)login
 {
-    CGFloat contentY = scrollView.contentOffset.y;
-    if (contentY < 0) {
-        self.navigationBar.imageView.alpha = 1;
-    }else {
-        self.navigationBar.imageView.alpha = contentY / self.navigationBar.mOpaque;
+    if (login) {  // 已经登录，可以修改密码
+        ModifyPswViewController *vc = [[ModifyPswViewController alloc] initWithHidesBottomBar:YES];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else {  // 还未登录，提示先登录
+        [SVProgressHUD showErrorWithStatus:@"您還未登錄，請先登錄！"];
     }
 }
+#pragma mark end MineHeadViewDelegate
 @end

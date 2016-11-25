@@ -23,6 +23,16 @@
 @property (nonatomic, copy) NSString *headUrlStr;
 /** 随机码 */
 @property (nonatomic, copy) NSString *rnd;
+/** 邮箱 */
+@property (nonatomic, copy) NSString *email;
+/** 手机号码 */
+@property (nonatomic, copy) NSString *phone;
+/** QQ */
+@property (nonatomic, copy) NSString *QQ;
+/** 真实姓名 */
+@property (nonatomic, copy) NSString *trueName;
+/** 微信号 */
+@property (nonatomic, copy) NSString *weChat;
 
 + (instancetype)userModelWithDict:(NSDictionary *)dict;
 
@@ -34,9 +44,14 @@
 + (instancetype)getCurrentUser;
 
 /**
- *  将用户信息保存到本地
+ *  在登录成功后，将用户信息保存到本地
  */
-- (void)saveUserInfo;
+- (void)saveUserInfoWhenLogin;
+
+/**
+ *  在成功获取“我的资料”后，将我的信息保存到本地
+ */
+- (void)saveUserInfoWithMyData;
 
 /**
  *  移除用户信息

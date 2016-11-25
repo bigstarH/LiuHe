@@ -15,7 +15,7 @@
 #define GET_INDEXAD_URL  @"http://ad.jizhou56.com:8090/appad/indexad/index.json" // 首页广告
 
 // 我的
-// 用户登录、注销、注册
-#define USER_LOGIN_LOGOUT_REGISTER_URL   @"http://wap.jizhou56.com:8090/e/member/doaction.php"
+// 用户相关
+#define USER_RELATION_URL   @"http://wap.jizhou56.com:8090/e/member/doaction.php"
 
 #endif /* NetworkUrl_h */

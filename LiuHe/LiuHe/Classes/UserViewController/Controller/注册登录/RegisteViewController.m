@@ -6,8 +6,10 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
+#import <SVProgressHUD/SVProgressHUD.h>
 #import "RegisteViewController.h"
 #import "UIImage+Extension.h"
+#import "NetworkManager.h"
 #import "XQTextField.h"
 
 @interface RegisteViewController ()
@@ -129,7 +131,31 @@
 
 - (void)registeEvent:(UIButton *)sender
 {
-    NSLog(@"registeEvent");
+    NSString *userName = self.userNameTF.text;
+    NSString *password = self.pswTF.text;
+    NSString *repsw    = self.confirmPswTF.text;
+    NSString *phone    = self.accountTF.text;
+    
+    if (![password isEqualToString:repsw]) {
+        [SVProgressHUD showErrorWithStatus:@"兩次輸入的密碼不同"];
+        return;
+    }
+    
+    [SVProgressHUD show];
+    __weak typeof(self) ws  = self;
+    NetworkManager *manager = [NetworkManager shareManager];
+    [manager userRegisterWithUserName:userName
+                             password:password
+                           repassword:repsw
+                                phone:phone
+                                email:nil
+                              success:^{
+                                  [SVProgressHUD showSuccessWithStatus:@"恭喜您，会员注册成功"];
+                                  [NotificationCenter postNotificationName:USER_REGISTER_SUCCESS object:nil userInfo:@{@"username" : userName}];
+                                  [ws.navigationController popViewControllerAnimated:YES];
+                              } failure:^(NSString *error) {
+                                  [SVProgressHUD showErrorWithStatus:error];
+                              }];
 }
 
 @end
