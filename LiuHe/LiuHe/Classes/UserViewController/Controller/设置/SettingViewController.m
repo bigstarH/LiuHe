@@ -8,6 +8,9 @@
 
 #import "SettingViewController.h"
 #import "UIImage+Extension.h"
+#import "FeedBackViewController.h"
+#import "AboutUsViewController.h"
+#import "DisclaimerViewController.h"
 
 @interface SettingViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -136,6 +139,32 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    switch (indexPath.section) {
+        case 0:
+        {
+            DisclaimerViewController *vc = [[DisclaimerViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 1:  // 用户反馈
+        {
+            FeedBackViewController *vc = [[FeedBackViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 2:  // 关于应用
+        {
+            AboutUsViewController *vc = [[AboutUsViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 3:
+        {
+            break;
+        }
+        default:
+            break;
+    }
 }
 #pragma mark end UITableViewDelegate, UITableViewDataSource
 @end

@@ -33,6 +33,10 @@
 		488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF2F1DE863C50061E9EF /* LoginViewController.m */; };
 		488FFF331DE863C50061E9EF /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF311DE863C50061E9EF /* RegisteViewController.m */; };
 		488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF351DE8645A0061E9EF /* ModifyPswViewController.m */; };
+		48DBCB3C1DE9C7C100B989D6 /* FeedBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBCB3B1DE9C7C100B989D6 /* FeedBackViewController.m */; };
+		48DBCB401DE9C8E500B989D6 /* XQTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBCB3F1DE9C8E500B989D6 /* XQTextView.m */; };
+		48DBCB431DE9D99300B989D6 /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBCB421DE9D99300B989D6 /* AboutUsViewController.m */; };
+		48DBCB461DE9DB3800B989D6 /* DisclaimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBCB451DE9DB3800B989D6 /* DisclaimerViewController.m */; };
 		48E271D31DE708A200CA3F4D /* MyDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271D21DE708A200CA3F4D /* MyDataViewController.m */; };
 		48E271D71DE708FC00CA3F4D /* XQActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271D61DE708FC00CA3F4D /* XQActionSheet.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271DA1DE7253200CA3F4D /* SettingViewController.m */; };
@@ -112,6 +116,14 @@
 		488FFF311DE863C50061E9EF /* RegisteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisteViewController.m; sourceTree = "<group>"; };
 		488FFF341DE8645A0061E9EF /* ModifyPswViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyPswViewController.h; sourceTree = "<group>"; };
 		488FFF351DE8645A0061E9EF /* ModifyPswViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyPswViewController.m; sourceTree = "<group>"; };
+		48DBCB3A1DE9C7C100B989D6 /* FeedBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedBackViewController.h; sourceTree = "<group>"; };
+		48DBCB3B1DE9C7C100B989D6 /* FeedBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedBackViewController.m; sourceTree = "<group>"; };
+		48DBCB3E1DE9C8E500B989D6 /* XQTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQTextView.h; sourceTree = "<group>"; };
+		48DBCB3F1DE9C8E500B989D6 /* XQTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQTextView.m; sourceTree = "<group>"; };
+		48DBCB411DE9D99300B989D6 /* AboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutUsViewController.h; sourceTree = "<group>"; };
+		48DBCB421DE9D99300B989D6 /* AboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutUsViewController.m; sourceTree = "<group>"; };
+		48DBCB441DE9DB3800B989D6 /* DisclaimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclaimerViewController.h; sourceTree = "<group>"; };
+		48DBCB451DE9DB3800B989D6 /* DisclaimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisclaimerViewController.m; sourceTree = "<group>"; };
 		48E271D11DE708A200CA3F4D /* MyDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDataViewController.h; sourceTree = "<group>"; };
 		48E271D21DE708A200CA3F4D /* MyDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDataViewController.m; sourceTree = "<group>"; };
 		48E271D51DE708FC00CA3F4D /* XQActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQActionSheet.h; sourceTree = "<group>"; };
@@ -262,6 +274,7 @@
 			children = (
 				48E271D41DE708FC00CA3F4D /* XQActionSheet */,
 				483AC61E1DE5B18B009E0E64 /* XQTextField */,
+				48DBCB3D1DE9C8CD00B989D6 /* XQTextView */,
 				483AC6091DE533F8009E0E64 /* XQFasciatePageControl */,
 				483AC5E21DE526CB009E0E64 /* CycleImageView */,
 			);
@@ -447,6 +460,15 @@
 			path = "注册登录";
 			sourceTree = "<group>";
 		};
+		48DBCB3D1DE9C8CD00B989D6 /* XQTextView */ = {
+			isa = PBXGroup;
+			children = (
+				48DBCB3E1DE9C8E500B989D6 /* XQTextView.h */,
+				48DBCB3F1DE9C8E500B989D6 /* XQTextView.m */,
+			);
+			path = XQTextView;
+			sourceTree = "<group>";
+		};
 		48E271D41DE708FC00CA3F4D /* XQActionSheet */ = {
 			isa = PBXGroup;
 			children = (
@@ -461,6 +483,12 @@
 			children = (
 				48E271D91DE7253200CA3F4D /* SettingViewController.h */,
 				48E271DA1DE7253200CA3F4D /* SettingViewController.m */,
+				48DBCB441DE9DB3800B989D6 /* DisclaimerViewController.h */,
+				48DBCB451DE9DB3800B989D6 /* DisclaimerViewController.m */,
+				48DBCB3A1DE9C7C100B989D6 /* FeedBackViewController.h */,
+				48DBCB3B1DE9C7C100B989D6 /* FeedBackViewController.m */,
+				48DBCB411DE9D99300B989D6 /* AboutUsViewController.h */,
+				48DBCB421DE9D99300B989D6 /* AboutUsViewController.m */,
 			);
 			path = "设置";
 			sourceTree = "<group>";
@@ -624,7 +652,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		AF058A7CC8AF06704AACB1A8 /* [CP] Copy Pods Resources */ = {
@@ -671,13 +699,17 @@
 				483AC58E1DE525AF009E0E64 /* AppDelegate.m in Sources */,
 				488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */,
 				483AC5E81DE526CB009E0E64 /* XQBarButtonItem.m in Sources */,
+				48DBCB3C1DE9C7C100B989D6 /* FeedBackViewController.m in Sources */,
 				483AC5FD1DE52749009E0E64 /* ForumViewController.m in Sources */,
 				483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */,
 				48E271D31DE708A200CA3F4D /* MyDataViewController.m in Sources */,
 				483AC6291DE5C240009E0E64 /* UIImage+Extension.m in Sources */,
+				48DBCB461DE9DB3800B989D6 /* DisclaimerViewController.m in Sources */,
 				483AC5EA1DE526CB009E0E64 /* XQCycleImageView.m in Sources */,
+				48DBCB401DE9C8E500B989D6 /* XQTextView.m in Sources */,
 				488F1A151DE6CB4B005C6882 /* UserModel.m in Sources */,
 				488FFF331DE863C50061E9EF /* RegisteViewController.m in Sources */,
+				48DBCB431DE9D99300B989D6 /* AboutUsViewController.m in Sources */,
 				483AC6051DE52830009E0E64 /* MenuItem.m in Sources */,
 				48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */,
 				483AC58B1DE525AF009E0E64 /* main.m in Sources */,
