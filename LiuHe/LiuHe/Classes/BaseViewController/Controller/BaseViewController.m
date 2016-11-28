@@ -45,7 +45,7 @@
 
 - (UIColor *)setBarTintColor
 {
-    return [UIColor whiteColor];
+    return MAIN_COLOR;
 }
 
 - (UIColor *)setTintColor
@@ -53,7 +53,7 @@
     return [UIColor whiteColor];
 }
 
-- (UILabel *)setTitleView
+- (UIView *)setTitleView
 {
     return nil;
 }
@@ -87,6 +87,7 @@
     _navigationBar.delegate = self;
     _navigationBar.frame    = CGRectMake(0, 0, SCREEN_WIDTH, 64);
     [_navigationBar setBarTintColor:[self setBarTintColor]];
+    [_navigationBar setTitleView:[self setTitleView]];
     [self.view addSubview:navigationBar];
 }
 

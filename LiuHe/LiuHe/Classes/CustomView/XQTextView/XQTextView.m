@@ -88,6 +88,9 @@
 {
     _text          = text;
     _textView.text = text;
+    if (text && ![text isEqualToString:@""]) {
+        _label.text = @"";
+    }
 }
 
 - (void)setTextColor:(UIColor *)textColor

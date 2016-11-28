@@ -42,4 +42,6 @@
 /** 重置信息显示 */
 - (void)resetHeaderData;
 
+/** 设置积分 */
+- (void)setIntegral:(int)integral;
 @end

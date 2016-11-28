@@ -69,11 +69,6 @@
     self.navigationBar.leftBarButtonItem = leftBtn;
 }
 
-- (UIColor *)setBarTintColor
-{
-    return MAIN_COLOR;
-}
-
 #pragma mark - start 初始化创建View
 - (void)createView
 {

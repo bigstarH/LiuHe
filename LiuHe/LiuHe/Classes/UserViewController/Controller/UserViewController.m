@@ -7,13 +7,16 @@
 //
 
 #import <SVProgressHUD/SVProgressHUD.h>
+#import "PostReleaseViewController.h"
 #import "ModifyPswViewController.h"
 #import "SettingViewController.h"
 #import "MyDataViewController.h"
+#import "MyPostViewController.h"
 #import "LoginViewController.h"
 #import "UserViewController.h"
 #import "NetworkManager.h"
 #import "MineHeadView.h"
+#import "XQToast.h"
 
 @interface UserViewController () <UITableViewDelegate, UITableViewDataSource, MineHeadViewDelegate>
 
@@ -66,11 +69,6 @@
     [rightBtn2 setTag:2];
     [rightBtn2 addTarget:self action:@selector(barButtonItemEvent:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationBar.rightBarButtonItems = @[rightBtn1, rightBtn2];
-}
-
-- (UIColor *)setBarTintColor
-{
-    return MAIN_COLOR;
 }
 #pragma mark end 设置导航栏
 
@@ -142,10 +140,31 @@
 #pragma mark - start 按钮事件监听
 - (void)barButtonItemEvent:(XQBarButtonItem *)sender
 {
+    BOOL didLogin = [UserDefaults boolForKey:USER_DIDLOGIN];
+    if (!didLogin) {
+        [[XQToast makeText:@"請先登錄"] show];
+        return;
+    }
     if (sender.tag == 1) {  // 签到
-        
+        __weak typeof(self) ws = self;
+        [SVProgressHUD show];
+        [[NetworkManager shareManager] userSignInWithSuccess:^(NSDictionary *dict) {
+            [SVProgressHUD dismiss];
+            NSString *ts         = [dict objectForKey:@"ts"];
+            MineHeadView *header = (MineHeadView *)[ws.tableView tableHeaderView];
+            [header setIntegral:[[dict objectForKey:@"fen"] intValue]];
+            XQToast *toast   = [XQToast makeText:ts];
+            toast.centerShow = YES;
+            [toast show];
+        } failure:^(NSString *error) {
+            [SVProgressHUD dismiss];
+            XQToast *toast   = [XQToast makeText:error];
+            toast.centerShow = YES;
+            [toast show];
+        }];
     }else {  // 发帖
-        
+        PostReleaseViewController *vc = [[PostReleaseViewController alloc] initWithHidesBottomBar:YES];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 #pragma mark - end 按钮事件监听
@@ -178,7 +197,7 @@
         case 0:  // 我的资料
         {
             if (!didLogin) {
-                [SVProgressHUD showErrorWithStatus:@"請先登錄"];
+                [[XQToast makeText:@"請先登錄"] show];
                 return;
             }
             MyDataViewController *vc = [[MyDataViewController alloc] initWithHidesBottomBar:YES];
@@ -188,7 +207,7 @@
         case 1:  // 我的收藏
         {
             if (!didLogin) {
-                [SVProgressHUD showErrorWithStatus:@"請先登錄"];
+                [[XQToast makeText:@"請先登錄"] show];
                 return;
             }
             break;
@@ -196,15 +215,17 @@
         case 2:  // 我的帖子
         {
             if (!didLogin) {
-                [SVProgressHUD showErrorWithStatus:@"請先登錄"];
+                [[XQToast makeText:@"請先登錄"] show];
                 return;
             }
+            MyPostViewController *vc = [[MyPostViewController alloc] initWithHidesBottomBar:YES];
+            [self.navigationController pushViewController:vc animated:YES];
             break;
         }
         case 3:  // 我的回复
         {
             if (!didLogin) {
-                [SVProgressHUD showErrorWithStatus:@"請先登錄"];
+                [[XQToast makeText:@"請先登錄"] show];
                 return;
             }
             break;

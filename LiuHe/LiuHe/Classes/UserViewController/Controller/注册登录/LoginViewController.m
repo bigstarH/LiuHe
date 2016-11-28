@@ -12,6 +12,7 @@
 #import "UIImage+Extension.h"
 #import "NetworkManager.h"
 #import "XQTextField.h"
+#import "XQToast.h"
 
 @interface LoginViewController ()
 
@@ -152,11 +153,11 @@
     NSString *userName = self.accountTF.text;
     NSString *password = self.passwordTF.text;
     if ((!userName) || [userName isEqualToString:@""]) {
-        [SVProgressHUD showErrorWithStatus:@"請填寫用户名"];
+        [[XQToast makeText:@"請填寫用户名"] show];
         return;
     }
     if ((!password) || [password isEqualToString:@""]) {
-        [SVProgressHUD showErrorWithStatus:@"請填寫密碼"];
+        [[XQToast makeText:@"請填寫密碼"] show];
         return;
     }
     

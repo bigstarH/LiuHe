@@ -28,6 +28,9 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    UIBarButtonItem *shareBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareEvent)];
+    self.navigationItem.rightBarButtonItem = shareBtn;
+    
     [[NetworkManager shareManager] getHomeADWithSuccess:^(NSArray *imagesArray) {
         [self createCycleImageViewWithImages:imagesArray];
         [self.cycleImageView startPlayImageView];
@@ -47,12 +50,7 @@
     [self.cycleImageView stopPlayImageView];
 }
 
-- (UIColor *)setBarTintColor
-{
-    return MAIN_COLOR;
-}
-
-- (UILabel *)setTitleView
+- (UIView *)setTitleView
 {
     UILabel *titleLab      = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
     titleLab.text          = @"首頁";
@@ -60,6 +58,11 @@
     titleLab.textColor     = [UIColor whiteColor];
     titleLab.textAlignment = NSTextAlignmentCenter;
     return titleLab;
+}
+
+- (void)shareEvent
+{
+    NSLog(@"分享");
 }
 
 /** 创建图片轮播 */

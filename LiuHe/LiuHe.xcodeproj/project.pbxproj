@@ -33,6 +33,12 @@
 		488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF2F1DE863C50061E9EF /* LoginViewController.m */; };
 		488FFF331DE863C50061E9EF /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF311DE863C50061E9EF /* RegisteViewController.m */; };
 		488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF351DE8645A0061E9EF /* ModifyPswViewController.m */; };
+		48D83C971DEBC02400E62100 /* XQToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C961DEBC02400E62100 /* XQToast.m */; };
+		48D83C9B1DEBD12000E62100 /* SystemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C9A1DEBD12000E62100 /* SystemManager.m */; };
+		48D83C9E1DEBDB3E00E62100 /* PostReleaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C9D1DEBDB3E00E62100 /* PostReleaseViewController.m */; };
+		48D83CA11DEC0D9500E62100 /* MyPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83CA01DEC0D9500E62100 /* MyPostViewController.m */; };
+		48D83CA51DEC0EA200E62100 /* XQSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83CA41DEC0EA200E62100 /* XQSegmentedControl.m */; };
+		48D83CA81DEC460300E62100 /* PostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83CA71DEC460300E62100 /* PostModel.m */; };
 		48DBCB3C1DE9C7C100B989D6 /* FeedBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBCB3B1DE9C7C100B989D6 /* FeedBackViewController.m */; };
 		48DBCB401DE9C8E500B989D6 /* XQTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBCB3F1DE9C8E500B989D6 /* XQTextView.m */; };
 		48DBCB431DE9D99300B989D6 /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBCB421DE9D99300B989D6 /* AboutUsViewController.m */; };
@@ -116,6 +122,18 @@
 		488FFF311DE863C50061E9EF /* RegisteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisteViewController.m; sourceTree = "<group>"; };
 		488FFF341DE8645A0061E9EF /* ModifyPswViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyPswViewController.h; sourceTree = "<group>"; };
 		488FFF351DE8645A0061E9EF /* ModifyPswViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyPswViewController.m; sourceTree = "<group>"; };
+		48D83C951DEBC02400E62100 /* XQToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQToast.h; sourceTree = "<group>"; };
+		48D83C961DEBC02400E62100 /* XQToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQToast.m; sourceTree = "<group>"; };
+		48D83C991DEBD12000E62100 /* SystemManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemManager.h; sourceTree = "<group>"; };
+		48D83C9A1DEBD12000E62100 /* SystemManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemManager.m; sourceTree = "<group>"; };
+		48D83C9C1DEBDB3E00E62100 /* PostReleaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostReleaseViewController.h; sourceTree = "<group>"; };
+		48D83C9D1DEBDB3E00E62100 /* PostReleaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostReleaseViewController.m; sourceTree = "<group>"; };
+		48D83C9F1DEC0D9500E62100 /* MyPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPostViewController.h; sourceTree = "<group>"; };
+		48D83CA01DEC0D9500E62100 /* MyPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPostViewController.m; sourceTree = "<group>"; };
+		48D83CA31DEC0EA200E62100 /* XQSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQSegmentedControl.h; sourceTree = "<group>"; };
+		48D83CA41DEC0EA200E62100 /* XQSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQSegmentedControl.m; sourceTree = "<group>"; };
+		48D83CA61DEC460300E62100 /* PostModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostModel.h; sourceTree = "<group>"; };
+		48D83CA71DEC460300E62100 /* PostModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostModel.m; sourceTree = "<group>"; };
 		48DBCB3A1DE9C7C100B989D6 /* FeedBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedBackViewController.h; sourceTree = "<group>"; };
 		48DBCB3B1DE9C7C100B989D6 /* FeedBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedBackViewController.m; sourceTree = "<group>"; };
 		48DBCB3E1DE9C8E500B989D6 /* XQTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQTextView.h; sourceTree = "<group>"; };
@@ -273,8 +291,10 @@
 			isa = PBXGroup;
 			children = (
 				48E271D41DE708FC00CA3F4D /* XQActionSheet */,
+				48D83CA21DEC0EA200E62100 /* XQSegmentedControl */,
 				483AC61E1DE5B18B009E0E64 /* XQTextField */,
 				48DBCB3D1DE9C8CD00B989D6 /* XQTextView */,
+				48D83C941DEBC02400E62100 /* XQToast */,
 				483AC6091DE533F8009E0E64 /* XQFasciatePageControl */,
 				483AC5E21DE526CB009E0E64 /* CycleImageView */,
 			);
@@ -373,10 +393,14 @@
 			children = (
 				483AC5F71DE52749009E0E64 /* UserViewController.h */,
 				483AC5F81DE52749009E0E64 /* UserViewController.m */,
+				48D83C9C1DEBDB3E00E62100 /* PostReleaseViewController.h */,
+				48D83C9D1DEBDB3E00E62100 /* PostReleaseViewController.m */,
 				488FFF341DE8645A0061E9EF /* ModifyPswViewController.h */,
 				488FFF351DE8645A0061E9EF /* ModifyPswViewController.m */,
 				48E271D11DE708A200CA3F4D /* MyDataViewController.h */,
 				48E271D21DE708A200CA3F4D /* MyDataViewController.m */,
+				48D83C9F1DEC0D9500E62100 /* MyPostViewController.h */,
+				48D83CA01DEC0D9500E62100 /* MyPostViewController.m */,
 				488FFF2D1DE863C50061E9EF /* 注册登录 */,
 				48E271D81DE7253200CA3F4D /* 设置 */,
 			);
@@ -404,6 +428,7 @@
 		483AC60D1DE54051009E0E64 /* UtilityObject */ = {
 			isa = PBXGroup;
 			children = (
+				48D83C981DEBD0FC00E62100 /* SystemManager */,
 				483AC6141DE541C9009E0E64 /* Category */,
 				483AC60E1DE54051009E0E64 /* Network */,
 			);
@@ -445,6 +470,8 @@
 			children = (
 				488F1A131DE6CB4B005C6882 /* UserModel.h */,
 				488F1A141DE6CB4B005C6882 /* UserModel.m */,
+				48D83CA61DEC460300E62100 /* PostModel.h */,
+				48D83CA71DEC460300E62100 /* PostModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -458,6 +485,33 @@
 				488FFF311DE863C50061E9EF /* RegisteViewController.m */,
 			);
 			path = "注册登录";
+			sourceTree = "<group>";
+		};
+		48D83C941DEBC02400E62100 /* XQToast */ = {
+			isa = PBXGroup;
+			children = (
+				48D83C951DEBC02400E62100 /* XQToast.h */,
+				48D83C961DEBC02400E62100 /* XQToast.m */,
+			);
+			path = XQToast;
+			sourceTree = "<group>";
+		};
+		48D83C981DEBD0FC00E62100 /* SystemManager */ = {
+			isa = PBXGroup;
+			children = (
+				48D83C991DEBD12000E62100 /* SystemManager.h */,
+				48D83C9A1DEBD12000E62100 /* SystemManager.m */,
+			);
+			path = SystemManager;
+			sourceTree = "<group>";
+		};
+		48D83CA21DEC0EA200E62100 /* XQSegmentedControl */ = {
+			isa = PBXGroup;
+			children = (
+				48D83CA31DEC0EA200E62100 /* XQSegmentedControl.h */,
+				48D83CA41DEC0EA200E62100 /* XQSegmentedControl.m */,
+			);
+			path = XQSegmentedControl;
 			sourceTree = "<group>";
 		};
 		48DBCB3D1DE9C8CD00B989D6 /* XQTextView */ = {
@@ -652,7 +706,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		AF058A7CC8AF06704AACB1A8 /* [CP] Copy Pods Resources */ = {
@@ -695,6 +749,7 @@
 				483AC5E61DE526CB009E0E64 /* BaseTabBarController.m in Sources */,
 				488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */,
 				483AC5FE1DE52749009E0E64 /* UserViewController.m in Sources */,
+				48D83CA11DEC0D9500E62100 /* MyPostViewController.m in Sources */,
 				483AC5E71DE526CB009E0E64 /* BaseViewController.m in Sources */,
 				483AC58E1DE525AF009E0E64 /* AppDelegate.m in Sources */,
 				488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */,
@@ -702,6 +757,8 @@
 				48DBCB3C1DE9C7C100B989D6 /* FeedBackViewController.m in Sources */,
 				483AC5FD1DE52749009E0E64 /* ForumViewController.m in Sources */,
 				483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */,
+				48D83CA81DEC460300E62100 /* PostModel.m in Sources */,
+				48D83C971DEBC02400E62100 /* XQToast.m in Sources */,
 				48E271D31DE708A200CA3F4D /* MyDataViewController.m in Sources */,
 				483AC6291DE5C240009E0E64 /* UIImage+Extension.m in Sources */,
 				48DBCB461DE9DB3800B989D6 /* DisclaimerViewController.m in Sources */,
@@ -713,11 +770,14 @@
 				483AC6051DE52830009E0E64 /* MenuItem.m in Sources */,
 				48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */,
 				483AC58B1DE525AF009E0E64 /* main.m in Sources */,
+				48D83CA51DEC0EA200E62100 /* XQSegmentedControl.m in Sources */,
+				48D83C9B1DEBD12000E62100 /* SystemManager.m in Sources */,
 				48E271D71DE708FC00CA3F4D /* XQActionSheet.m in Sources */,
 				483AC5E51DE526CB009E0E64 /* BaseNavigationController.m in Sources */,
 				483AC5FF1DE52749009E0E64 /* MineHeadView.m in Sources */,
 				483AC5E91DE526CB009E0E64 /* XQNavigationBar.m in Sources */,
 				483AC6021DE5276A009E0E64 /* HomeViewController.m in Sources */,
+				48D83C9E1DEBDB3E00E62100 /* PostReleaseViewController.m in Sources */,
 				483AC6111DE54080009E0E64 /* NetworkManager.m in Sources */,
 				483AC60C1DE533F8009E0E64 /* XQFasciatePageControl.m in Sources */,
 				483AC6171DE541F3009E0E64 /* NSString+Extension.m in Sources */,

@@ -46,6 +46,22 @@ static id networkInstance;
     return _manager;
 }
 
+- (void)getHomeADWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    [self.manager GET:GET_INDEXAD_URL parameters:nil progress:nil
+              success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                  NSArray *responseArr = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                  NSMutableArray *images = [NSMutableArray array];
+                  for (int i = 0; i < responseArr.count; i++) {
+                      NSDictionary *dict = responseArr[i];
+                      [images addObject:dict[@"titlepic"]];
+                  }
+                  successBlock ? successBlock(images) : nil;
+              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                  failureBlock ? failureBlock(error.domain) : nil;
+              }];
+}
+
 - (void)userLoginWithUsername:(NSString *)userName password:(NSString *)password success:(void (^)())successBlock failure:(void (^)(NSString *))failureBlock
 {
     NSDictionary *param = @{@"enews" : @"login", @"username" : userName, @"password" : password};
@@ -182,20 +198,99 @@ static id networkInstance;
      }];
 }
 
-- (void)getHomeADWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+- (void)userFeedBackWithName:(NSString *)name phone:(NSString *)phone content:(NSString *)content success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
 {
-    [self.manager GET:GET_INDEXAD_URL parameters:nil progress:nil
-              success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                  NSArray *responseArr = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-                  NSMutableArray *images = [NSMutableArray array];
-                  for (int i = 0; i < responseArr.count; i++) {
-                      NSDictionary *dict = responseArr[i];
-                      [images addObject:dict[@"titlepic"]];
-                  }
-                  successBlock ? successBlock(images) : nil;
-              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                  failureBlock ? failureBlock(error.domain) : nil;
-              }];
+    NSDictionary *param = @{@"enews"   : @"ToFeedback",
+                            @"bid"     : @"7",
+                            @"name"    : name,
+                            @"phone"   : phone,
+                            @"saytext" : content};
+    [self.manager POST:USER_SETTING_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
+                   NSString *ts   = [responseDict objectForKey:@"ts"];
+                   if (code == 1) {
+                       successBlock ? successBlock(ts) : nil;
+                   }else {
+                       failureBlock ? failureBlock(ts) : nil;
+                   }
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
 }
 
+- (void)postReleaseWithEnews:(NSString *)enews sid:(NSString *)sid title:(NSString *)title content:(NSString *)content success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    [param setObject:enews forKey:@"enews"];
+    [param setObject:@"1" forKey:@"classid"];
+    [param setObject:title forKey:@"title"];
+    [param setObject:content forKey:@"newstext"];
+    [param setObject:[UserModel getCurrentUser].uid forKey:@"userid"];
+    [param setObject:[UserModel getCurrentUser].userName forKey:@"username"];
+    [param setObject:[UserModel getCurrentUser].rnd forKey:@"rnd"];
+    if (sid) [param setObject:sid forKey:@"id"];
+    [self.manager POST:POST_RELEASE_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
+                   NSString *ts   = [responseDict objectForKey:@"ts"];
+                   if (code == 1) {
+                       successBlock ? successBlock(ts) : nil;
+                   }else {
+                       failureBlock ? failureBlock(ts) : nil;
+                   }
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
+
+- (void)userSignInWithSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews"    : @"signfen",
+                            @"userid"   : [UserModel getCurrentUser].uid,
+                            @"username" : [UserModel getCurrentUser].userName,
+                            @"rnd"      : [UserModel getCurrentUser].rnd};
+    [self.manager POST:USER_RELATION_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
+                   NSString *ts   = [responseDict objectForKey:@"ts"];
+                   if (code == 1) {
+                       successBlock ? successBlock(responseDict) : nil;
+                   }else {
+                       failureBlock ? failureBlock(ts) : nil;
+                   }
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
+
+- (void)userPostWithEnews:(NSString *)enews success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews" : enews,
+                            @"uid"   : [UserModel getCurrentUser].uid};
+    [self.manager POST:USER_POST_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   successBlock ? successBlock(array) : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
+
+- (void)userPostDetailWithEnews:(NSString *)enews sid:(NSString *)sid success:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews" : enews,
+                            @"uid"   : [UserModel getCurrentUser].uid,
+                            @"sid"   : sid};
+    [self.manager POST:USER_POST_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   successBlock ? successBlock(responseDict) : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
 @end

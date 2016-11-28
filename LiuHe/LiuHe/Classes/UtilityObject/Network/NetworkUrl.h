@@ -17,5 +17,9 @@
 // 我的
 // 用户相关
 #define USER_RELATION_URL   @"http://wap.jizhou56.com:8090/e/member/doaction.php"
+// 设置相关
+#define USER_SETTING_URL    @"http://wap.jizhou56.com:8090/e/enews/index.php"
+#define POST_RELEASE_URL    @"http://wap.jizhou56.com:8090/e/DoInfo/ecms.php"  // 发布帖子
+#define USER_POST_URL       @"http://wap.jizhou56.com:8090/e/extend/json/json.php"  // 我的帖子
 
 #endif /* NetworkUrl_h */

@@ -11,6 +11,7 @@
 #import "FeedBackViewController.h"
 #import "AboutUsViewController.h"
 #import "DisclaimerViewController.h"
+#import "SystemManager.h"
 
 @interface SettingViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -41,11 +42,6 @@
     XQBarButtonItem *leftBtn = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]];
     [leftBtn addTarget:self action:@selector(goBackWithNavigationBar:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationBar.leftBarButtonItem = leftBtn;
-}
-
-- (UIColor *)setBarTintColor
-{
-    return MAIN_COLOR;
 }
 
 - (void)createTableView
@@ -129,7 +125,7 @@
             [label setTag:101];
             [label setTextAlignment:NSTextAlignmentRight];
         }
-        label.text = @"aaaaa";
+        label.text = [SystemManager getCacheSize];
         cell.accessoryView  = label;
     }
     cell.textLabel.text = self.dataArray[indexPath.section][indexPath.row];
@@ -140,7 +136,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.section) {
-        case 0:
+        case 0:  // 免责声明
         {
             DisclaimerViewController *vc = [[DisclaimerViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -158,8 +154,10 @@
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
-        case 3:
+        case 3:  // 清除缓存
         {
+            [SystemManager clearCache];
+            [tableView reloadData];
             break;
         }
         default:

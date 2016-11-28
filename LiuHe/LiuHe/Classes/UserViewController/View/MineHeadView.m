@@ -144,6 +144,12 @@
     [self.gradeLab setText:@"无"];
 }
 
+- (void)setIntegral:(int)integral
+{
+    NSString *str = [NSString stringWithFormat:@"%d", integral];
+    self.integralLab.text = str;
+}
+
 - (void)headerDidClick:(UITapGestureRecognizer *)tap
 {
     BOOL didLogin = [UserDefaults boolForKey:USER_DIDLOGIN];

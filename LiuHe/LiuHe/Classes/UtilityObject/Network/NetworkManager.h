@@ -14,15 +14,18 @@
 
 #pragma mark - start 网络请求
 
-/** 1  用户登录 */
+/** 1  获取首页广告图 */
+- (void)getHomeADWithSuccess:(void (^)(NSArray *imagesArray))successBlock
+                     failure:(void (^)(NSString *error))failureBlock;
+/** 2  用户登录 */
 - (void)userLoginWithUsername:(NSString *)userName
                      password:(NSString *)password
                       success:(void (^)())successBlock
                       failure:(void (^)(NSString *error))failureBlock;
-/** 2  用户注销 */
+/** 3  用户注销 */
 - (void)userLogoutWithSuccess:(void (^)())successBlock
                       failure:(void (^)(NSString *error))failureBlock;
-/** 3  用户注册 */
+/** 4  用户注册 */
 - (void)userRegisterWithUserName:(NSString *)userName
                         password:(NSString *)password
                       repassword:(NSString *)repassword
@@ -30,16 +33,16 @@
                            email:(NSString *)email
                          success:(void (^)())successBlock
                          failure:(void (^)(NSString *error))failureBlock;
-/** 4  我的资料 */
+/** 5  我的资料 */
 - (void)userInfoWithSuccess:(void (^)(NSDictionary *dict))successBlock
                     failure:(void (^)(NSString *error))failureBlock;
-/** 5  修改密码 */
+/** 6  修改密码 */
 - (void)modifyPswWithOldPsw:(NSString *)oldPsw
                         psw:(NSString *)psw
                  confirmPsw:(NSString *)confirmPsw
                     success:(void (^)(NSString *userName, NSString *ts))successBlock
                     failure:(void (^)(NSString *error))failureBlock;
-/** 6  修改资料 */
+/** 7  修改资料 */
 - (void)modifyUserInfoWithTrueName:(NSString *)trueName
                              phone:(NSString *)phone
                           QQNumber:(NSString *)QQ
@@ -47,10 +50,31 @@
                          headImage:(UIImage *)image
                            success:(void (^)(NSString *str))successBlock
                            failure:(void (^)(NSString *error))failureBlock;
-
-/** 7  获取首页广告图 */
-- (void)getHomeADWithSuccess:(void (^)(NSArray *imagesArray))successBlock
+/** 8  用户反馈 */
+- (void)userFeedBackWithName:(NSString *)name
+                       phone:(NSString *)phone
+                     content:(NSString *)content
+                     success:(void (^)(NSString *str))successBlock
                      failure:(void (^)(NSString *error))failureBlock;
+/** 9  发布帖子 */
+- (void)postReleaseWithEnews:(NSString *)enews
+                         sid:(NSString *)sid
+                       title:(NSString *)title
+                     content:(NSString *)content
+                     success:(void (^)(NSString *str))successBlock
+                     failure:(void (^)(NSString *error))failureBlock;
+/** 10 用户签到 */
+- (void)userSignInWithSuccess:(void (^)(NSDictionary *dict))successBlock
+                      failure:(void (^)(NSString *error))failureBlock;
+/** 11 我的帖子 */
+- (void)userPostWithEnews:(NSString *)enews
+                  success:(void (^)(NSArray *array))successBlock
+                  failure:(void (^)(NSString *error))failureBlock;
+/** 12 我的帖子——详情内容 */
+- (void)userPostDetailWithEnews:(NSString *)enews
+                            sid:(NSString *)sid
+                        success:(void (^)(NSDictionary *dict))successBlock
+                        failure:(void (^)(NSString *error))failureBlock;
 #pragma mark end 网络请求
 
 @end

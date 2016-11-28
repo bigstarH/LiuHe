@@ -33,7 +33,7 @@
  */
 - (UIColor *)setTintColor;
 
-- (UILabel *)setTitleView;
+- (UIView *)setTitleView;
 /**
  *  自定义navigationBar返回事件
  */

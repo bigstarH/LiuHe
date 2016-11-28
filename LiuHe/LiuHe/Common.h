@@ -18,5 +18,6 @@
 #define USER_REGISTER_SUCCESS  @"USER_REGISTER_SUCCESS"  // 用户注册成功
 #define USER_MODIFY_SUCCESS    @"USER_MODIFY_SUCCESS"    // 用户修改信息成功
 #define USER_MODIFYPSW_SUCCESS @"USER_MODIFYPSW_SUCCESS" // 用户修改密码成功
+#define POST_EDIT_SUCCESS      @"POST_EDIT_SUCCESS"      // 编辑帖子成功
 
 #endif /* Common_h */

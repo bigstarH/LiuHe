@@ -11,6 +11,7 @@
 #import "UIImage+Extension.h"
 #import "NetworkManager.h"
 #import "XQTextField.h"
+#import "XQToast.h"
 
 @interface RegisteViewController ()
 
@@ -136,8 +137,16 @@
     NSString *repsw    = self.confirmPswTF.text;
     NSString *phone    = self.accountTF.text;
     
+    if ((!userName) || [userName isEqualToString:@""]) {
+        [[XQToast makeText:@"請輸入用戶名"] show];
+        return;
+    }
+    if ((!password) || [password isEqualToString:@""]) {
+        [[XQToast makeText:@"請輸入密碼"] show];
+        return;
+    }
     if (![password isEqualToString:repsw]) {
-        [SVProgressHUD showErrorWithStatus:@"兩次輸入的密碼不同"];
+        [[XQToast makeText:@"兩次輸入的密碼不同"] show];
         return;
     }
     
