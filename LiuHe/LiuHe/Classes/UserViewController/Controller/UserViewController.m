@@ -7,6 +7,7 @@
 //
 
 #import <SVProgressHUD/SVProgressHUD.h>
+#import "MyCollectionViewController.h"
 #import "PostReleaseViewController.h"
 #import "ModifyPswViewController.h"
 #import "SettingViewController.h"
@@ -210,6 +211,8 @@
                 [[XQToast makeText:@"請先登錄"] show];
                 return;
             }
+            MyCollectionViewController *vc = [[MyCollectionViewController alloc] initWithHidesBottomBar:YES];
+            [self.navigationController pushViewController:vc animated:YES];
             break;
         }
         case 2:  // 我的帖子

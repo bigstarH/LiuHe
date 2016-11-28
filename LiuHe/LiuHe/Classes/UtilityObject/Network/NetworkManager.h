@@ -13,7 +13,6 @@
 + (instancetype)shareManager;
 
 #pragma mark - start 网络请求
-
 /** 1  获取首页广告图 */
 - (void)getHomeADWithSuccess:(void (^)(NSArray *imagesArray))successBlock
                      failure:(void (^)(NSString *error))failureBlock;
@@ -75,6 +74,9 @@
                             sid:(NSString *)sid
                         success:(void (^)(NSDictionary *dict))successBlock
                         failure:(void (^)(NSString *error))failureBlock;
+/** 13 我的收藏 */
+- (void)userCollectionWithSuccess:(void (^)(NSArray *array))successBlock
+                          failure:(void (^)(NSString *error))failureBlock;
 #pragma mark end 网络请求
 
 @end

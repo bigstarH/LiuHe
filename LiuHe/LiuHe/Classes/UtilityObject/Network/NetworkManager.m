@@ -293,4 +293,17 @@ static id networkInstance;
                    failureBlock ? failureBlock(error.domain) : nil;
                }];
 }
+
+- (void)userCollectionWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews" : @"Myfava",
+                            @"uid"   : [UserModel getCurrentUser].uid};
+    [self.manager POST:USER_POST_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   successBlock ? successBlock(array) : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
 @end

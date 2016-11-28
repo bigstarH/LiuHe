@@ -39,6 +39,9 @@
 		48D83CA11DEC0D9500E62100 /* MyPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83CA01DEC0D9500E62100 /* MyPostViewController.m */; };
 		48D83CA51DEC0EA200E62100 /* XQSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83CA41DEC0EA200E62100 /* XQSegmentedControl.m */; };
 		48D83CA81DEC460300E62100 /* PostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83CA71DEC460300E62100 /* PostModel.m */; };
+		48D83CB01DEC634D00E62100 /* MyCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83CAF1DEC634D00E62100 /* MyCollectionViewController.m */; };
+		48D83CB31DEC64A000E62100 /* CollectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83CB21DEC64A000E62100 /* CollectionModel.m */; };
+		48D83CB71DEC6A3800E62100 /* XQAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83CB61DEC6A3800E62100 /* XQAlertView.m */; };
 		48DBCB3C1DE9C7C100B989D6 /* FeedBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBCB3B1DE9C7C100B989D6 /* FeedBackViewController.m */; };
 		48DBCB401DE9C8E500B989D6 /* XQTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBCB3F1DE9C8E500B989D6 /* XQTextView.m */; };
 		48DBCB431DE9D99300B989D6 /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBCB421DE9D99300B989D6 /* AboutUsViewController.m */; };
@@ -134,6 +137,12 @@
 		48D83CA41DEC0EA200E62100 /* XQSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQSegmentedControl.m; sourceTree = "<group>"; };
 		48D83CA61DEC460300E62100 /* PostModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostModel.h; sourceTree = "<group>"; };
 		48D83CA71DEC460300E62100 /* PostModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostModel.m; sourceTree = "<group>"; };
+		48D83CAE1DEC634D00E62100 /* MyCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCollectionViewController.h; sourceTree = "<group>"; };
+		48D83CAF1DEC634D00E62100 /* MyCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCollectionViewController.m; sourceTree = "<group>"; };
+		48D83CB11DEC64A000E62100 /* CollectionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionModel.h; sourceTree = "<group>"; };
+		48D83CB21DEC64A000E62100 /* CollectionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionModel.m; sourceTree = "<group>"; };
+		48D83CB51DEC6A3800E62100 /* XQAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQAlertView.h; sourceTree = "<group>"; };
+		48D83CB61DEC6A3800E62100 /* XQAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQAlertView.m; sourceTree = "<group>"; };
 		48DBCB3A1DE9C7C100B989D6 /* FeedBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedBackViewController.h; sourceTree = "<group>"; };
 		48DBCB3B1DE9C7C100B989D6 /* FeedBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedBackViewController.m; sourceTree = "<group>"; };
 		48DBCB3E1DE9C8E500B989D6 /* XQTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQTextView.h; sourceTree = "<group>"; };
@@ -290,6 +299,7 @@
 		483AC5E11DE526CB009E0E64 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
+				48D83CB41DEC6A3800E62100 /* XQAlertView */,
 				48E271D41DE708FC00CA3F4D /* XQActionSheet */,
 				48D83CA21DEC0EA200E62100 /* XQSegmentedControl */,
 				483AC61E1DE5B18B009E0E64 /* XQTextField */,
@@ -401,6 +411,7 @@
 				48E271D21DE708A200CA3F4D /* MyDataViewController.m */,
 				48D83C9F1DEC0D9500E62100 /* MyPostViewController.h */,
 				48D83CA01DEC0D9500E62100 /* MyPostViewController.m */,
+				48D83CAD1DEC634D00E62100 /* 我的收藏 */,
 				488FFF2D1DE863C50061E9EF /* 注册登录 */,
 				48E271D81DE7253200CA3F4D /* 设置 */,
 			);
@@ -472,6 +483,8 @@
 				488F1A141DE6CB4B005C6882 /* UserModel.m */,
 				48D83CA61DEC460300E62100 /* PostModel.h */,
 				48D83CA71DEC460300E62100 /* PostModel.m */,
+				48D83CB11DEC64A000E62100 /* CollectionModel.h */,
+				48D83CB21DEC64A000E62100 /* CollectionModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -512,6 +525,24 @@
 				48D83CA41DEC0EA200E62100 /* XQSegmentedControl.m */,
 			);
 			path = XQSegmentedControl;
+			sourceTree = "<group>";
+		};
+		48D83CAD1DEC634D00E62100 /* 我的收藏 */ = {
+			isa = PBXGroup;
+			children = (
+				48D83CAE1DEC634D00E62100 /* MyCollectionViewController.h */,
+				48D83CAF1DEC634D00E62100 /* MyCollectionViewController.m */,
+			);
+			path = "我的收藏";
+			sourceTree = "<group>";
+		};
+		48D83CB41DEC6A3800E62100 /* XQAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				48D83CB51DEC6A3800E62100 /* XQAlertView.h */,
+				48D83CB61DEC6A3800E62100 /* XQAlertView.m */,
+			);
+			path = XQAlertView;
 			sourceTree = "<group>";
 		};
 		48DBCB3D1DE9C8CD00B989D6 /* XQTextView */ = {
@@ -759,6 +790,8 @@
 				483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */,
 				48D83CA81DEC460300E62100 /* PostModel.m in Sources */,
 				48D83C971DEBC02400E62100 /* XQToast.m in Sources */,
+				48D83CB31DEC64A000E62100 /* CollectionModel.m in Sources */,
+				48D83CB71DEC6A3800E62100 /* XQAlertView.m in Sources */,
 				48E271D31DE708A200CA3F4D /* MyDataViewController.m in Sources */,
 				483AC6291DE5C240009E0E64 /* UIImage+Extension.m in Sources */,
 				48DBCB461DE9DB3800B989D6 /* DisclaimerViewController.m in Sources */,
@@ -766,6 +799,7 @@
 				48DBCB401DE9C8E500B989D6 /* XQTextView.m in Sources */,
 				488F1A151DE6CB4B005C6882 /* UserModel.m in Sources */,
 				488FFF331DE863C50061E9EF /* RegisteViewController.m in Sources */,
+				48D83CB01DEC634D00E62100 /* MyCollectionViewController.m in Sources */,
 				48DBCB431DE9D99300B989D6 /* AboutUsViewController.m in Sources */,
 				483AC6051DE52830009E0E64 /* MenuItem.m in Sources */,
 				48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */,
