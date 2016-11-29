@@ -45,8 +45,6 @@
 
 - (void)setNavigationBarStyle
 {
-    self.needsCustomNavigationBar   = YES;
-    self.navigationBar.shadowHidden = YES;
     if (self.type == VCTypePostNew) {
         self.title = @"發表帖子";
     }else {

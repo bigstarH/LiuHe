@@ -15,5 +15,7 @@
 
 @property (strong, nonatomic) BaseTabBarController *tabBarController;
 
++ (AppDelegate *)appDelegate;
+
 @end
 

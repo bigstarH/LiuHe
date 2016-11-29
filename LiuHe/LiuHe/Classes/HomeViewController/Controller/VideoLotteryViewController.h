@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 
+/** 视频开奖 */
 @interface VideoLotteryViewController : BaseViewController
 
 @end

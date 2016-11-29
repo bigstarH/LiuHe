@@ -7,10 +7,12 @@
 //
 
 #import <SVProgressHUD/SVProgressHUD.h>
+#import "CollectionWebViewController.h"
 #import "MyCollectionViewController.h"
 #import "CollectionModel.h"
 #import "NetworkManager.h"
 #import "XQAlertView.h"
+#import "XQToast.h"
 
 @interface MyCollectionViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -32,9 +34,7 @@
 
 - (void)setNavigationBarStyle
 {
-    self.needsCustomNavigationBar   = YES;
     self.title = @"我的收藏";
-    self.navigationBar.shadowHidden = YES;
     
     XQBarButtonItem *leftBtn  = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]];
     [leftBtn addTarget:self action:@selector(goBackWithNavigationBar:) forControlEvents:UIControlEventTouchUpInside];
@@ -70,14 +70,27 @@
 }
 
 /** 取消收藏 */
-- (void)cancelCollecting
+- (void)cancelCollectingWithRow:(NSIndexPath *)indexPath
 {
+    __weak typeof(self) ws = self;
     XQAlertView *alert = [[XQAlertView alloc] initWithTitle:@"提示" message:@"確定要取消收藏麽？"];
     alert.themeColor   = RGBCOLOR(238, 154, 0);
     alert.titleColor   = [UIColor whiteColor];
     [alert addButtonWithTitle:@"再想一想" style:XQAlertButtonStyleCancel handle:nil];
     [alert addButtonWithTitle:@"確定" style:XQAlertButtonStyleDefault handle:^{
-        
+        CollectionModel *model = [ws.array objectAtIndex:indexPath.row];
+        [SVProgressHUD show];
+        [[NetworkManager shareManager] cancelCollectingWithSid:model.sid
+                                                       success:^(NSString *str) {
+                                                           [SVProgressHUD dismiss];
+                                                           [[XQToast makeText:str] show];
+                                                           NSMutableArray *array = [ws.array mutableCopy];
+                                                           [array removeObject:model];
+                                                           ws.array = array;
+                                                           [ws.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                                                       } failure:^(NSString *error) {
+                                                           [SVProgressHUD showErrorWithStatus:error];
+                                                       }];
     }];
     [alert show];
 }
@@ -94,7 +107,7 @@
     UITableViewRowAction *edit = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault
                                                                     title:@"取消收藏"
                                                                   handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                      [ws cancelCollecting];
+                                                                      [ws cancelCollectingWithRow:indexPath];
                                                                   }];
     edit.backgroundColor = [UIColor redColor];
     return @[edit];
@@ -115,6 +128,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    CollectionModel *model = self.array[indexPath.row];
+    CollectionWebViewController *vc = [[CollectionWebViewController alloc] initWithLinkStr:model.linkStr];
+    vc.titleStr = @"我的收藏";
+    [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark end UITableViewDelegate, UITableViewDataSource
 

@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		239491FE0DE2EC08498AD64C /* libPods-LiuHe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6889F03AADAB6FAF8C717B85 /* libPods-LiuHe.a */; };
+		483010401DED1B4800B11BE9 /* CollectionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830103F1DED1B4800B11BE9 /* CollectionWebViewController.m */; };
+		483010441DED27DC00B11BE9 /* MyReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483010431DED27DC00B11BE9 /* MyReplyViewController.m */; };
+		483010471DED2C0000B11BE9 /* ReplyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 483010461DED2C0000B11BE9 /* ReplyModel.m */; };
+		4830104A1DED74D600B11BE9 /* TrendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483010491DED74D600B11BE9 /* TrendViewController.m */; };
+		4830104E1DED804D00B11BE9 /* AdvertModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830104D1DED804D00B11BE9 /* AdvertModel.m */; };
+		483010511DED8F2F00B11BE9 /* VideoLotteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483010501DED8F2F00B11BE9 /* VideoLotteryViewController.m */; };
 		483AC58B1DE525AF009E0E64 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC58A1DE525AF009E0E64 /* main.m */; };
 		483AC58E1DE525AF009E0E64 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC58D1DE525AF009E0E64 /* AppDelegate.m */; };
 		483AC5961DE525AF009E0E64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 483AC5951DE525AF009E0E64 /* Assets.xcassets */; };
@@ -70,6 +76,18 @@
 
 /* Begin PBXFileReference section */
 		034C0C8F0BA74B5B525B0336 /* Pods-LiuHe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiuHe.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiuHe/Pods-LiuHe.release.xcconfig"; sourceTree = "<group>"; };
+		4830103E1DED1B4800B11BE9 /* CollectionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionWebViewController.h; sourceTree = "<group>"; };
+		4830103F1DED1B4800B11BE9 /* CollectionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionWebViewController.m; sourceTree = "<group>"; };
+		483010421DED27DC00B11BE9 /* MyReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReplyViewController.h; sourceTree = "<group>"; };
+		483010431DED27DC00B11BE9 /* MyReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReplyViewController.m; sourceTree = "<group>"; };
+		483010451DED2C0000B11BE9 /* ReplyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyModel.h; sourceTree = "<group>"; };
+		483010461DED2C0000B11BE9 /* ReplyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyModel.m; sourceTree = "<group>"; };
+		483010481DED74D600B11BE9 /* TrendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrendViewController.h; sourceTree = "<group>"; };
+		483010491DED74D600B11BE9 /* TrendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrendViewController.m; sourceTree = "<group>"; };
+		4830104C1DED804D00B11BE9 /* AdvertModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvertModel.h; sourceTree = "<group>"; };
+		4830104D1DED804D00B11BE9 /* AdvertModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvertModel.m; sourceTree = "<group>"; };
+		4830104F1DED8F2F00B11BE9 /* VideoLotteryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoLotteryViewController.h; sourceTree = "<group>"; };
+		483010501DED8F2F00B11BE9 /* VideoLotteryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoLotteryViewController.m; sourceTree = "<group>"; };
 		483AC5861DE525AF009E0E64 /* LiuHe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiuHe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		483AC58A1DE525AF009E0E64 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		483AC58C1DE525AF009E0E64 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -187,6 +205,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		483010411DED278000B11BE9 /* 我的回复 */ = {
+			isa = PBXGroup;
+			children = (
+				483010421DED27DC00B11BE9 /* MyReplyViewController.h */,
+				483010431DED27DC00B11BE9 /* MyReplyViewController.m */,
+			);
+			path = "我的回复";
+			sourceTree = "<group>";
+		};
+		4830104B1DED803E00B11BE9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4830104C1DED804D00B11BE9 /* AdvertModel.h */,
+				4830104D1DED804D00B11BE9 /* AdvertModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		483AC57D1DE525AF009E0E64 = {
 			isa = PBXGroup;
 			children = (
@@ -357,7 +393,7 @@
 			isa = PBXGroup;
 			children = (
 				483AC5F21DE52749009E0E64 /* Controller */,
-				483AC5F31DE52749009E0E64 /* Model */,
+				4830104B1DED803E00B11BE9 /* Model */,
 				483AC5F41DE52749009E0E64 /* View */,
 			);
 			path = HomeViewController;
@@ -368,15 +404,12 @@
 			children = (
 				483AC6001DE5276A009E0E64 /* HomeViewController.h */,
 				483AC6011DE5276A009E0E64 /* HomeViewController.m */,
+				483010481DED74D600B11BE9 /* TrendViewController.h */,
+				483010491DED74D600B11BE9 /* TrendViewController.m */,
+				4830104F1DED8F2F00B11BE9 /* VideoLotteryViewController.h */,
+				483010501DED8F2F00B11BE9 /* VideoLotteryViewController.m */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		483AC5F31DE52749009E0E64 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		483AC5F41DE52749009E0E64 /* View */ = {
@@ -412,6 +445,7 @@
 				48D83C9F1DEC0D9500E62100 /* MyPostViewController.h */,
 				48D83CA01DEC0D9500E62100 /* MyPostViewController.m */,
 				48D83CAD1DEC634D00E62100 /* 我的收藏 */,
+				483010411DED278000B11BE9 /* 我的回复 */,
 				488FFF2D1DE863C50061E9EF /* 注册登录 */,
 				48E271D81DE7253200CA3F4D /* 设置 */,
 			);
@@ -485,6 +519,8 @@
 				48D83CA71DEC460300E62100 /* PostModel.m */,
 				48D83CB11DEC64A000E62100 /* CollectionModel.h */,
 				48D83CB21DEC64A000E62100 /* CollectionModel.m */,
+				483010451DED2C0000B11BE9 /* ReplyModel.h */,
+				483010461DED2C0000B11BE9 /* ReplyModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -532,6 +568,8 @@
 			children = (
 				48D83CAE1DEC634D00E62100 /* MyCollectionViewController.h */,
 				48D83CAF1DEC634D00E62100 /* MyCollectionViewController.m */,
+				4830103E1DED1B4800B11BE9 /* CollectionWebViewController.h */,
+				4830103F1DED1B4800B11BE9 /* CollectionWebViewController.m */,
 			);
 			path = "我的收藏";
 			sourceTree = "<group>";
@@ -777,16 +815,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4830104A1DED74D600B11BE9 /* TrendViewController.m in Sources */,
 				483AC5E61DE526CB009E0E64 /* BaseTabBarController.m in Sources */,
 				488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */,
 				483AC5FE1DE52749009E0E64 /* UserViewController.m in Sources */,
 				48D83CA11DEC0D9500E62100 /* MyPostViewController.m in Sources */,
+				4830104E1DED804D00B11BE9 /* AdvertModel.m in Sources */,
 				483AC5E71DE526CB009E0E64 /* BaseViewController.m in Sources */,
 				483AC58E1DE525AF009E0E64 /* AppDelegate.m in Sources */,
 				488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */,
 				483AC5E81DE526CB009E0E64 /* XQBarButtonItem.m in Sources */,
 				48DBCB3C1DE9C7C100B989D6 /* FeedBackViewController.m in Sources */,
 				483AC5FD1DE52749009E0E64 /* ForumViewController.m in Sources */,
+				483010511DED8F2F00B11BE9 /* VideoLotteryViewController.m in Sources */,
 				483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */,
 				48D83CA81DEC460300E62100 /* PostModel.m in Sources */,
 				48D83C971DEBC02400E62100 /* XQToast.m in Sources */,
@@ -796,6 +837,7 @@
 				483AC6291DE5C240009E0E64 /* UIImage+Extension.m in Sources */,
 				48DBCB461DE9DB3800B989D6 /* DisclaimerViewController.m in Sources */,
 				483AC5EA1DE526CB009E0E64 /* XQCycleImageView.m in Sources */,
+				483010441DED27DC00B11BE9 /* MyReplyViewController.m in Sources */,
 				48DBCB401DE9C8E500B989D6 /* XQTextView.m in Sources */,
 				488F1A151DE6CB4B005C6882 /* UserModel.m in Sources */,
 				488FFF331DE863C50061E9EF /* RegisteViewController.m in Sources */,
@@ -806,10 +848,12 @@
 				483AC58B1DE525AF009E0E64 /* main.m in Sources */,
 				48D83CA51DEC0EA200E62100 /* XQSegmentedControl.m in Sources */,
 				48D83C9B1DEBD12000E62100 /* SystemManager.m in Sources */,
+				483010401DED1B4800B11BE9 /* CollectionWebViewController.m in Sources */,
 				48E271D71DE708FC00CA3F4D /* XQActionSheet.m in Sources */,
 				483AC5E51DE526CB009E0E64 /* BaseNavigationController.m in Sources */,
 				483AC5FF1DE52749009E0E64 /* MineHeadView.m in Sources */,
 				483AC5E91DE526CB009E0E64 /* XQNavigationBar.m in Sources */,
+				483010471DED2C0000B11BE9 /* ReplyModel.m in Sources */,
 				483AC6021DE5276A009E0E64 /* HomeViewController.m in Sources */,
 				48D83C9E1DEBDB3E00E62100 /* PostReleaseViewController.m in Sources */,
 				483AC6111DE54080009E0E64 /* NetworkManager.m in Sources */,

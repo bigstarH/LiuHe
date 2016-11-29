@@ -11,6 +11,7 @@
 #import "PostReleaseViewController.h"
 #import "ModifyPswViewController.h"
 #import "SettingViewController.h"
+#import "MyReplyViewController.h"
 #import "MyDataViewController.h"
 #import "MyPostViewController.h"
 #import "LoginViewController.h"
@@ -55,12 +56,8 @@
 #pragma mark - start 设置导航栏
 - (void)setNavigationBarStyle
 {
-    [super setNavigationBarStyle];
-    self.navigationController.navigationBar.hidden = YES;
-    self.needsCustomNavigationBar      = YES;
-    self.title = @"我的";
-    self.navigationBar.shadowHidden    = YES;
     self.navigationBar.imageView.alpha = 0;
+    self.title = @"我的";
     
     XQBarButtonItem *rightBtn1 = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"signIn"]];
     [rightBtn1 setTag:1];
@@ -231,6 +228,8 @@
                 [[XQToast makeText:@"請先登錄"] show];
                 return;
             }
+            MyReplyViewController *vc = [[MyReplyViewController alloc] initWithHidesBottomBar:YES];
+            [self.navigationController pushViewController:vc animated:YES];
             break;
         }
         case 4:  // 设置

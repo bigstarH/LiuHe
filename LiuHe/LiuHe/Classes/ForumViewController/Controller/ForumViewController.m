@@ -6,23 +6,40 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
+#import <SVProgressHUD/SVProgressHUD.h>
+#import "VideoLotteryViewController.h"
+#import "XQFasciatePageControl.h"
+#import "TrendViewController.h"
 #import "ForumViewController.h"
+#import "XQCycleImageView.h"
+#import "NetworkManager.h"
+#import "AdvertModel.h"
+#import "MenuItem.h"
 
 @interface ForumViewController ()
+
+@property (nonatomic, strong) NSArray *imageArr;
+
+@property (nonatomic, weak) XQCycleImageView *cycleImageView;
+
+@property (nonatomic, weak) XQFasciatePageControl *pageControl;
 
 @end
 
 @implementation ForumViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    self.edgesForExtendedLayout = UIRectEdgeTop;
-    self.view.backgroundColor = [UIColor yellowColor];
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.title = @"論壇";
 }
 
-- (UIColor *)setBarTintColor
+#pragma mark - start 设置导航栏
+- (void)shareEvent
 {
-    return [UIColor orangeColor];
+    NSLog(@"分享");
 }
+#pragma mark end 设置导航栏
 
 @end

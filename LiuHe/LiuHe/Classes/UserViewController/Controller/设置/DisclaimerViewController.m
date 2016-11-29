@@ -26,8 +26,6 @@
 
 - (void)setNavigationBarStyle
 {
-    self.needsCustomNavigationBar   = YES;
-    self.navigationBar.shadowHidden = YES;
     self.title = @"免責聲明";
     
     XQBarButtonItem *leftBtn = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]];

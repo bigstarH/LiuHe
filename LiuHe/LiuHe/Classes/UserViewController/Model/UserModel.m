@@ -57,6 +57,7 @@ static UserModel *userInfo = nil;
     data[@"uid"] = self.uid ? self.uid : @"";
     data[@"psw"] = self.password ? self.password : @"";
     [data writeToFile:plistPath atomically:YES];
+    userInfo     = [UserModel userModelWithDict:data];
 }
 
 - (void)saveUserInfoWithMyData

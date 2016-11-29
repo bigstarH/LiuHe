@@ -8,7 +8,6 @@
 
 #import <AFNetworking/AFNetworking.h>
 #import "NetworkManager.h"
-#import "NetworkUrl.h"
 #import "UserModel.h"
 
 static id networkInstance;
@@ -46,17 +45,12 @@ static id networkInstance;
     return _manager;
 }
 
-- (void)getHomeADWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+- (void)getADWithURL:(NSString *)urlStr success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
 {
-    [self.manager GET:GET_INDEXAD_URL parameters:nil progress:nil
+    [self.manager GET:urlStr parameters:nil progress:nil
               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                   NSArray *responseArr = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-                  NSMutableArray *images = [NSMutableArray array];
-                  for (int i = 0; i < responseArr.count; i++) {
-                      NSDictionary *dict = responseArr[i];
-                      [images addObject:dict[@"titlepic"]];
-                  }
-                  successBlock ? successBlock(images) : nil;
+                  successBlock ? successBlock(responseArr) : nil;
               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                   failureBlock ? failureBlock(error.domain) : nil;
               }];
@@ -153,7 +147,6 @@ static id networkInstance;
     [self.manager POST:USER_RELATION_URL parameters:param progress:nil
                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                    NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-                   NSLog(@"responseDict = %@", responseDict);
                    NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
                    NSString *str  = [responseDict objectForKey:@"ts"];
                    if (code == 1) {
@@ -297,6 +290,41 @@ static id networkInstance;
 - (void)userCollectionWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     NSDictionary *param = @{@"enews" : @"Myfava",
+                            @"uid"   : [UserModel getCurrentUser].uid};
+    [self.manager POST:USER_POST_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   successBlock ? successBlock(array) : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
+
+- (void)cancelCollectingWithSid:(NSString *)sid success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews"    : @"DelFava",
+                            @"favaid"   : sid,
+                            @"userid"   : [UserModel getCurrentUser].uid,
+                            @"rnd"      : [UserModel getCurrentUser].rnd,
+                            @"username" : [UserModel getCurrentUser].userName};
+    [self.manager POST:USER_RELATION_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
+                   NSString *ts   = [responseDict objectForKey:@"ts"];
+                   if (code == 1) {
+                       successBlock ? successBlock(ts) : nil;
+                   }else {
+                       failureBlock ? failureBlock(ts) : nil;
+                   }
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
+
+- (void)userReplyWithEnews:(NSString *)enews success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews" : enews,
                             @"uid"   : [UserModel getCurrentUser].uid};
     [self.manager POST:USER_POST_URL parameters:param progress:nil
                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

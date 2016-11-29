@@ -51,9 +51,6 @@
 
 - (void)setNavigationBarStyle
 {
-    self.needsCustomNavigationBar   = YES;
-    self.navigationBar.shadowHidden = YES;
-    
     XQBarButtonItem *leftBtn  = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]];
     [leftBtn addTarget:self action:@selector(goBackWithNavigationBar:) forControlEvents:UIControlEventTouchUpInside];
     XQBarButtonItem *shareBtn = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_share"]];

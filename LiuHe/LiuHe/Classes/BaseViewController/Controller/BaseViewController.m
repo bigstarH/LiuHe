@@ -25,17 +25,28 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.edgesForExtendedLayout   = UIRectEdgeNone;
+    self.navigationController.navigationBar.barStyle = [self setStatuBar];
+    self.navigationController.navigationBar.hidden   = YES;
+    self.automaticallyAdjustsScrollViewInsets        = NO;
+    self.edgesForExtendedLayout    = UIRectEdgeNone;
+    
+    XQNavigationBar *navigationBar = [[XQNavigationBar alloc] init];
+    _navigationBar                 = navigationBar;
+    _navigationBar.delegate        = self;
+    _navigationBar.frame           = CGRectMake(0, 0, SCREEN_WIDTH, 64);
+    _navigationBar.shadowHidden    = YES;
+    [_navigationBar setBarTintColor:[self setBarTintColor]];
+    [self.view addSubview:navigationBar];
+    
+    UIView *titleView              = [self setTitleView];
+    if (titleView) {
+        _navigationBar.titleView   = titleView;
+    }
     [self setNavigationBarStyle];
 }
 
 - (void)setNavigationBarStyle
 {
-    self.navigationItem.titleView = [self setTitleView];
-    self.navigationController.navigationBar.barStyle     = [self setStatuBar];
-    self.navigationController.navigationBar.barTintColor = [self setBarTintColor];
-    self.navigationController.navigationBar.tintColor    = [self setTintColor];
 }
 
 - (UIBarStyle)setStatuBar
@@ -57,38 +68,19 @@
 {
     return nil;
 }
-
 /**
  *  设置标题
  */
 - (void)setTitle:(NSString *)title
 {
-    if (self.needsCustomNavigationBar) {
-        NSDictionary *dictionary = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17]};
-        CGRect rect = [title boundingRectWithSize:CGSizeMake(200, 27) options:NSStringDrawingUsesLineFragmentOrigin attributes:dictionary context:nil];
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, rect.size.width + 2, 27)];
-        [label setText:title];
-        [label setFont:[UIFont boldSystemFontOfSize:17]];
-        [label setTextColor:[self setTintColor]];
-        [label setTextAlignment:NSTextAlignmentCenter];
-        self.navigationBar.titleView = label;
-    }else {
-        [super setTitle:title];
-    }
-}
-
-- (void)setNeedsCustomNavigationBar:(BOOL)needsCustomNavigationBar
-{
-    _needsCustomNavigationBar = needsCustomNavigationBar;
-    if (!needsCustomNavigationBar) return;
-    
-    XQNavigationBar *navigationBar = [[XQNavigationBar alloc] init];
-    _navigationBar          = navigationBar;
-    _navigationBar.delegate = self;
-    _navigationBar.frame    = CGRectMake(0, 0, SCREEN_WIDTH, 64);
-    [_navigationBar setBarTintColor:[self setBarTintColor]];
-    [_navigationBar setTitleView:[self setTitleView]];
-    [self.view addSubview:navigationBar];
+    NSDictionary *dictionary = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17]};
+    CGRect rect = [title boundingRectWithSize:CGSizeMake(200, 27) options:NSStringDrawingUsesLineFragmentOrigin attributes:dictionary context:nil];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, rect.size.width + 2, 27)];
+    [label setText:title];
+    [label setFont:[UIFont boldSystemFontOfSize:17]];
+    [label setTextColor:[self setTintColor]];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    self.navigationBar.titleView = label;
 }
 
 - (void)goBackWithNavigationBar:(XQNavigationBar *)navigationBar

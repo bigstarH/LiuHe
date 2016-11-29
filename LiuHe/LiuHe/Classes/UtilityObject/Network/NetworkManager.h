@@ -7,15 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NetworkUrl.h"
 
 @interface NetworkManager : NSObject
 
 + (instancetype)shareManager;
 
 #pragma mark - start 网络请求
-/** 1  获取首页广告图 */
-- (void)getHomeADWithSuccess:(void (^)(NSArray *imagesArray))successBlock
-                     failure:(void (^)(NSString *error))failureBlock;
+/** 1  获取广告图 */
+- (void)getADWithURL:(NSString *)urlStr
+             success:(void (^)(NSArray *imagesArray))successBlock
+             failure:(void (^)(NSString *error))failureBlock;
 /** 2  用户登录 */
 - (void)userLoginWithUsername:(NSString *)userName
                      password:(NSString *)password
@@ -77,6 +79,14 @@
 /** 13 我的收藏 */
 - (void)userCollectionWithSuccess:(void (^)(NSArray *array))successBlock
                           failure:(void (^)(NSString *error))failureBlock;
+/** 14 取消收藏 */
+- (void)cancelCollectingWithSid:(NSString *)sid
+                          success:(void (^)(NSString *str))successBlock
+                          failure:(void (^)(NSString *error))failureBlock;
+/** 15 我的回复 */
+- (void)userReplyWithEnews:(NSString *)enews
+                   success:(void (^)(NSArray *array))successBlock
+                   failure:(void (^)(NSString *error))failureBlock;
 #pragma mark end 网络请求
 
 @end

@@ -12,8 +12,6 @@
 @interface BaseViewController : UIViewController
 /** 自定义navigationBar */
 @property (nonatomic, weak, readonly) XQNavigationBar *navigationBar;
-/** 是否需要自定义navigationBar */
-@property (nonatomic) BOOL needsCustomNavigationBar;
 
 - (instancetype)initWithHidesBottomBar:(BOOL)hide;
 /**

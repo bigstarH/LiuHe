@@ -37,10 +37,8 @@
 
 - (void)setNavigationBarStyle
 {
-    self.needsCustomNavigationBar = YES;
     self.title = @"註冊賬號";
-    self.navigationBar.imageView.alpha  = 0;
-    self.navigationBar.shadowHidden     = YES;
+    self.navigationBar.imageView.alpha = 0;
     
     XQBarButtonItem *leftBtn = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]];
     [leftBtn addTarget:self action:@selector(goBackWithNavigationBar:) forControlEvents:UIControlEventTouchUpInside];

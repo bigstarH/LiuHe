@@ -10,4 +10,16 @@
 
 @interface ReplyModel : NSObject
 
+@property (nonatomic, copy) NSString *title;
+
+@property (nonatomic, copy) NSString *classid;
+
+@property (nonatomic, copy) NSString *linkStr;
+
+@property (nonatomic, copy) NSString *sid;
+
+@property (nonatomic, copy) NSString *tid;
+
++ (instancetype)replyModelWithDict:(NSDictionary *)dict;
+
 @end

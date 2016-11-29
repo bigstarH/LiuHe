@@ -8,6 +8,11 @@
 
 #import "BaseViewController.h"
 
+/** 收藏, 回复链接 */
 @interface CollectionWebViewController : BaseViewController
+
+@property (nonatomic, copy) NSString *titleStr;
+
+- (instancetype)initWithLinkStr:(NSString *)linkStr;
 
 @end

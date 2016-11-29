@@ -9,6 +9,7 @@
 #import "BaseTabBarController.h"
 #import "BaseNavigationController.h"
 #import "HomeViewController.h"
+#import "ForumViewController.h"
 #import "UserViewController.h"
 
 @interface BaseTabBarController ()
@@ -28,9 +29,9 @@
     [tabBarItem setTitleTextAttributes:attr forState:UIControlStateNormal];
     [tabBarItem setTitleTextAttributes:attrSelect forState:UIControlStateSelected];
     
-    HomeViewController *homeVC  = [[HomeViewController alloc] init];
-    BaseViewController *forumVC = [[BaseViewController alloc] init];
-    UserViewController *userVC  = [[UserViewController alloc] init];
+    HomeViewController  *homeVC  = [[HomeViewController alloc] init];
+    ForumViewController *forumVC = [[ForumViewController alloc] init];
+    UserViewController  *userVC  = [[UserViewController alloc] init];
     
     homeVC.tabBarItem    = [[UITabBarItem alloc] initWithTitle:@"首頁"
                                                          image:[UIImage imageNamed:@"tabbar_menu"]

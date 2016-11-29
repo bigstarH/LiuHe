@@ -12,6 +12,7 @@
 #import "AboutUsViewController.h"
 #import "DisclaimerViewController.h"
 #import "SystemManager.h"
+#import "XQAlertView.h"
 
 @interface SettingViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -35,8 +36,6 @@
 
 - (void)setNavigationBarStyle
 {
-    self.needsCustomNavigationBar   = YES;
-    self.navigationBar.shadowHidden = YES;
     self.title = @"設置";
     
     XQBarButtonItem *leftBtn = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]];
@@ -156,8 +155,15 @@
         }
         case 3:  // 清除缓存
         {
-            [SystemManager clearCache];
-            [tableView reloadData];
+            XQAlertView *alert = [[XQAlertView alloc] initWithTitle:@"提示" message:@"確定要清楚緩存嗎？"];
+            alert.themeColor   = MAIN_COLOR;
+            alert.titleColor   = [UIColor whiteColor];
+            [alert addButtonWithTitle:@"再想一想" style:XQAlertButtonStyleCancel handle:nil];
+            [alert addButtonWithTitle:@"確定" style:XQAlertButtonStyleDefault handle:^{
+                [SystemManager clearCache];
+                [tableView reloadData];
+            }];
+            [alert show];
             break;
         }
         default:
