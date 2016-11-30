@@ -15,6 +15,8 @@
 #import "Common.h"
 #endif
 
+#define IOS_8_LATER   [[UIDevice currentDevice].systemVersion doubleValue] >= 8.0
+
 #define SCREEN_WIDTH  [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 #define WIDTH(w)      (w) * SCREEN_WIDTH / 320
@@ -27,5 +29,6 @@
 
 #define UserDefaults       [NSUserDefaults standardUserDefaults]
 #define NotificationCenter [NSNotificationCenter defaultCenter]
+
 
 #endif /* LiuHe_pch */

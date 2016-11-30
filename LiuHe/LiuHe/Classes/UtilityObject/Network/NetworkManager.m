@@ -335,14 +335,17 @@ static id networkInstance;
                }];
 }
 
-- (void)forumPostWithStar:(NSString *)star success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+- (void)lotteryStartWithSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
 {
-    NSDictionary *param = @{@"enews" : @"bbslist",
-                            @"star"  : star};
-    [self.manager POST:USER_POST_URL parameters:param progress:nil
+    [self.manager POST:USER_POST_URL parameters:@{@"enews" : @"IosKj"} progress:nil
                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                   NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-                   successBlock ? successBlock(array) : nil;
+                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
+                   if (code == 1) {
+                       successBlock ? successBlock(responseDict) : nil;
+                   }else {
+                       failureBlock ? failureBlock(@"") : nil;
+                   }
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                    failureBlock ? failureBlock(error.domain) : nil;
                }];
@@ -355,6 +358,30 @@ static id networkInstance;
                    NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
                    NSString *time = responseDict[@"time"];
                    successBlock ? successBlock(time) : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
+
+- (void)lotteryHistoryWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    [self.manager GET:LOTTERY_HISTORY_URL parameters:nil progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   successBlock ? successBlock(array) : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
+
+- (void)forumPostWithStar:(NSString *)star success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews" : @"bbslist",
+                            @"star"  : star};
+    [self.manager POST:USER_POST_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   successBlock ? successBlock(array) : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                    failureBlock ? failureBlock(error.domain) : nil;
                }];

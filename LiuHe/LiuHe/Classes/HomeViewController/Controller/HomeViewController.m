@@ -8,6 +8,7 @@
 
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "VideoLotteryViewController.h"
+#import "HistoryViewController.h"
 #import "XQFasciatePageControl.h"
 #import "HomeViewController.h"
 #import "XQCycleImageView.h"
@@ -228,11 +229,16 @@
 /** 菜单项的点击事件 */
 - (void)menuItemDidClickWithTag:(NSInteger)tag
 {
-    NSLog(@"tag = %zd", tag);
     switch (tag) {
         case 0:  // 视频开奖
         {
             VideoLotteryViewController *vc = [[VideoLotteryViewController alloc] initWithHidesBottomBar:YES];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 1:  // 历史记录
+        {
+            HistoryViewController *vc = [[HistoryViewController alloc] initWithHidesBottomBar:YES];
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }

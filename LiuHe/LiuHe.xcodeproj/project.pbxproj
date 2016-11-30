@@ -40,6 +40,10 @@
 		488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF2F1DE863C50061E9EF /* LoginViewController.m */; };
 		488FFF331DE863C50061E9EF /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF311DE863C50061E9EF /* RegisteViewController.m */; };
 		488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF351DE8645A0061E9EF /* ModifyPswViewController.m */; };
+		4897355A1DEEABAE006ADA94 /* LotteryNumberModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 489735591DEEABAE006ADA94 /* LotteryNumberModel.m */; };
+		4897355E1DEEEBAD006ADA94 /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4897355D1DEEEBAD006ADA94 /* HistoryViewController.m */; };
+		489735611DEEF2CB006ADA94 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 489735601DEEF2CB006ADA94 /* HistoryCell.m */; };
+		489735641DEF021A006ADA94 /* HistoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 489735631DEF021A006ADA94 /* HistoryDetailViewController.m */; };
 		48D83C971DEBC02400E62100 /* XQToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C961DEBC02400E62100 /* XQToast.m */; };
 		48D83C9B1DEBD12000E62100 /* SystemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C9A1DEBD12000E62100 /* SystemManager.m */; };
 		48D83C9E1DEBDB3E00E62100 /* PostReleaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C9D1DEBDB3E00E62100 /* PostReleaseViewController.m */; };
@@ -146,6 +150,14 @@
 		488FFF311DE863C50061E9EF /* RegisteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisteViewController.m; sourceTree = "<group>"; };
 		488FFF341DE8645A0061E9EF /* ModifyPswViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyPswViewController.h; sourceTree = "<group>"; };
 		488FFF351DE8645A0061E9EF /* ModifyPswViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyPswViewController.m; sourceTree = "<group>"; };
+		489735581DEEABAE006ADA94 /* LotteryNumberModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LotteryNumberModel.h; sourceTree = "<group>"; };
+		489735591DEEABAE006ADA94 /* LotteryNumberModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LotteryNumberModel.m; sourceTree = "<group>"; };
+		4897355C1DEEEBAD006ADA94 /* HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
+		4897355D1DEEEBAD006ADA94 /* HistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewController.m; sourceTree = "<group>"; };
+		4897355F1DEEF2CB006ADA94 /* HistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCell.h; sourceTree = "<group>"; };
+		489735601DEEF2CB006ADA94 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
+		489735621DEF021A006ADA94 /* HistoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryDetailViewController.h; sourceTree = "<group>"; };
+		489735631DEF021A006ADA94 /* HistoryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryDetailViewController.m; sourceTree = "<group>"; };
 		48D83C951DEBC02400E62100 /* XQToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQToast.h; sourceTree = "<group>"; };
 		48D83C961DEBC02400E62100 /* XQToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQToast.m; sourceTree = "<group>"; };
 		48D83C991DEBD12000E62100 /* SystemManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemManager.h; sourceTree = "<group>"; };
@@ -222,6 +234,8 @@
 			children = (
 				4830104C1DED804D00B11BE9 /* AdvertModel.h */,
 				4830104D1DED804D00B11BE9 /* AdvertModel.m */,
+				489735581DEEABAE006ADA94 /* LotteryNumberModel.h */,
+				489735591DEEABAE006ADA94 /* LotteryNumberModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -409,6 +423,7 @@
 				483AC6011DE5276A009E0E64 /* HomeViewController.m */,
 				4830104F1DED8F2F00B11BE9 /* VideoLotteryViewController.h */,
 				483010501DED8F2F00B11BE9 /* VideoLotteryViewController.m */,
+				4897355B1DEEEB93006ADA94 /* 历史记录 */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -422,6 +437,8 @@
 				483010531DEDA6B000B11BE9 /* LotteryView.m */,
 				483010551DEDB85600B11BE9 /* CountDowner.h */,
 				483010561DEDB85600B11BE9 /* CountDowner.m */,
+				4897355F1DEEF2CB006ADA94 /* HistoryCell.h */,
+				489735601DEEF2CB006ADA94 /* HistoryCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -539,6 +556,17 @@
 				488FFF311DE863C50061E9EF /* RegisteViewController.m */,
 			);
 			path = "注册登录";
+			sourceTree = "<group>";
+		};
+		4897355B1DEEEB93006ADA94 /* 历史记录 */ = {
+			isa = PBXGroup;
+			children = (
+				4897355C1DEEEBAD006ADA94 /* HistoryViewController.h */,
+				4897355D1DEEEBAD006ADA94 /* HistoryViewController.m */,
+				489735621DEF021A006ADA94 /* HistoryDetailViewController.h */,
+				489735631DEF021A006ADA94 /* HistoryDetailViewController.m */,
+			);
+			path = "历史记录";
 			sourceTree = "<group>";
 		};
 		48D83C941DEBC02400E62100 /* XQToast */ = {
@@ -822,6 +850,7 @@
 			files = (
 				483AC5E61DE526CB009E0E64 /* BaseTabBarController.m in Sources */,
 				488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */,
+				4897355A1DEEABAE006ADA94 /* LotteryNumberModel.m in Sources */,
 				483AC5FE1DE52749009E0E64 /* UserViewController.m in Sources */,
 				48D83CA11DEC0D9500E62100 /* MyPostViewController.m in Sources */,
 				4830104E1DED804D00B11BE9 /* AdvertModel.m in Sources */,
@@ -832,6 +861,7 @@
 				483AC5E81DE526CB009E0E64 /* XQBarButtonItem.m in Sources */,
 				48DBCB3C1DE9C7C100B989D6 /* FeedBackViewController.m in Sources */,
 				483AC5FD1DE52749009E0E64 /* ForumViewController.m in Sources */,
+				4897355E1DEEEBAD006ADA94 /* HistoryViewController.m in Sources */,
 				483010511DED8F2F00B11BE9 /* VideoLotteryViewController.m in Sources */,
 				483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */,
 				48D83CA81DEC460300E62100 /* PostModel.m in Sources */,
@@ -842,6 +872,7 @@
 				483AC6291DE5C240009E0E64 /* UIImage+Extension.m in Sources */,
 				48DBCB461DE9DB3800B989D6 /* DisclaimerViewController.m in Sources */,
 				483AC5EA1DE526CB009E0E64 /* XQCycleImageView.m in Sources */,
+				489735641DEF021A006ADA94 /* HistoryDetailViewController.m in Sources */,
 				483010441DED27DC00B11BE9 /* MyReplyViewController.m in Sources */,
 				48DBCB401DE9C8E500B989D6 /* XQTextView.m in Sources */,
 				488F1A151DE6CB4B005C6882 /* UserModel.m in Sources */,
@@ -860,6 +891,7 @@
 				483AC5FF1DE52749009E0E64 /* MineHeadView.m in Sources */,
 				483AC5E91DE526CB009E0E64 /* XQNavigationBar.m in Sources */,
 				483010471DED2C0000B11BE9 /* ReplyModel.m in Sources */,
+				489735611DEEF2CB006ADA94 /* HistoryCell.m in Sources */,
 				483AC6021DE5276A009E0E64 /* HomeViewController.m in Sources */,
 				48D83C9E1DEBDB3E00E62100 /* PostReleaseViewController.m in Sources */,
 				483AC6111DE54080009E0E64 /* NetworkManager.m in Sources */,
