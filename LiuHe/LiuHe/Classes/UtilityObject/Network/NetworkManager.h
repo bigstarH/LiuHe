@@ -87,6 +87,13 @@
 - (void)userReplyWithEnews:(NSString *)enews
                    success:(void (^)(NSArray *array))successBlock
                    failure:(void (^)(NSString *error))failureBlock;
+/** 16 论坛帖子 */
+- (void)forumPostWithStar:(NSString *)star
+                  success:(void (^)(NSArray *array))successBlock
+                  failure:(void (^)(NSString *error))failureBlock;
+/** 下期开奖事件 */
+- (void)lotteryNextTimeWithSuccess:(void (^)(NSString *time))successBlock
+                           failure:(void (^)(NSString *error))failureBlock;
 #pragma mark end 网络请求
 
 @end

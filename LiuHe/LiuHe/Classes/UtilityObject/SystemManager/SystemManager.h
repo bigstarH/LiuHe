@@ -18,5 +18,9 @@
  *  清除缓存
  */
 + (void)clearCache;
+/**
+ *  将NSTimeInterval转成NSDate字符串
+ */
++ (NSString *)dateStringWithTime:(NSTimeInterval)time formatter:(NSString *)formatter;
 
 @end

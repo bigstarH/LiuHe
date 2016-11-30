@@ -26,4 +26,14 @@
 //    [[SDImageCache sharedImageCache] clearMemory];
 }
 
++ (NSString *)dateStringWithTime:(NSTimeInterval)time formatter:(NSString *)formatter
+{
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:time];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:formatter];
+    dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"zh_CN"];
+    NSString *strDate = [dateFormatter stringFromDate:date];
+    return strDate;
+}
+
 @end

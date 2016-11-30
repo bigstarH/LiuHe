@@ -9,14 +9,19 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "VideoLotteryViewController.h"
 #import "XQFasciatePageControl.h"
-#import "TrendViewController.h"
 #import "HomeViewController.h"
 #import "XQCycleImageView.h"
 #import "NetworkManager.h"
+#import "SystemManager.h"
 #import "AdvertModel.h"
+#import "CountDowner.h"
 #import "MenuItem.h"
 
 @interface HomeViewController () <XQCycleImageViewDelegate>
+
+@property (nonatomic, weak) UIView *timeView;
+
+@property (nonatomic, weak) UILabel *nextTimeLab;
 
 @property (nonatomic, strong) NSArray *imageArr;
 
@@ -34,22 +39,13 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    __weak typeof(self) ws    = self;
-    [[NetworkManager shareManager] getADWithURL:GET_INDEXAD_AD_URL
-                                        success:^(NSArray *imagesArray) {
-                                            NSMutableArray *images = [NSMutableArray array];
-                                            for (int i = 0; i < imagesArray.count; i++) {
-                                                NSDictionary *dict = imagesArray[i];
-                                                AdvertModel *model = [AdvertModel advertModelWithDict:dict];
-                                                [images addObject:model];
-                                            }
-                                            ws.imageArr = images;
-                                            [ws createCycleImageView];
-                                            [ws.cycleImageView startPlayImageView];
-                                        } failure:^(NSString *error) {
-                                            [SVProgressHUD showErrorWithStatus:error];
-                                        }];
+    [self createCycleImageView];
     [self createBottomButton];
+    
+    // 获取广告图片
+    [self getAdvertisementPic];
+    // 获取下期开奖事件
+    [self getLotteryNextTime];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -91,22 +87,28 @@
 /** 创建图片轮播 */
 - (void)createCycleImageView
 {
-    NSMutableArray *array = [NSMutableArray array];
-    for (AdvertModel *model in self.imageArr) {
-        [array addObject:model.titlepic];
-    }
+    CGFloat cycleH = SCREEN_WIDTH * 200 / 1100;
     XQCycleImageView *cycleImage = [XQCycleImageView cycleImageView];
-    cycleImage.frame             = CGRectMake(0, 64, SCREEN_WIDTH, HEIGHT(130));
-    cycleImage.images            = array;
+    cycleImage.frame             = CGRectMake(0, 64, SCREEN_WIDTH, cycleH);
+    cycleImage.backgroundColor   = RGBCOLOR(245, 245, 245);
     cycleImage.delegate          = self;
     cycleImage.repeatSecond      = 5;
     cycleImage.autoDragging      = YES;
     self.cycleImageView          = cycleImage;
     [self.view addSubview:cycleImage];
+}
+
+- (void)setCycleImageData
+{
+    NSMutableArray *array = [NSMutableArray array];
+    for (AdvertModel *model in self.imageArr) {
+        [array addObject:model.titlepic];
+    }
+    self.cycleImageView.images = array;
     
     if (array.count <= 1) return;
     
-    CGFloat pageY      = CGRectGetMaxY(cycleImage.frame) - HEIGHT(25);
+    CGFloat pageY      = CGRectGetMaxY(self.cycleImageView.frame) - HEIGHT(25);
     XQFasciatePageControl *page  = [XQFasciatePageControl pageControl];
     page.frame         = CGRectMake(0, pageY, SCREEN_WIDTH, HEIGHT(25));
     page.numberOfPages = array.count;
@@ -121,17 +123,32 @@
 - (void)createBottomButton
 {
     __weak typeof(self) ws = self;
-    CGFloat hSpace = WIDTH(5);
-    CGFloat vSpace = HEIGHT(8);
+    CGFloat hSpace = WIDTH(6);
+    CGFloat vSpace = HEIGHT(6);
+    
+    CGFloat viewY  = CGRectGetMaxY(ws.cycleImageView.frame) + HEIGHT(5);
+    CGFloat viewH  = HEIGHT(130) - viewY + 64;
+    CGFloat viewW  = SCREEN_WIDTH - hSpace * 2;
+    UIView *view   = [[UIView alloc] initWithFrame:CGRectMake(hSpace, viewY, viewW, viewH)];
+    self.timeView  = view;
+    [view setBackgroundColor:RGBCOLOR(245, 245, 245)];
+    [self.view addSubview:view];
+    
+    CGFloat labelH = viewH * 0.4;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewW, labelH)];
+    label.font     = [UIFont systemFontOfSize:fontSize(14)];
+    _nextTimeLab   = label;
+    [label setTextAlignment:NSTextAlignmentCenter];
+    [view addSubview:label];
     
     NSArray *array      = @[@"視頻開獎", @"歷史記錄", @"走勢分析", @"開獎日期",
                             @"六合資料", @"六合圖庫", @"六合尋寶", @"六合大全"];
     NSArray *bgColorArr = @[RGBCOLOR(237, 110, 112), RGBCOLOR(194, 153, 194),
-                            RGBCOLOR(67, 180, 237) , RGBCOLOR(195, 163, 159),
+                            RGBCOLOR(67, 180, 237) , RGBCOLOR(195, 163, 159), 
                             RGBCOLOR(60, 179, 113) , RGBCOLOR(237, 163, 130),
                             RGBCOLOR(237, 163, 45)];
     
-    CGFloat originY   = 64 + HEIGHT(130) + vSpace;
+    CGFloat originY   = CGRectGetMaxY(view.frame) + vSpace;
     CGFloat mHeight   = (SCREEN_HEIGHT - originY - 49 - 3 * vSpace) / 3;
     CGFloat itemW     = (SCREEN_WIDTH - 3 * hSpace) * 0.5;
     for (int i = 0; i < 7; i++) {
@@ -164,6 +181,26 @@
         [item setBackgroundColor:bgColorArr[i]];
         [self.view addSubview:item];
     }
+}
+
+/** 创建倒计时 */
+- (void)createCountDownerWithTime:(NSTimeInterval)time
+{
+    CGFloat width      = WIDTH(200);
+    CGFloat originX    = (CGRectGetWidth(self.timeView.frame) - width) * 0.5;
+    CGFloat originY    = CGRectGetMaxY(self.nextTimeLab.frame);
+    CGFloat height     = CGRectGetHeight(self.timeView.frame) - originY;
+    NSDate *date       = [NSDate date];
+    NSTimeInterval dis = time - [date timeIntervalSince1970];
+    if (dis <= 0) {
+        dis  = 0;
+    }
+    
+    CountDowner *count = [CountDowner countDownerWithTime:dis];
+    count.frame        = CGRectMake(originX, originY, width, height);
+    [count setBackgroundColor:MAIN_COLOR];
+    [count startCountDown];
+    [self.timeView addSubview:count];
 }
 
 /** 设置每个菜单项的位置尺寸 */
@@ -209,7 +246,9 @@
 - (void)cycleImageView:(XQCycleImageView *)cycleImageView didClickAtIndex:(int)index
 {
     AdvertModel *model = self.imageArr[index];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:model.linkStr]];
+    if (![model.linkStr isEqualToString:@"#"]) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:model.linkStr]];
+    }
 }
 
 - (void)cycleImageViewDidScrollingAnimation:(XQCycleImageView *)cycleImageView atIndex:(int)index
@@ -218,4 +257,39 @@
 }
 #pragma mark end XQCycleImageViewDelegate
 
+#pragma mark - start 网络请求
+/** 获取广告轮播图 */
+- (void)getAdvertisementPic
+{
+    __weak typeof(self) ws = self;
+    [[NetworkManager shareManager] getADWithURL:GET_INDEXAD_AD_URL
+                                        success:^(NSArray *imagesArray) {
+                                            NSMutableArray *images = [NSMutableArray array];
+                                            for (int i = 0; i < imagesArray.count; i++) {
+                                                NSDictionary *dict = imagesArray[i];
+                                                AdvertModel *model = [AdvertModel advertModelWithDict:dict];
+                                                [images addObject:model];
+                                            }
+                                            ws.imageArr = images;
+                                            [ws setCycleImageData];
+                                            [ws.cycleImageView startPlayImageView];
+                                        } failure:^(NSString *error) {
+                                            [SVProgressHUD showErrorWithStatus:error];
+                                        }];
+}
+
+/** 获取下期开奖事件 */
+- (void)getLotteryNextTime
+{
+    __weak typeof(self) ws = self;
+    [[NetworkManager shareManager] lotteryNextTimeWithSuccess:^(NSString *time) {
+        NSString *formatter = @"MM月dd日  HH时mm分 EE";
+        NSString *str = [SystemManager dateStringWithTime:[time doubleValue] formatter:formatter];
+        ws.nextTimeLab.text = [NSString stringWithFormat:@"下期開獎時間：%@",str];
+        [ws createCountDownerWithTime:[time doubleValue]];
+    } failure:^(NSString *error) {
+        [SVProgressHUD showErrorWithStatus:error];
+    }];
+}
+#pragma mark end 网络请求
 @end

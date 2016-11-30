@@ -11,9 +11,10 @@
 		483010401DED1B4800B11BE9 /* CollectionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830103F1DED1B4800B11BE9 /* CollectionWebViewController.m */; };
 		483010441DED27DC00B11BE9 /* MyReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483010431DED27DC00B11BE9 /* MyReplyViewController.m */; };
 		483010471DED2C0000B11BE9 /* ReplyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 483010461DED2C0000B11BE9 /* ReplyModel.m */; };
-		4830104A1DED74D600B11BE9 /* TrendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483010491DED74D600B11BE9 /* TrendViewController.m */; };
 		4830104E1DED804D00B11BE9 /* AdvertModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830104D1DED804D00B11BE9 /* AdvertModel.m */; };
 		483010511DED8F2F00B11BE9 /* VideoLotteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483010501DED8F2F00B11BE9 /* VideoLotteryViewController.m */; };
+		483010541DEDA6B000B11BE9 /* LotteryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 483010531DEDA6B000B11BE9 /* LotteryView.m */; };
+		483010571DEDB85600B11BE9 /* CountDowner.m in Sources */ = {isa = PBXBuildFile; fileRef = 483010561DEDB85600B11BE9 /* CountDowner.m */; };
 		483AC58B1DE525AF009E0E64 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC58A1DE525AF009E0E64 /* main.m */; };
 		483AC58E1DE525AF009E0E64 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC58D1DE525AF009E0E64 /* AppDelegate.m */; };
 		483AC5961DE525AF009E0E64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 483AC5951DE525AF009E0E64 /* Assets.xcassets */; };
@@ -82,12 +83,14 @@
 		483010431DED27DC00B11BE9 /* MyReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReplyViewController.m; sourceTree = "<group>"; };
 		483010451DED2C0000B11BE9 /* ReplyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyModel.h; sourceTree = "<group>"; };
 		483010461DED2C0000B11BE9 /* ReplyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyModel.m; sourceTree = "<group>"; };
-		483010481DED74D600B11BE9 /* TrendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrendViewController.h; sourceTree = "<group>"; };
-		483010491DED74D600B11BE9 /* TrendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrendViewController.m; sourceTree = "<group>"; };
 		4830104C1DED804D00B11BE9 /* AdvertModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvertModel.h; sourceTree = "<group>"; };
 		4830104D1DED804D00B11BE9 /* AdvertModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvertModel.m; sourceTree = "<group>"; };
 		4830104F1DED8F2F00B11BE9 /* VideoLotteryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoLotteryViewController.h; sourceTree = "<group>"; };
 		483010501DED8F2F00B11BE9 /* VideoLotteryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoLotteryViewController.m; sourceTree = "<group>"; };
+		483010521DEDA6B000B11BE9 /* LotteryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LotteryView.h; sourceTree = "<group>"; };
+		483010531DEDA6B000B11BE9 /* LotteryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LotteryView.m; sourceTree = "<group>"; };
+		483010551DEDB85600B11BE9 /* CountDowner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountDowner.h; sourceTree = "<group>"; };
+		483010561DEDB85600B11BE9 /* CountDowner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountDowner.m; sourceTree = "<group>"; };
 		483AC5861DE525AF009E0E64 /* LiuHe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiuHe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		483AC58A1DE525AF009E0E64 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		483AC58C1DE525AF009E0E64 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -392,8 +395,8 @@
 		483AC5F11DE52749009E0E64 /* HomeViewController */ = {
 			isa = PBXGroup;
 			children = (
-				483AC5F21DE52749009E0E64 /* Controller */,
 				4830104B1DED803E00B11BE9 /* Model */,
+				483AC5F21DE52749009E0E64 /* Controller */,
 				483AC5F41DE52749009E0E64 /* View */,
 			);
 			path = HomeViewController;
@@ -404,8 +407,6 @@
 			children = (
 				483AC6001DE5276A009E0E64 /* HomeViewController.h */,
 				483AC6011DE5276A009E0E64 /* HomeViewController.m */,
-				483010481DED74D600B11BE9 /* TrendViewController.h */,
-				483010491DED74D600B11BE9 /* TrendViewController.m */,
 				4830104F1DED8F2F00B11BE9 /* VideoLotteryViewController.h */,
 				483010501DED8F2F00B11BE9 /* VideoLotteryViewController.m */,
 			);
@@ -417,6 +418,10 @@
 			children = (
 				483AC6031DE52830009E0E64 /* MenuItem.h */,
 				483AC6041DE52830009E0E64 /* MenuItem.m */,
+				483010521DEDA6B000B11BE9 /* LotteryView.h */,
+				483010531DEDA6B000B11BE9 /* LotteryView.m */,
+				483010551DEDB85600B11BE9 /* CountDowner.h */,
+				483010561DEDB85600B11BE9 /* CountDowner.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -815,13 +820,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4830104A1DED74D600B11BE9 /* TrendViewController.m in Sources */,
 				483AC5E61DE526CB009E0E64 /* BaseTabBarController.m in Sources */,
 				488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */,
 				483AC5FE1DE52749009E0E64 /* UserViewController.m in Sources */,
 				48D83CA11DEC0D9500E62100 /* MyPostViewController.m in Sources */,
 				4830104E1DED804D00B11BE9 /* AdvertModel.m in Sources */,
 				483AC5E71DE526CB009E0E64 /* BaseViewController.m in Sources */,
+				483010541DEDA6B000B11BE9 /* LotteryView.m in Sources */,
 				483AC58E1DE525AF009E0E64 /* AppDelegate.m in Sources */,
 				488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */,
 				483AC5E81DE526CB009E0E64 /* XQBarButtonItem.m in Sources */,
@@ -846,6 +851,7 @@
 				483AC6051DE52830009E0E64 /* MenuItem.m in Sources */,
 				48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */,
 				483AC58B1DE525AF009E0E64 /* main.m in Sources */,
+				483010571DEDB85600B11BE9 /* CountDowner.m in Sources */,
 				48D83CA51DEC0EA200E62100 /* XQSegmentedControl.m in Sources */,
 				48D83C9B1DEBD12000E62100 /* SystemManager.m in Sources */,
 				483010401DED1B4800B11BE9 /* CollectionWebViewController.m in Sources */,

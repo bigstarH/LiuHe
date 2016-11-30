@@ -12,7 +12,7 @@
 #define BASE_URL    @""
 
 // 首页
-#define GET_INDEXAD_AD_URL  @"http://ad.jizhou56.com:8090/appad/indexad/index.json" // 首页广告
+#define GET_INDEXAD_AD_URL  @"http://ad.jizhou56.com:8090/appad/lhcbtad/index.json" // 首页广告
 #define GET_KAIJIANG_AD_URL @"http://ad.jizhou56.com:8090/appad/spkjad/index.json"  // 视频开奖广告
 
 // 我的

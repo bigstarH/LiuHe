@@ -334,4 +334,29 @@ static id networkInstance;
                    failureBlock ? failureBlock(error.domain) : nil;
                }];
 }
+
+- (void)forumPostWithStar:(NSString *)star success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews" : @"bbslist",
+                            @"star"  : star};
+    [self.manager POST:USER_POST_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   successBlock ? successBlock(array) : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
+
+- (void)lotteryNextTimeWithSuccess:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    [self.manager POST:USER_POST_URL parameters:@{@"enews" : @"Kjtime"} progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSString *time = responseDict[@"time"];
+                   successBlock ? successBlock(time) : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(error.domain) : nil;
+               }];
+}
 @end
