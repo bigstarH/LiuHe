@@ -96,6 +96,15 @@
 /** 18 历史记录列表 */
 - (void)lotteryHistoryWithSuccess:(void (^)(NSArray *array))successBlock
                           failure:(void (^)(NSString *error))failureBlock;
+/** 19 六合资料 */
+- (void)dataWithClassID:(NSString *)classID
+                   star:(NSString *)star
+                success:(void (^)(NSArray *array))successBlock
+                failure:(void (^)(NSString *error))failureBlock;
+/** 20 六合资料——详情内容 */
+- (void)dataDetailWithSid:(NSString *)sid
+                  success:(void (^)(NSDictionary *array))successBlock
+                  failure:(void (^)(NSString *error))failureBlock;
 /** 16 论坛帖子 */
 - (void)forumPostWithStar:(NSString *)star
                   success:(void (^)(NSArray *array))successBlock

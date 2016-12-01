@@ -9,6 +9,7 @@
 #import "SystemManager.h"
 #import <SDWebImage/SDImageCache.h>
 
+static NSDateFormatter *dateFormatter = nil;
 
 @implementation SystemManager
 
@@ -29,9 +30,11 @@
 + (NSString *)dateStringWithTime:(NSTimeInterval)time formatter:(NSString *)formatter
 {
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:time];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    if (dateFormatter == nil) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"zh_CN"]];
+    }
     [dateFormatter setDateFormat:formatter];
-    dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"zh_CN"];
     NSString *strDate = [dateFormatter stringFromDate:date];
     return strDate;
 }

@@ -25,6 +25,8 @@
 #define USER_POST_URL       @"http://wap.jizhou56.com:8090/e/extend/json/json.php"  // 我的帖子
 
 // 网页
-#define LOTTERY_KJ_URL      @"http://ad.jizhou56.com:8090/kaijiang.php"  // 视频开奖网页
+#define LOTTERY_KJ_URL      @"http://ad.jizhou56.com:8090/kaijiang.php"     // 视频开奖网页
+#define TREND_ANALYZE_URL   @"http://wap.jizhou56.com:8090/e/extend/trend/" // 走势分析网页
+#define DATE_LOTTERY_URL    @"http://wap.jizhou56.com:8090/appdate.php"     // 开奖日期网页
 
 #endif /* NetworkUrl_h */

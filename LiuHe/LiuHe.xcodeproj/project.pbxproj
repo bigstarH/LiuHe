@@ -44,6 +44,13 @@
 		4897355E1DEEEBAD006ADA94 /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4897355D1DEEEBAD006ADA94 /* HistoryViewController.m */; };
 		489735611DEEF2CB006ADA94 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 489735601DEEF2CB006ADA94 /* HistoryCell.m */; };
 		489735641DEF021A006ADA94 /* HistoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 489735631DEF021A006ADA94 /* HistoryDetailViewController.m */; };
+		48BE5AA51DEFC412004ACB90 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AA41DEFC412004ACB90 /* WebViewController.m */; };
+		48BE5AA91DEFCACB004ACB90 /* DataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AA81DEFCACB004ACB90 /* DataViewController.m */; };
+		48BE5AB91DF01550004ACB90 /* XQSpringMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AB61DF01550004ACB90 /* XQSpringMenu.m */; };
+		48BE5ABA1DF01550004ACB90 /* XQSpringMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AB81DF01550004ACB90 /* XQSpringMenuItem.m */; };
+		48BE5ABD1DF01F7E004ACB90 /* DataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5ABC1DF01F7E004ACB90 /* DataModel.m */; };
+		48BE5AC01DF02EEE004ACB90 /* DataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5ABF1DF02EEE004ACB90 /* DataCell.m */; };
+		48BE5AC31DF050DE004ACB90 /* DataDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AC21DF050DE004ACB90 /* DataDetailViewController.m */; };
 		48D83C971DEBC02400E62100 /* XQToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C961DEBC02400E62100 /* XQToast.m */; };
 		48D83C9B1DEBD12000E62100 /* SystemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C9A1DEBD12000E62100 /* SystemManager.m */; };
 		48D83C9E1DEBDB3E00E62100 /* PostReleaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C9D1DEBDB3E00E62100 /* PostReleaseViewController.m */; };
@@ -158,6 +165,20 @@
 		489735601DEEF2CB006ADA94 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
 		489735621DEF021A006ADA94 /* HistoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryDetailViewController.h; sourceTree = "<group>"; };
 		489735631DEF021A006ADA94 /* HistoryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryDetailViewController.m; sourceTree = "<group>"; };
+		48BE5AA31DEFC412004ACB90 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		48BE5AA41DEFC412004ACB90 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		48BE5AA71DEFCACB004ACB90 /* DataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataViewController.h; sourceTree = "<group>"; };
+		48BE5AA81DEFCACB004ACB90 /* DataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataViewController.m; sourceTree = "<group>"; };
+		48BE5AB51DF01550004ACB90 /* XQSpringMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQSpringMenu.h; sourceTree = "<group>"; };
+		48BE5AB61DF01550004ACB90 /* XQSpringMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQSpringMenu.m; sourceTree = "<group>"; };
+		48BE5AB71DF01550004ACB90 /* XQSpringMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQSpringMenuItem.h; sourceTree = "<group>"; };
+		48BE5AB81DF01550004ACB90 /* XQSpringMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQSpringMenuItem.m; sourceTree = "<group>"; };
+		48BE5ABB1DF01F7E004ACB90 /* DataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModel.h; sourceTree = "<group>"; };
+		48BE5ABC1DF01F7E004ACB90 /* DataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataModel.m; sourceTree = "<group>"; };
+		48BE5ABE1DF02EEE004ACB90 /* DataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataCell.h; sourceTree = "<group>"; };
+		48BE5ABF1DF02EEE004ACB90 /* DataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataCell.m; sourceTree = "<group>"; };
+		48BE5AC11DF050DE004ACB90 /* DataDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataDetailViewController.h; sourceTree = "<group>"; };
+		48BE5AC21DF050DE004ACB90 /* DataDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataDetailViewController.m; sourceTree = "<group>"; };
 		48D83C951DEBC02400E62100 /* XQToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQToast.h; sourceTree = "<group>"; };
 		48D83C961DEBC02400E62100 /* XQToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQToast.m; sourceTree = "<group>"; };
 		48D83C991DEBD12000E62100 /* SystemManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemManager.h; sourceTree = "<group>"; };
@@ -236,6 +257,8 @@
 				4830104D1DED804D00B11BE9 /* AdvertModel.m */,
 				489735581DEEABAE006ADA94 /* LotteryNumberModel.h */,
 				489735591DEEABAE006ADA94 /* LotteryNumberModel.m */,
+				48BE5ABB1DF01F7E004ACB90 /* DataModel.h */,
+				48BE5ABC1DF01F7E004ACB90 /* DataModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -355,6 +378,7 @@
 				48D83CB41DEC6A3800E62100 /* XQAlertView */,
 				48E271D41DE708FC00CA3F4D /* XQActionSheet */,
 				48D83CA21DEC0EA200E62100 /* XQSegmentedControl */,
+				48BE5AB41DF01550004ACB90 /* XQSpringMenu */,
 				483AC61E1DE5B18B009E0E64 /* XQTextField */,
 				48DBCB3D1DE9C8CD00B989D6 /* XQTextView */,
 				48D83C941DEBC02400E62100 /* XQToast */,
@@ -423,7 +447,10 @@
 				483AC6011DE5276A009E0E64 /* HomeViewController.m */,
 				4830104F1DED8F2F00B11BE9 /* VideoLotteryViewController.h */,
 				483010501DED8F2F00B11BE9 /* VideoLotteryViewController.m */,
+				48BE5AA31DEFC412004ACB90 /* WebViewController.h */,
+				48BE5AA41DEFC412004ACB90 /* WebViewController.m */,
 				4897355B1DEEEB93006ADA94 /* 历史记录 */,
+				48BE5AA61DEFCABC004ACB90 /* 六合资料 */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -437,6 +464,8 @@
 				483010531DEDA6B000B11BE9 /* LotteryView.m */,
 				483010551DEDB85600B11BE9 /* CountDowner.h */,
 				483010561DEDB85600B11BE9 /* CountDowner.m */,
+				48BE5ABE1DF02EEE004ACB90 /* DataCell.h */,
+				48BE5ABF1DF02EEE004ACB90 /* DataCell.m */,
 				4897355F1DEEF2CB006ADA94 /* HistoryCell.h */,
 				489735601DEEF2CB006ADA94 /* HistoryCell.m */,
 			);
@@ -567,6 +596,28 @@
 				489735631DEF021A006ADA94 /* HistoryDetailViewController.m */,
 			);
 			path = "历史记录";
+			sourceTree = "<group>";
+		};
+		48BE5AA61DEFCABC004ACB90 /* 六合资料 */ = {
+			isa = PBXGroup;
+			children = (
+				48BE5AA71DEFCACB004ACB90 /* DataViewController.h */,
+				48BE5AA81DEFCACB004ACB90 /* DataViewController.m */,
+				48BE5AC11DF050DE004ACB90 /* DataDetailViewController.h */,
+				48BE5AC21DF050DE004ACB90 /* DataDetailViewController.m */,
+			);
+			path = "六合资料";
+			sourceTree = "<group>";
+		};
+		48BE5AB41DF01550004ACB90 /* XQSpringMenu */ = {
+			isa = PBXGroup;
+			children = (
+				48BE5AB51DF01550004ACB90 /* XQSpringMenu.h */,
+				48BE5AB61DF01550004ACB90 /* XQSpringMenu.m */,
+				48BE5AB71DF01550004ACB90 /* XQSpringMenuItem.h */,
+				48BE5AB81DF01550004ACB90 /* XQSpringMenuItem.m */,
+			);
+			path = XQSpringMenu;
 			sourceTree = "<group>";
 		};
 		48D83C941DEBC02400E62100 /* XQToast */ = {
@@ -855,9 +906,12 @@
 				48D83CA11DEC0D9500E62100 /* MyPostViewController.m in Sources */,
 				4830104E1DED804D00B11BE9 /* AdvertModel.m in Sources */,
 				483AC5E71DE526CB009E0E64 /* BaseViewController.m in Sources */,
+				48BE5AA91DEFCACB004ACB90 /* DataViewController.m in Sources */,
 				483010541DEDA6B000B11BE9 /* LotteryView.m in Sources */,
+				48BE5AC31DF050DE004ACB90 /* DataDetailViewController.m in Sources */,
 				483AC58E1DE525AF009E0E64 /* AppDelegate.m in Sources */,
 				488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */,
+				48BE5ABD1DF01F7E004ACB90 /* DataModel.m in Sources */,
 				483AC5E81DE526CB009E0E64 /* XQBarButtonItem.m in Sources */,
 				48DBCB3C1DE9C7C100B989D6 /* FeedBackViewController.m in Sources */,
 				483AC5FD1DE52749009E0E64 /* ForumViewController.m in Sources */,
@@ -866,6 +920,7 @@
 				483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */,
 				48D83CA81DEC460300E62100 /* PostModel.m in Sources */,
 				48D83C971DEBC02400E62100 /* XQToast.m in Sources */,
+				48BE5AA51DEFC412004ACB90 /* WebViewController.m in Sources */,
 				48D83CB31DEC64A000E62100 /* CollectionModel.m in Sources */,
 				48D83CB71DEC6A3800E62100 /* XQAlertView.m in Sources */,
 				48E271D31DE708A200CA3F4D /* MyDataViewController.m in Sources */,
@@ -879,11 +934,14 @@
 				488FFF331DE863C50061E9EF /* RegisteViewController.m in Sources */,
 				48D83CB01DEC634D00E62100 /* MyCollectionViewController.m in Sources */,
 				48DBCB431DE9D99300B989D6 /* AboutUsViewController.m in Sources */,
+				48BE5AB91DF01550004ACB90 /* XQSpringMenu.m in Sources */,
 				483AC6051DE52830009E0E64 /* MenuItem.m in Sources */,
+				48BE5AC01DF02EEE004ACB90 /* DataCell.m in Sources */,
 				48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */,
 				483AC58B1DE525AF009E0E64 /* main.m in Sources */,
 				483010571DEDB85600B11BE9 /* CountDowner.m in Sources */,
 				48D83CA51DEC0EA200E62100 /* XQSegmentedControl.m in Sources */,
+				48BE5ABA1DF01550004ACB90 /* XQSpringMenuItem.m in Sources */,
 				48D83C9B1DEBD12000E62100 /* SystemManager.m in Sources */,
 				483010401DED1B4800B11BE9 /* CollectionWebViewController.m in Sources */,
 				48E271D71DE708FC00CA3F4D /* XQActionSheet.m in Sources */,

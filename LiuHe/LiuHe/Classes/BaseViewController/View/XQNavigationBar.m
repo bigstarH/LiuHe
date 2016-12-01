@@ -197,6 +197,7 @@
         [self addSubview:titleView];
         _titleView = titleView;
         _titleW    = CGRectGetWidth(titleView.frame);
+        [self updateTitleViewConstraint];
     }
 }
 

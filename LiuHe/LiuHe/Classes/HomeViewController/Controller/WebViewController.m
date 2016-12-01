@@ -1,41 +1,40 @@
 //
-//  VideoLotteryViewController.m
+//  WebViewController.m
 //  LiuHe
 //
-//  Created by huxingqin on 2016/11/29.
+//  Created by huxingqin on 2016/12/1.
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
 #import <WebKit/WebKit.h>
 #import <MJRefresh/MJRefresh.h>
 #import <SVProgressHUD/SVProgressHUD.h>
-#import "VideoLotteryViewController.h"
-#import "HistoryViewController.h"
 #import "XQFasciatePageControl.h"
+#import "WebViewController.h"
 #import "XQCycleImageView.h"
 #import "NetworkManager.h"
-#import "LotteryView.h"
 #import "AdvertModel.h"
 
-@interface VideoLotteryViewController () <XQCycleImageViewDelegate, WKNavigationDelegate, UIWebViewDelegate>
+@interface WebViewController ()<XQCycleImageViewDelegate, WKNavigationDelegate, UIWebViewDelegate>
 
 @property (nonatomic, strong) NSArray *imageArr;
 
 @property (nonatomic, weak) XQCycleImageView *cycleImageView;
 
 @property (nonatomic, weak) XQFasciatePageControl *pageControl;
-/** 开奖结果视图 */
-@property (nonatomic, weak) UIView *resultView;
+
+@property (nonatomic) BOOL refreshing;
+
+@property (nonatomic, copy) NSString *requestUrl;
 
 @end
 
-@implementation VideoLotteryViewController
+@implementation WebViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"視頻開獎";
     // 创建广告轮播
     [self createCycleImageView];
     // 创建WebView
@@ -43,23 +42,14 @@
     
     // 获得广告轮播图
     [self getAdvertisementPic];
-    // 获取开奖号码
-    [self getLotteryNumber];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self.cycleImageView startPlayImageView];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [self.cycleImageView stopPlayImageView];
 }
 
 #pragma mark - start 设置导航栏
 - (void)setNavigationBarStyle
 {
+    self.title      = self.type == WebVCTypeTrendAnalyze ? @"走勢分析" : @"開獎日期";
+    self.requestUrl = self.type == WebVCTypeTrendAnalyze ? TREND_ANALYZE_URL : DATE_LOTTERY_URL;
+    
     XQBarButtonItem *leftItem = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]];
     [leftItem addTarget:self action:@selector(goBackWithNavigationBar:) forControlEvents:UIControlEventTouchUpInside];
     XQBarButtonItem *shareBtn = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_share"]];
@@ -76,93 +66,18 @@
 #pragma mark end 设置导航栏
 
 #pragma mark - start 初始化控件
-/** 创建广告轮播 */
+/** 创建图片轮播 */
 - (void)createCycleImageView
 {
     CGFloat cycleH = SCREEN_WIDTH * 200 / 1100;
     XQCycleImageView *cycleImage = [XQCycleImageView cycleImageView];
-    cycleImage.frame             = CGRectMake(0, 65, SCREEN_WIDTH, cycleH);
+    cycleImage.frame             = CGRectMake(0, 64, SCREEN_WIDTH, cycleH);
     cycleImage.backgroundColor   = RGBCOLOR(245, 245, 245);
     cycleImage.delegate          = self;
     cycleImage.repeatSecond      = 5;
     cycleImage.autoDragging      = YES;
     self.cycleImageView          = cycleImage;
     [self.view addSubview:cycleImage];
-    
-    CGFloat resultVY = CGRectGetMaxY(cycleImage.frame) + HEIGHT(2);
-    CGFloat resultVX = WIDTH(6);
-    CGFloat resultVH = HEIGHT(120);
-    CGFloat resultVW = SCREEN_WIDTH - resultVX * 2;
-    UIView *resultV  = [[UIView alloc] initWithFrame:CGRectMake(resultVX, resultVY, resultVW, resultVH)];
-    self.resultView  = resultV;
-    [resultV setBackgroundColor:RGBCOLOR(245, 245, 245)];
-    [resultV addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goLotteryHistory)]];
-    [self.view addSubview:resultV];
-}
-
-- (void)createWebView
-{
-    CGFloat webViewY = CGRectGetMaxY(self.resultView.frame) + HEIGHT(2);
-    CGFloat webViewH = SCREEN_HEIGHT - webViewY;
-    CGRect frame     = CGRectMake(0, webViewY, SCREEN_WIDTH, webViewH);
-    if (IOS_8_LATER) {  // iOS 8及之后的版本
-        WKWebView *webView = [[WKWebView alloc] initWithFrame:frame];
-        [webView setNavigationDelegate:self];
-        [webView sizeToFit];
-        [self.view addSubview:webView];
-        
-        // 添加下拉刷新功能
-        __weak WKWebView *wb = webView;
-        webView.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-            // 加载网页
-            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:LOTTERY_KJ_URL]];
-            [wb loadRequest:request];
-        }];
-        [webView.scrollView.mj_header beginRefreshing];
-    }else {
-        UIWebView *webView = [[UIWebView alloc] initWithFrame:frame];
-        webView.delegate   = self;
-        [webView setScalesPageToFit:YES];
-        [webView sizeToFit];
-        [self.view addSubview:webView];
-        
-        // 添加下拉刷新功能
-        __weak UIWebView *wb = webView;
-        webView.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-            // 加载网页
-            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:LOTTERY_KJ_URL]];
-            [wb loadRequest:request];
-        }];
-        [webView.scrollView.mj_header beginRefreshing];
-    }
-}
-
-/** 创建开奖视图 */
-- (void)createLotteryViewWithModel:(LotteryNumberModel *)model
-{
-    CGFloat originY = 0;
-    CGFloat height  = HEIGHT(30);
-    CGFloat width   = CGRectGetWidth(self.resultView.frame);
-    UILabel *label  = [[UILabel alloc] initWithFrame:CGRectMake(0, originY, width, height)];
-    label.font      = [UIFont systemFontOfSize:fontSize(16)];
-    label.text      = [NSString stringWithFormat:@"第%@期開獎結果", model.bq];
-    [label setTextAlignment:NSTextAlignmentCenter];
-    [self.resultView addSubview:label];
-    
-    originY     += height;
-    height       = HEIGHT(62);
-    CGRect frame = CGRectMake(0, originY, width, height);
-    LotteryView *lotteryView = [[LotteryView alloc] initWithFrame:frame];
-    lotteryView.model        = model;
-    [self.resultView addSubview:lotteryView];
-    
-    originY     += height;
-    height       = CGRectGetHeight(self.resultView.frame) - originY;
-    label        = [[UILabel alloc] initWithFrame:CGRectMake(0, originY, width, height)];
-    label.font   = [UIFont systemFontOfSize:fontSize(14)];
-    label.text   = [NSString stringWithFormat:@"第%@期開獎時間：%@ 星期%@", model.xyq, model.xyqsj, model.xq];
-    [label setTextAlignment:NSTextAlignmentCenter];
-    [self.resultView addSubview:label];
 }
 
 /** 设置轮播数据 */
@@ -187,11 +102,44 @@
     [self.view addSubview:page];
 }
 
-/** 进入“历史记录” */
-- (void)goLotteryHistory
+- (void)createWebView
 {
-    HistoryViewController *vc = [[HistoryViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    __weak typeof(self) ws = self;
+    CGFloat webViewY = CGRectGetMaxY(self.cycleImageView.frame) + HEIGHT(2);
+    CGFloat webViewH = SCREEN_HEIGHT - webViewY;
+    CGRect frame     = CGRectMake(0, webViewY, SCREEN_WIDTH, webViewH);
+    if (IOS_8_LATER) {  // iOS 8及之后的版本
+        WKWebView *webView = [[WKWebView alloc] initWithFrame:frame];
+        [webView setNavigationDelegate:self];
+        [webView sizeToFit];
+        [self.view addSubview:webView];
+        
+        // 添加下拉刷新功能
+        __weak WKWebView *wb   = webView;
+        webView.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            // 加载网页
+            ws.refreshing = YES;
+            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:ws.requestUrl]];
+            [wb loadRequest:request];
+        }];
+        [webView.scrollView.mj_header beginRefreshing];
+    }else {
+        UIWebView *webView = [[UIWebView alloc] initWithFrame:frame];
+        webView.delegate   = self;
+        [webView setScalesPageToFit:YES];
+        [webView sizeToFit];
+        [self.view addSubview:webView];
+        
+        // 添加下拉刷新功能
+        __weak UIWebView *wb = webView;
+        webView.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            // 加载网页
+            ws.refreshing = YES;
+            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:ws.requestUrl]];
+            [wb loadRequest:request];
+        }];
+        [webView.scrollView.mj_header beginRefreshing];
+    }
 }
 #pragma mark end 初始化控件
 
@@ -209,9 +157,18 @@
 #pragma mark end XQCycleImageViewDelegate
 
 #pragma mark - start WKNavigationDelegate
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
+{
+    if (self.refreshing) {
+        self.refreshing = NO;
+        return;
+    }
+    [SVProgressHUD show];
+}
 /** 页面加载完成之后调用 */
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation
 {
+    [SVProgressHUD dismiss];
     [webView.scrollView.mj_header endRefreshing];
 }
 
@@ -239,7 +196,7 @@
 /** 获取广告轮播图 */
 - (void)getAdvertisementPic
 {
-    __weak typeof(self) ws    = self;
+    __weak typeof(self) ws = self;
     [[NetworkManager shareManager] getADWithURL:GET_INDEXAD_AD_URL
                                         success:^(NSArray *imagesArray) {
                                             NSMutableArray *images = [NSMutableArray array];
@@ -255,17 +212,5 @@
                                             [SVProgressHUD showErrorWithStatus:error];
                                         }];
 }
-
-/** 获取开奖号码 */
-- (void)getLotteryNumber
-{
-    __weak typeof(self) ws = self;
-    [[NetworkManager shareManager] lotteryStartWithSuccess:^(NSDictionary *dict) {
-        LotteryNumberModel *model = [LotteryNumberModel lotteryNumberWithDict:dict];
-        [ws createLotteryViewWithModel:model];
-    } failure:^(NSString *error) {
-        [SVProgressHUD showErrorWithStatus:error];
-    }];
-}
-#pragma mark - start 网络请求
+#pragma mark end 网络请求
 @end
