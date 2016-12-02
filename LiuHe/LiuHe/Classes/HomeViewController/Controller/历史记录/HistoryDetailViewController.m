@@ -122,6 +122,60 @@
     LotteryView *lotView = [[LotteryView alloc] initWithFrame:CGRectMake(0, lotViewY, titleVW, lotViewH)];
     lotView.model     = _model;
     [titleView addSubview:lotView];
+    
+    CGFloat viewH  = HEIGHT(38);
+    CGFloat viewY  = CGRectGetMaxY(titleView.frame) + HEIGHT(10);
+    CGRect  frame  = CGRectMake(titleVX, viewY, titleVW, viewH);
+    UILabel *label = [self createItemWithFrame:frame name:@"特碼單雙:" hideBottomLine:NO];
+    label.text     = [_model.tm intValue] % 2 == 1 ? @"單" : @"雙";
+    
+    viewY     += viewH;
+    frame      = CGRectMake(titleVX, viewY, titleVW, viewH);
+    label      = [self createItemWithFrame:frame name:@"特碼大小:" hideBottomLine:NO];
+    label.text = [_model.tm intValue] >= 25 ? @"大" : @"小";
+    
+    viewY     += viewH;
+    frame      = CGRectMake(titleVX, viewY, titleVW, viewH);
+    label      = [self createItemWithFrame:frame name:@"總和單雙:" hideBottomLine:NO];
+    int sum    = _model.z1m.intValue + _model.z2m.intValue + _model.z3m.intValue + _model.z4m.intValue + _model.z5m.intValue + _model.z6m.intValue + _model.tm.intValue;
+    label.text = sum % 2 == 1 ? @"單" : @"雙";
+    
+    viewY     += viewH;
+    frame      = CGRectMake(titleVX, viewY, titleVW, viewH);
+    label      = [self createItemWithFrame:frame name:@"總和大小:" hideBottomLine:YES];
+    label.text = sum >= 148 ? @"大" : @"小";
+}
+
+- (UILabel *)createItemWithFrame:(CGRect)frame name:(NSString *)name hideBottomLine:(BOOL)hide
+{
+    UIView *view   = [[UIView alloc] initWithFrame:frame];
+    [view setBackgroundColor:RGBCOLOR(245, 245, 245)];
+    [self.view addSubview:view];
+    
+    CGFloat labelW = frame.size.width * 0.5;
+    CGFloat labelH = frame.size.height;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelW, labelH)];
+    label.text     = name;
+    label.font     = [UIFont boldSystemFontOfSize:fontSize(17)];
+    [label setTextColor:[UIColor lightGrayColor]];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    [view addSubview:label];
+    
+    label      = [[UILabel alloc] initWithFrame:CGRectMake(labelW, 0, labelW, labelH)];
+    label.font = [UIFont boldSystemFontOfSize:fontSize(17)];
+    [label setTextColor:[UIColor lightGrayColor]];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    [view addSubview:label];
+    
+    if (!hide) {
+        CGFloat lineX = WIDTH(20);
+        CGFloat lineW = frame.size.width - lineX * 2;
+        CGFloat lineY = frame.size.height - 1;
+        UIView *line  = [[UIView alloc] initWithFrame:CGRectMake(lineX, lineY, lineW, 1.0)];
+        [line setBackgroundColor:RGBCOLOR(176, 176, 176)];
+        [view addSubview:line];
+    }
+    return label;
 }
 #pragma mark end 初始化控件
 

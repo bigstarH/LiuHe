@@ -52,7 +52,7 @@ static id networkInstance;
                   NSArray *responseArr = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
                   successBlock ? successBlock(responseArr) : nil;
               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                  failureBlock ? failureBlock(error.domain) : nil;
+                  failureBlock ? failureBlock(@"網絡錯誤") : nil;
               }];
 }
 
@@ -75,7 +75,7 @@ static id networkInstance;
                        failureBlock ? failureBlock(error) : nil;
                    }
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -90,7 +90,7 @@ static id networkInstance;
                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                    successBlock ? successBlock() : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -109,6 +109,7 @@ static id networkInstance;
                        failureBlock ? failureBlock(error) : nil;
                    }
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -130,7 +131,7 @@ static id networkInstance;
                        failureBlock ? failureBlock(error) : nil;
                    }
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -155,7 +156,7 @@ static id networkInstance;
                        failureBlock ? failureBlock(str) : nil;
                    }
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -187,7 +188,7 @@ static id networkInstance;
              failureBlock ? failureBlock(ts) : nil;
          }
      } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-         failureBlock ? failureBlock(error.domain) : nil;
+         failureBlock ? failureBlock(@"網絡錯誤") : nil;
      }];
 }
 
@@ -209,7 +210,7 @@ static id networkInstance;
                        failureBlock ? failureBlock(ts) : nil;
                    }
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -235,7 +236,7 @@ static id networkInstance;
                        failureBlock ? failureBlock(ts) : nil;
                    }
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -256,7 +257,7 @@ static id networkInstance;
                        failureBlock ? failureBlock(ts) : nil;
                    }
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -269,7 +270,7 @@ static id networkInstance;
                    NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
                    successBlock ? successBlock(array) : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -283,7 +284,7 @@ static id networkInstance;
                    NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
                    successBlock ? successBlock(responseDict) : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -296,7 +297,7 @@ static id networkInstance;
                    NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
                    successBlock ? successBlock(array) : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -318,7 +319,7 @@ static id networkInstance;
                        failureBlock ? failureBlock(ts) : nil;
                    }
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -331,7 +332,7 @@ static id networkInstance;
                    NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
                    successBlock ? successBlock(array) : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -347,7 +348,7 @@ static id networkInstance;
                        failureBlock ? failureBlock(@"") : nil;
                    }
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -359,7 +360,7 @@ static id networkInstance;
                    NSString *time = responseDict[@"time"];
                    successBlock ? successBlock(time) : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 
@@ -370,8 +371,65 @@ static id networkInstance;
                    NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
                    successBlock ? successBlock(array) : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
+}
+
+- (void)dataWithClassID:(NSString *)classID star:(NSString *)star success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews"   : @"zhiliaolist",
+                            @"classid" : classID,
+                            @"star"    : star};
+    [self.manager POST:USER_POST_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   successBlock ? successBlock(array) : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
+               }];
+}
+
+- (void)dataDetailWithSid:(NSString *)sid success:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews" : @"zhiliaoShow",
+                            @"sid"   : sid};
+    [self.manager POST:USER_POST_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSInteger code = [[dict objectForKey:@"zt"] integerValue];
+                   if (code == 1) {
+                       successBlock ? successBlock(dict) : nil;
+                   }else {
+                       failureBlock ? failureBlock(@"") : nil;
+                   }
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
+               }];
+}
+
+- (void)picLibraryWithClassID:(NSString *)classID star:(NSString *)star success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews"   : @"photolist",
+                            @"classid" : classID,
+                            @"star"    : star};
+    [self.manager POST:USER_POST_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   successBlock ? successBlock(array) : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
+               }];
+}
+
+- (void)treasureWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    [self.manager GET:GET_TREASURE_URL parameters:nil progress:nil
+              success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                  NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                  successBlock ? successBlock(array) : nil;
+              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                  failureBlock ? failureBlock(@"網絡錯誤") : nil;
+              }];
 }
 
 - (void)forumPostWithStar:(NSString *)star success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
@@ -383,7 +441,7 @@ static id networkInstance;
                    NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
                    successBlock ? successBlock(array) : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(error.domain) : nil;
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
 @end

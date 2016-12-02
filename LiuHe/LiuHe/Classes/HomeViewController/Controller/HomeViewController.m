@@ -8,9 +8,13 @@
 
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "VideoLotteryViewController.h"
+#import "PicLibraryViewController.h"
+#import "TreasureViewController.h"
 #import "HistoryViewController.h"
 #import "XQFasciatePageControl.h"
 #import "HomeViewController.h"
+#import "DataViewController.h"
+#import "WebViewController.h"
 #import "XQCycleImageView.h"
 #import "NetworkManager.h"
 #import "SystemManager.h"
@@ -239,6 +243,38 @@
         case 1:  // 历史记录
         {
             HistoryViewController *vc = [[HistoryViewController alloc] initWithHidesBottomBar:YES];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 2:  // 走势分析
+        {
+            WebViewController *vc = [[WebViewController alloc] initWithHidesBottomBar:YES];
+            vc.type = WebVCTypeTrendAnalyze;
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 3:  // 开奖日期
+        {
+            WebViewController *vc = [[WebViewController alloc] initWithHidesBottomBar:YES];
+            vc.type = WebVCTypeDateLottery;
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 4:  // 六合资料
+        {
+            DataViewController *vc = [[DataViewController alloc] initWithHidesBottomBar:YES];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 5:  // 六合图库
+        {
+            PicLibraryViewController *vc = [[PicLibraryViewController alloc] initWithHidesBottomBar:YES];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 6:  // 六合寻宝
+        {
+            TreasureViewController *vc = [[TreasureViewController alloc] initWithHidesBottomBar:YES];
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
