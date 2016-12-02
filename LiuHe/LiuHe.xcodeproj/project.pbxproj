@@ -42,14 +42,21 @@
 		488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF351DE8645A0061E9EF /* ModifyPswViewController.m */; };
 		4897355A1DEEABAE006ADA94 /* LotteryNumberModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 489735591DEEABAE006ADA94 /* LotteryNumberModel.m */; };
 		4897355E1DEEEBAD006ADA94 /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4897355D1DEEEBAD006ADA94 /* HistoryViewController.m */; };
-		489735611DEEF2CB006ADA94 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 489735601DEEF2CB006ADA94 /* HistoryCell.m */; };
 		489735641DEF021A006ADA94 /* HistoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 489735631DEF021A006ADA94 /* HistoryDetailViewController.m */; };
+		489932A41DF105220041A016 /* DataTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932A31DF105220041A016 /* DataTableView.m */; };
+		489932A71DF146DC0041A016 /* TreasureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932A61DF146DC0041A016 /* TreasureViewController.m */; };
+		489932AB1DF151500041A016 /* PicLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932AA1DF151500041A016 /* PicLibraryViewController.m */; };
+		489932BB1DF156250041A016 /* DataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932B81DF156250041A016 /* DataCell.m */; };
+		489932BC1DF156250041A016 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932BA1DF156250041A016 /* HistoryCell.m */; };
+		489932BF1DF157130041A016 /* ColumnView.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932BE1DF157130041A016 /* ColumnView.m */; };
+		489932C21DF188190041A016 /* PicLibraryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932C11DF188190041A016 /* PicLibraryModel.m */; };
+		489932C51DF18BA50041A016 /* PicLibraryTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932C41DF18BA50041A016 /* PicLibraryTableView.m */; };
+		489932C81DF1940A0041A016 /* PicLibraryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932C71DF1940A0041A016 /* PicLibraryCell.m */; };
 		48BE5AA51DEFC412004ACB90 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AA41DEFC412004ACB90 /* WebViewController.m */; };
 		48BE5AA91DEFCACB004ACB90 /* DataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AA81DEFCACB004ACB90 /* DataViewController.m */; };
 		48BE5AB91DF01550004ACB90 /* XQSpringMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AB61DF01550004ACB90 /* XQSpringMenu.m */; };
 		48BE5ABA1DF01550004ACB90 /* XQSpringMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AB81DF01550004ACB90 /* XQSpringMenuItem.m */; };
 		48BE5ABD1DF01F7E004ACB90 /* DataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5ABC1DF01F7E004ACB90 /* DataModel.m */; };
-		48BE5AC01DF02EEE004ACB90 /* DataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5ABF1DF02EEE004ACB90 /* DataCell.m */; };
 		48BE5AC31DF050DE004ACB90 /* DataDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AC21DF050DE004ACB90 /* DataDetailViewController.m */; };
 		48D83C971DEBC02400E62100 /* XQToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C961DEBC02400E62100 /* XQToast.m */; };
 		48D83C9B1DEBD12000E62100 /* SystemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C9A1DEBD12000E62100 /* SystemManager.m */; };
@@ -161,10 +168,26 @@
 		489735591DEEABAE006ADA94 /* LotteryNumberModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LotteryNumberModel.m; sourceTree = "<group>"; };
 		4897355C1DEEEBAD006ADA94 /* HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
 		4897355D1DEEEBAD006ADA94 /* HistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewController.m; sourceTree = "<group>"; };
-		4897355F1DEEF2CB006ADA94 /* HistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCell.h; sourceTree = "<group>"; };
-		489735601DEEF2CB006ADA94 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
 		489735621DEF021A006ADA94 /* HistoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryDetailViewController.h; sourceTree = "<group>"; };
 		489735631DEF021A006ADA94 /* HistoryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryDetailViewController.m; sourceTree = "<group>"; };
+		489932A21DF105220041A016 /* DataTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataTableView.h; sourceTree = "<group>"; };
+		489932A31DF105220041A016 /* DataTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataTableView.m; sourceTree = "<group>"; };
+		489932A51DF146DC0041A016 /* TreasureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreasureViewController.h; sourceTree = "<group>"; };
+		489932A61DF146DC0041A016 /* TreasureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreasureViewController.m; sourceTree = "<group>"; };
+		489932A91DF151500041A016 /* PicLibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicLibraryViewController.h; sourceTree = "<group>"; };
+		489932AA1DF151500041A016 /* PicLibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicLibraryViewController.m; sourceTree = "<group>"; };
+		489932B71DF156250041A016 /* DataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataCell.h; sourceTree = "<group>"; };
+		489932B81DF156250041A016 /* DataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataCell.m; sourceTree = "<group>"; };
+		489932B91DF156250041A016 /* HistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCell.h; sourceTree = "<group>"; };
+		489932BA1DF156250041A016 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
+		489932BD1DF157130041A016 /* ColumnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnView.h; sourceTree = "<group>"; };
+		489932BE1DF157130041A016 /* ColumnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnView.m; sourceTree = "<group>"; };
+		489932C01DF188190041A016 /* PicLibraryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicLibraryModel.h; sourceTree = "<group>"; };
+		489932C11DF188190041A016 /* PicLibraryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicLibraryModel.m; sourceTree = "<group>"; };
+		489932C31DF18BA50041A016 /* PicLibraryTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicLibraryTableView.h; sourceTree = "<group>"; };
+		489932C41DF18BA50041A016 /* PicLibraryTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicLibraryTableView.m; sourceTree = "<group>"; };
+		489932C61DF1940A0041A016 /* PicLibraryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicLibraryCell.h; sourceTree = "<group>"; };
+		489932C71DF1940A0041A016 /* PicLibraryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicLibraryCell.m; sourceTree = "<group>"; };
 		48BE5AA31DEFC412004ACB90 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		48BE5AA41DEFC412004ACB90 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		48BE5AA71DEFCACB004ACB90 /* DataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataViewController.h; sourceTree = "<group>"; };
@@ -175,8 +198,6 @@
 		48BE5AB81DF01550004ACB90 /* XQSpringMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQSpringMenuItem.m; sourceTree = "<group>"; };
 		48BE5ABB1DF01F7E004ACB90 /* DataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModel.h; sourceTree = "<group>"; };
 		48BE5ABC1DF01F7E004ACB90 /* DataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataModel.m; sourceTree = "<group>"; };
-		48BE5ABE1DF02EEE004ACB90 /* DataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataCell.h; sourceTree = "<group>"; };
-		48BE5ABF1DF02EEE004ACB90 /* DataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataCell.m; sourceTree = "<group>"; };
 		48BE5AC11DF050DE004ACB90 /* DataDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataDetailViewController.h; sourceTree = "<group>"; };
 		48BE5AC21DF050DE004ACB90 /* DataDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataDetailViewController.m; sourceTree = "<group>"; };
 		48D83C951DEBC02400E62100 /* XQToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQToast.h; sourceTree = "<group>"; };
@@ -259,6 +280,8 @@
 				489735591DEEABAE006ADA94 /* LotteryNumberModel.m */,
 				48BE5ABB1DF01F7E004ACB90 /* DataModel.h */,
 				48BE5ABC1DF01F7E004ACB90 /* DataModel.m */,
+				489932C01DF188190041A016 /* PicLibraryModel.h */,
+				489932C11DF188190041A016 /* PicLibraryModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -449,8 +472,11 @@
 				483010501DED8F2F00B11BE9 /* VideoLotteryViewController.m */,
 				48BE5AA31DEFC412004ACB90 /* WebViewController.h */,
 				48BE5AA41DEFC412004ACB90 /* WebViewController.m */,
+				489932A51DF146DC0041A016 /* TreasureViewController.h */,
+				489932A61DF146DC0041A016 /* TreasureViewController.m */,
 				4897355B1DEEEB93006ADA94 /* 历史记录 */,
 				48BE5AA61DEFCABC004ACB90 /* 六合资料 */,
+				489932A81DF150EC0041A016 /* 六合图库 */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -464,10 +490,13 @@
 				483010531DEDA6B000B11BE9 /* LotteryView.m */,
 				483010551DEDB85600B11BE9 /* CountDowner.h */,
 				483010561DEDB85600B11BE9 /* CountDowner.m */,
-				48BE5ABE1DF02EEE004ACB90 /* DataCell.h */,
-				48BE5ABF1DF02EEE004ACB90 /* DataCell.m */,
-				4897355F1DEEF2CB006ADA94 /* HistoryCell.h */,
-				489735601DEEF2CB006ADA94 /* HistoryCell.m */,
+				489932A21DF105220041A016 /* DataTableView.h */,
+				489932A31DF105220041A016 /* DataTableView.m */,
+				489932C31DF18BA50041A016 /* PicLibraryTableView.h */,
+				489932C41DF18BA50041A016 /* PicLibraryTableView.m */,
+				489932BD1DF157130041A016 /* ColumnView.h */,
+				489932BE1DF157130041A016 /* ColumnView.m */,
+				489932B61DF156250041A016 /* CellView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -596,6 +625,28 @@
 				489735631DEF021A006ADA94 /* HistoryDetailViewController.m */,
 			);
 			path = "历史记录";
+			sourceTree = "<group>";
+		};
+		489932A81DF150EC0041A016 /* 六合图库 */ = {
+			isa = PBXGroup;
+			children = (
+				489932A91DF151500041A016 /* PicLibraryViewController.h */,
+				489932AA1DF151500041A016 /* PicLibraryViewController.m */,
+			);
+			path = "六合图库";
+			sourceTree = "<group>";
+		};
+		489932B61DF156250041A016 /* CellView */ = {
+			isa = PBXGroup;
+			children = (
+				489932B71DF156250041A016 /* DataCell.h */,
+				489932B81DF156250041A016 /* DataCell.m */,
+				489932C61DF1940A0041A016 /* PicLibraryCell.h */,
+				489932C71DF1940A0041A016 /* PicLibraryCell.m */,
+				489932B91DF156250041A016 /* HistoryCell.h */,
+				489932BA1DF156250041A016 /* HistoryCell.m */,
+			);
+			path = CellView;
 			sourceTree = "<group>";
 		};
 		48BE5AA61DEFCABC004ACB90 /* 六合资料 */ = {
@@ -901,14 +952,18 @@
 			files = (
 				483AC5E61DE526CB009E0E64 /* BaseTabBarController.m in Sources */,
 				488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */,
+				489932C21DF188190041A016 /* PicLibraryModel.m in Sources */,
 				4897355A1DEEABAE006ADA94 /* LotteryNumberModel.m in Sources */,
 				483AC5FE1DE52749009E0E64 /* UserViewController.m in Sources */,
+				489932C81DF1940A0041A016 /* PicLibraryCell.m in Sources */,
 				48D83CA11DEC0D9500E62100 /* MyPostViewController.m in Sources */,
 				4830104E1DED804D00B11BE9 /* AdvertModel.m in Sources */,
 				483AC5E71DE526CB009E0E64 /* BaseViewController.m in Sources */,
 				48BE5AA91DEFCACB004ACB90 /* DataViewController.m in Sources */,
+				489932A41DF105220041A016 /* DataTableView.m in Sources */,
 				483010541DEDA6B000B11BE9 /* LotteryView.m in Sources */,
 				48BE5AC31DF050DE004ACB90 /* DataDetailViewController.m in Sources */,
+				489932A71DF146DC0041A016 /* TreasureViewController.m in Sources */,
 				483AC58E1DE525AF009E0E64 /* AppDelegate.m in Sources */,
 				488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */,
 				48BE5ABD1DF01F7E004ACB90 /* DataModel.m in Sources */,
@@ -920,6 +975,7 @@
 				483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */,
 				48D83CA81DEC460300E62100 /* PostModel.m in Sources */,
 				48D83C971DEBC02400E62100 /* XQToast.m in Sources */,
+				489932C51DF18BA50041A016 /* PicLibraryTableView.m in Sources */,
 				48BE5AA51DEFC412004ACB90 /* WebViewController.m in Sources */,
 				48D83CB31DEC64A000E62100 /* CollectionModel.m in Sources */,
 				48D83CB71DEC6A3800E62100 /* XQAlertView.m in Sources */,
@@ -929,6 +985,7 @@
 				483AC5EA1DE526CB009E0E64 /* XQCycleImageView.m in Sources */,
 				489735641DEF021A006ADA94 /* HistoryDetailViewController.m in Sources */,
 				483010441DED27DC00B11BE9 /* MyReplyViewController.m in Sources */,
+				489932BF1DF157130041A016 /* ColumnView.m in Sources */,
 				48DBCB401DE9C8E500B989D6 /* XQTextView.m in Sources */,
 				488F1A151DE6CB4B005C6882 /* UserModel.m in Sources */,
 				488FFF331DE863C50061E9EF /* RegisteViewController.m in Sources */,
@@ -936,9 +993,10 @@
 				48DBCB431DE9D99300B989D6 /* AboutUsViewController.m in Sources */,
 				48BE5AB91DF01550004ACB90 /* XQSpringMenu.m in Sources */,
 				483AC6051DE52830009E0E64 /* MenuItem.m in Sources */,
-				48BE5AC01DF02EEE004ACB90 /* DataCell.m in Sources */,
+				489932AB1DF151500041A016 /* PicLibraryViewController.m in Sources */,
 				48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */,
 				483AC58B1DE525AF009E0E64 /* main.m in Sources */,
+				489932BC1DF156250041A016 /* HistoryCell.m in Sources */,
 				483010571DEDB85600B11BE9 /* CountDowner.m in Sources */,
 				48D83CA51DEC0EA200E62100 /* XQSegmentedControl.m in Sources */,
 				48BE5ABA1DF01550004ACB90 /* XQSpringMenuItem.m in Sources */,
@@ -949,11 +1007,11 @@
 				483AC5FF1DE52749009E0E64 /* MineHeadView.m in Sources */,
 				483AC5E91DE526CB009E0E64 /* XQNavigationBar.m in Sources */,
 				483010471DED2C0000B11BE9 /* ReplyModel.m in Sources */,
-				489735611DEEF2CB006ADA94 /* HistoryCell.m in Sources */,
 				483AC6021DE5276A009E0E64 /* HomeViewController.m in Sources */,
 				48D83C9E1DEBDB3E00E62100 /* PostReleaseViewController.m in Sources */,
 				483AC6111DE54080009E0E64 /* NetworkManager.m in Sources */,
 				483AC60C1DE533F8009E0E64 /* XQFasciatePageControl.m in Sources */,
+				489932BB1DF156250041A016 /* DataCell.m in Sources */,
 				483AC6171DE541F3009E0E64 /* NSString+Extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

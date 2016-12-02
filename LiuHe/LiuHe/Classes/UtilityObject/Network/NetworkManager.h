@@ -103,8 +103,17 @@
                 failure:(void (^)(NSString *error))failureBlock;
 /** 20 六合资料——详情内容 */
 - (void)dataDetailWithSid:(NSString *)sid
-                  success:(void (^)(NSDictionary *array))successBlock
+                  success:(void (^)(NSDictionary *dict))successBlock
                   failure:(void (^)(NSString *error))failureBlock;
+
+/** 21 六合图库列表 */
+- (void)picLibraryWithClassID:(NSString *)classID
+                         star:(NSString *)star
+                      success:(void (^)(NSArray *array))successBlock
+                      failure:(void (^)(NSString *error))failureBlock;
+/** 22 六合寻宝 */
+- (void)treasureWithSuccess:(void (^)(NSArray *array))successBlock
+                    failure:(void (^)(NSString *error))failureBlock;
 /** 16 论坛帖子 */
 - (void)forumPostWithStar:(NSString *)star
                   success:(void (^)(NSArray *array))successBlock

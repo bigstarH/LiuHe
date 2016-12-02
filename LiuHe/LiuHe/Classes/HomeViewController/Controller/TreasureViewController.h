@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 
+/** 六合寻宝 */
 @interface TreasureViewController : BaseViewController
 
 @end

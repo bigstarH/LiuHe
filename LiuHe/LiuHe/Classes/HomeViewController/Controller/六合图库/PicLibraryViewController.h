@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 
+/** 六合图库 */
 @interface PicLibraryViewController : BaseViewController
 
 @end

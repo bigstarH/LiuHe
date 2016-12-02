@@ -6,38 +6,22 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <MJRefresh/MJRefresh.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "DataDetailViewController.h"
 #import "DataViewController.h"
 #import "NSString+Extension.h"
 #import "UIImage+Extension.h"
 #import "NetworkManager.h"
+#import "DataTableView.h"
 #import "SystemManager.h"
 #import "XQSpringMenu.h"
-#import "DataCell.h"
+#import "DataModel.h"
 
-@interface DataViewController () <UITableViewDelegate, UITableViewDataSource, XQSpringMenuDelegate>
+@interface DataViewController () <DataTableViewDelegate, XQSpringMenuDelegate>
 
-@property (nonatomic, weak) UITableView *tableView;
+@property (nonatomic, weak) UIButton *moreBtn;
 /** 标题数组 */
 @property (nonatomic, strong) NSArray *titleList;
-/** 分页数组 */
-@property (nonatomic, strong) NSMutableArray *starList;
-/** 心水资料数组 */
-@property (nonatomic, strong) NSArray *favorList;
-/** 文字资料数组 */
-@property (nonatomic, strong) NSArray *textList;
-/** 高手资料数组 */
-@property (nonatomic, strong) NSArray *superList;
-/** 公式资料数组 */
-@property (nonatomic, strong) NSArray *fxList;
-/** 精品杀项数组 */
-@property (nonatomic, strong) NSArray *boutiqueList;
-/** 香港挂牌数组 */
-@property (nonatomic, strong) NSArray *cardList;
-/** 全年资料数组 */
-@property (nonatomic, strong) NSArray *yearList;
 /** 当前的类型 */
 @property (nonatomic) NSInteger type;
 
@@ -47,7 +31,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"DataViewController dealloc");
+    [SVProgressHUD dismiss];
 }
 
 - (void)viewDidLoad
@@ -58,7 +42,11 @@
     self.type = 0;
     
     // 初始化控件
-    [self createView];
+    [self createButtonMenu];
+    [self createTableViewWithTag:0];
+    
+    // 加载数据
+    [self getNetData];
 }
 
 #pragma mark - start 设置导航栏
@@ -81,33 +69,30 @@
 #pragma mark end 设置导航栏
 
 #pragma mark - start 初始化控件
-/** 创建图片轮播 */
-- (void)createView
+/** 创建TableView */
+- (DataTableView *)createTableViewWithTag:(NSInteger)tag
 {
-    CGFloat tableY = 64;
-    CGFloat tableH = SCREEN_HEIGHT - tableY;
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tableY, SCREEN_WIDTH, tableH)];
-    self.tableView         = tableView;
-    tableView.delegate     = self;
-    tableView.dataSource   = self;
-    [tableView setTableFooterView:[[UIView alloc] init]];
-    [self.view addSubview:tableView];
-    
-    __weak typeof(self) ws = self;
-    tableView.mj_header    = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        [ws getDataWitMore:NO];
-    }];
-    tableView.mj_footer    = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-        [ws getDataWitMore:YES];
-    }];
-    [tableView.mj_header beginRefreshing];
-    
+    CGRect  frame  = CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT - 64);
+    DataTableView *tableView = [[DataTableView alloc] initWithFrame:frame];
+    tableView.tag        = TableViewTypeFavor + tag;
+    tableView.delegate   = self;
+    tableView.classID    = [self getCurrentClassIDWithTag:tag];
+    [tableView setHideMJHeader:YES];
+    [tableView setHideMJFooter:YES];
+    [self.view insertSubview:tableView belowSubview:self.moreBtn];
+    return tableView;
+}
+
+/** 创建“更多”菜单按钮 */
+- (void)createButtonMenu
+{
     CGFloat moreBtnW  = WIDTH(45);
     CGFloat moreBtnX  = SCREEN_WIDTH - moreBtnW - WIDTH(25);
     CGFloat moreBtnY  = SCREEN_HEIGHT - moreBtnW - HEIGHT(110);
     UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.moreBtn      = moreBtn;
     [moreBtn setBackgroundColor:MAIN_COLOR];
-    [moreBtn setImage:[UIImage imageNamed:@"btn_more"] forState:UIControlStateNormal];
+    [moreBtn setImage:[UIImage imageNamed:@"menu_more"] forState:UIControlStateNormal];
     [moreBtn setImageEdgeInsets:UIEdgeInsetsMake(WIDTH(10), WIDTH(10), WIDTH(10), WIDTH(10))];
     [moreBtn setFrame:CGRectMake(moreBtnX, moreBtnY, moreBtnW, moreBtnW)];
     [moreBtn.layer setMasksToBounds:YES];
@@ -126,12 +111,12 @@
     XQSpringMenuItem *card  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageWithColor:RGBCOLOR(95, 180, 216)] title:@"香港掛牌"];
     XQSpringMenuItem *year  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageWithColor:RGBCOLOR(106, 204, 203)] title:@"全年资料"];
     
-    NSArray *array     = @[favor, text, sup, fx, jp, card, year];
-    XQSpringMenu *menu = [XQSpringMenu springMenuWithItems:array];
-    menu.delegate      = self;
-    menu.animationTime = 0.56;
+    NSArray *array      = @[favor, text, sup, fx, jp, card, year];
+    XQSpringMenu *menu  = [XQSpringMenu springMenuWithItems:array];
+    menu.delegate       = self;
+    menu.animationTime  = 0.56;
     menu.animationDelay = 0.017;
-    menu.dismissAnimationTime = 0.3;
+    menu.dismissAnimationTime  = 0.3;
     menu.dismissAnimationDelay = 0.017;
     [menu showWithAnimate:YES];
 }
@@ -146,67 +131,15 @@
     }
     return _titleList;
 }
-
-- (NSMutableArray *)starList
-{
-    if (!_starList) {
-        _starList = [NSMutableArray array];
-        for (int i = 0; i < 7; i++) {
-            [_starList addObject:@"0"];
-        }
-    }
-    return _starList;
-}
 #pragma mark end 懒加载
 
 #pragma mark - start 私有方法
-/** 设置当前数组 */
-- (void)setCurrentListWithArray:(NSMutableArray *)array tag:(NSInteger)tag
+/** 返回当前的tableView */
+- (DataTableView *)getCurrentTableViewWithTag:(NSInteger)tag
 {
-    switch (tag) {
-        case 0:
-            self.favorList = array;
-            break;
-        case 1:
-            self.textList = array;
-            break;
-        case 2:
-            self.superList = array;
-            break;
-        case 3:
-            self.fxList = array;
-            break;
-        case 4:
-            self.boutiqueList = array;
-            break;
-        case 5:
-            self.cardList = array;
-            break;
-        default:
-            self.yearList = array;
-            break;
-    }
-}
-
-/** 返回当前的数组 */
-- (NSArray *)getCurrentListWithTag:(NSInteger)tag
-{
-    switch (tag) {
-        case 0:
-            return self.favorList;
-        case 1:
-            return self.textList;
-        case 2:
-            return self.superList;
-        case 3:
-            return self.fxList;
-        case 4:
-            return self.boutiqueList;
-        case 5:
-            return self.cardList;
-        default:
-            return self.yearList;
-    }
+    NSInteger type = tag + TableViewTypeFavor;
+    DataTableView *tableView = [self.view viewWithTag:type];
+    return tableView;
 }
 
 /** 返回当前的Classid */
@@ -230,13 +163,6 @@
     }
 }
 
-/** 停止刷新 */
-- (void)endRefreshing
-{
-    [self.tableView.mj_header endRefreshing];
-    [self.tableView.mj_footer endRefreshing];
-}
-
 - (void)caculateHeightWithModel:(DataModel *)model
 {
     NSString *title = model.title;
@@ -252,77 +178,51 @@
 #pragma mark - start XQSpringMenuDelegate
 - (void)springMenu:(XQSpringMenu *)menu didClickItemAtIdx:(NSInteger)index menuTitle:(NSString *)menuTitle
 {
+    self.type  = index;
     self.title = self.titleList[index];
-    self.type = index;
-    NSArray *currentList = [self getCurrentListWithTag:index];
-    [self.tableView reloadData];
-    if (!(currentList && currentList.count > 0)) {
-        [self.tableView.mj_header beginRefreshing];
+    DataTableView *tableView = [self getCurrentTableViewWithTag:index];
+    if (tableView == nil) {
+        [self createTableViewWithTag:index];
+        [self getNetData];
+    }else {
+        [self.view bringSubviewToFront:tableView];
     }
+    [self.view bringSubviewToFront:self.moreBtn];
 }
 #pragma mark end XQSpringMenuDelegate
 
-#pragma mark - start UITableViewDelegate, UITableViewDataSource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+#pragma mark - start DataTableViewDelegate
+/** 点击了某一行 */
+- (void)dataTableView:(DataTableView *)dataTableView didSelectCellWithModel:(DataModel *)model
 {
-    NSArray *currentList = [self getCurrentListWithTag:self.type];
-    return currentList.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSArray *currentList = [self getCurrentListWithTag:self.type];
-    DataModel *model     = currentList[indexPath.row];
-    return model.height;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    DataCell *cell = [DataCell dataCell:tableView];
-    NSArray *currentList = [self getCurrentListWithTag:self.type];
-    DataModel *model     = currentList[indexPath.row];
-    [cell setCellData:model];
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSArray *currentList = [self getCurrentListWithTag:self.type];
-    DataModel *model     = currentList[indexPath.row];
     DataDetailViewController *vc = [[DataDetailViewController alloc] init];
     vc.model = model;
     [self.navigationController pushViewController:vc animated:YES];
 }
-#pragma mark end UITableViewDelegate, UITableViewDataSource
 
-#pragma mark - start 网络请求
-- (void)getDataWitMore:(BOOL)more
+/** 上拉刷新／下拉加载 */
+- (void)dataTableView:(DataTableView *)dataTableView refreshingDataWithMore:(BOOL)more
 {
     if (more == NO) {
-        self.starList[self.type] = @"0";
+        dataTableView.star  = 0;
     }
-    NSString *classID = [self getCurrentClassIDWithTag:self.type];
-    NSString *star    = self.starList[self.type];
-    
-    NSArray *currentList    = [self getCurrentListWithTag:self.type];
     __weak typeof(self) ws  = self;
     NetworkManager *manager = [NetworkManager shareManager];
-    [manager dataWithClassID:classID
-                        star:star
+    [manager dataWithClassID:dataTableView.classID
+                        star:[NSString stringWithFormat:@"%zd", dataTableView.star]
                      success:^(NSArray *array) {
-                         [ws endRefreshing];
+                         [dataTableView endRefreshing];
                          NSMutableArray *dataList = [NSMutableArray array];
                          if (more) {
                              if ((!array) || array.count <= 0) {
-                                 ws.tableView.mj_footer.hidden = YES;
+                                 [dataTableView setHideMJFooter:YES];
                                  [SVProgressHUD showErrorWithStatus:@"沒有更多數據了"];
                                  return ;
                              }
-                             [dataList addObjectsFromArray:currentList];
+                             [dataList addObjectsFromArray:dataTableView.dataList];
                          }else {
-                             if (array.count >= 20) {
-                                 ws.tableView.mj_footer.hidden = NO;
+                             if (array.count >= pageSize) {
+                                 [dataTableView setHideMJFooter:NO];
                              }
                          }
                          for (int i = 0; i < array.count; i++) {
@@ -331,11 +231,42 @@
                              [ws caculateHeightWithModel:data];
                              [dataList addObject:data];
                          }
-                         ws.starList[ws.type] = [NSString stringWithFormat:@"%d", [star intValue] + 20];
-                         [ws setCurrentListWithArray:dataList tag:ws.type];
-                         [ws.tableView reloadData];
+                         dataTableView.star     = dataTableView.star + 20;
+                         dataTableView.dataList = dataList;
+                         [dataTableView.tableView reloadData];
                      } failure:^(NSString *error) {
-                         [ws endRefreshing];
+                         [dataTableView endRefreshing];
+                         [SVProgressHUD showErrorWithStatus:error];
+                     }];
+}
+#pragma mark end DataTableViewDelegate
+
+#pragma mark - start 网络请求
+- (void)getNetData
+{
+    DataTableView *tableView = [self getCurrentTableViewWithTag:self.type];
+    __weak typeof(self) ws   = self;
+    NetworkManager *manager  = [NetworkManager shareManager];
+    [SVProgressHUD showWithStatus:@"正在加載中..."];
+    [manager dataWithClassID:tableView.classID
+                        star:[NSString stringWithFormat:@"%zd", tableView.star]
+                     success:^(NSArray *array) {
+                         [SVProgressHUD dismiss];
+                         [tableView setHideMJHeader:NO];
+                         if (array.count >= pageSize) {
+                             [tableView setHideMJFooter:NO];
+                         }
+                         NSMutableArray *dataList = [NSMutableArray array];
+                         tableView.star = 20;
+                         for (int i = 0; i < array.count; i++) {
+                             NSDictionary *dict = array[i];
+                             DataModel *data = [DataModel dataWithDict:dict];
+                             [ws caculateHeightWithModel:data];
+                             [dataList addObject:data];
+                         }
+                         tableView.dataList = dataList;
+                         [tableView.tableView reloadData];
+                     } failure:^(NSString *error) {
                          [SVProgressHUD showErrorWithStatus:error];
                      }];
 }

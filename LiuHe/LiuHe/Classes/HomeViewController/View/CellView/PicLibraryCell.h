@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PicLibraryModel.h"
 
 @interface PicLibraryCell : UITableViewCell
+
++ (instancetype)picLibraryCell:(UITableView *)tableView;
+
+- (void)setCellData:(PicLibraryModel *)model;
 
 @end

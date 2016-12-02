@@ -8,6 +8,8 @@
 
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "VideoLotteryViewController.h"
+#import "PicLibraryViewController.h"
+#import "TreasureViewController.h"
 #import "HistoryViewController.h"
 #import "XQFasciatePageControl.h"
 #import "HomeViewController.h"
@@ -261,6 +263,18 @@
         case 4:  // 六合资料
         {
             DataViewController *vc = [[DataViewController alloc] initWithHidesBottomBar:YES];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 5:  // 六合图库
+        {
+            PicLibraryViewController *vc = [[PicLibraryViewController alloc] initWithHidesBottomBar:YES];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 6:  // 六合寻宝
+        {
+            TreasureViewController *vc = [[TreasureViewController alloc] initWithHidesBottomBar:YES];
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
