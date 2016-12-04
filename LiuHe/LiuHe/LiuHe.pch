@@ -27,6 +27,7 @@
 #define RGBCOLOR(r, g, b)     [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
 #define MAIN_COLOR            RGBCOLOR(252, 146, 54) //[UIColor orangeColor]
 
+#define KeyWindow          [UIApplication sharedApplication].keyWindow
 #define UserDefaults       [NSUserDefaults standardUserDefaults]
 #define NotificationCenter [NSNotificationCenter defaultCenter]
 

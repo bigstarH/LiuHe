@@ -111,13 +111,22 @@
                          star:(NSString *)star
                       success:(void (^)(NSArray *array))successBlock
                       failure:(void (^)(NSString *error))failureBlock;
-/** 22 六合寻宝 */
+/** 22 收藏 */
+- (void)collectingWithClassID:(NSString *)classID
+                           ID:(NSString *)ID
+                      success:(void (^)(NSString *string))successBlock
+                      failure:(void (^)(NSString *error))failureBlock;
+/** 23 六合寻宝 */
 - (void)treasureWithSuccess:(void (^)(NSArray *array))successBlock
                     failure:(void (^)(NSString *error))failureBlock;
-/** 16 论坛帖子 */
+/** 24 论坛帖子 */
 - (void)forumPostWithStar:(NSString *)star
                   success:(void (^)(NSArray *array))successBlock
                   failure:(void (^)(NSString *error))failureBlock;
+/** 25 论坛帖子详情内容 */
+- (void)forumPostDetailWithSid:(NSString *)sid
+                       success:(void (^)(NSDictionary *dict))successBlock
+                       failure:(void (^)(NSString *error))failureBlock;
 #pragma mark end 网络请求
 
 @end

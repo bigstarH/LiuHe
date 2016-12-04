@@ -93,7 +93,6 @@
 
 - (void)setCellData:(PicLibraryModel *)model
 {
-    NSLog(@"%@", model.urlString);
     [self.thumbView sd_setImageWithURL:[NSURL URLWithString:model.urlString] placeholderImage:nil];
     self.titleLab.text = model.text;
     self.timeLab.text  = model.dateString;

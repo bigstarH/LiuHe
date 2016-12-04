@@ -421,6 +421,30 @@ static id networkInstance;
                }];
 }
 
+- (void)collectingWithClassID:(NSString *)classID ID:(NSString *)ID success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews"    : @"AddFava",
+                            @"classid"  : classID,
+                            @"id"       : ID,
+                            @"cid"      : @"1",
+                            @"userid"   : [UserModel getCurrentUser].uid,
+                            @"username" : [UserModel getCurrentUser].userName,
+                            @"rnd"      : [UserModel getCurrentUser].rnd};
+    [self.manager POST:USER_RELATION_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSString *ts   = [dict objectForKey:@"ts"];
+                   NSInteger code = [[dict objectForKey:@"zt"] integerValue];
+                   if (code == 1) {
+                       successBlock ? successBlock(ts) : nil;
+                   }else {
+                       failureBlock ? failureBlock(ts) : nil;
+                   }
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
+               }];
+}
+
 - (void)treasureWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     [self.manager GET:GET_TREASURE_URL parameters:nil progress:nil
@@ -440,6 +464,19 @@ static id networkInstance;
                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                    NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
                    successBlock ? successBlock(array) : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
+               }];
+}
+
+- (void)forumPostDetailWithSid:(NSString *)sid success:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews" : @"bbsshow",
+                            @"sid"   : sid};
+    [self.manager POST:USER_POST_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   successBlock ? successBlock(dict) : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                    failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];

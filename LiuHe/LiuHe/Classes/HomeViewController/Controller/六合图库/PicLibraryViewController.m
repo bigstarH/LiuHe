@@ -8,6 +8,7 @@
 
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "PicLibraryViewController.h"
+#import "PicDetailViewController.h"
 #import "PicLibraryTableView.h"
 #import "PicLibraryModel.h"
 #import "NetworkManager.h"
@@ -51,18 +52,16 @@
     self.title = @"六合圖庫";
     XQBarButtonItem *leftItem = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]];
     [leftItem addTarget:self action:@selector(goBackWithNavigationBar:) forControlEvents:UIControlEventTouchUpInside];
-    XQBarButtonItem *collectItem = [[XQBarButtonItem alloc] initWithTitle:@"收藏"];
-    [collectItem setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [collectItem setTitleColor:[UIColor lightTextColor] forState:UIControlStateHighlighted];
-    [collectItem addTarget:self action:@selector(collectEvent) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationBar.rightBarButtonItem = collectItem;
+    XQBarButtonItem *shareBtn = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_share"]];
+    [shareBtn addTarget:self action:@selector(shareEvent) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationBar.rightBarButtonItem = shareBtn;
     self.navigationBar.leftBarButtonItem  = leftItem;
 }
 
 /** 按钮分享事件 */
-- (void)collectEvent
+- (void)shareEvent
 {
-    NSLog(@"收藏");
+    NSLog(@"分享");
 }
 #pragma mark end 设置导航栏
 
@@ -141,7 +140,7 @@
         url  = [NSString stringWithFormat:@"%@%@/", model.url, model.qishu];
     }
     if (model.type) {
-        url  = [NSString stringWithFormat:@"%@%@.jpg", model.url, model.type];
+        url  = [NSString stringWithFormat:@"%@%@.jpg", url, model.type];
         text = [NSString stringWithFormat:@"%@ %@", model.type, model.title];
     }
     model.urlString = url;
@@ -152,7 +151,6 @@
 #pragma mark - start ColumnViewDelegate
 - (void)columnView:(ColumnView *)columnView didSelectedAtItem:(NSInteger)item
 {
-    NSLog(@"item = %zd", item);
     self.index = item;
     [self.scrollView setContentOffset:CGPointMake(item * SCREEN_WIDTH, 0) animated:NO];
     PicLibraryTableView *tableView = [self getCurrentTableViewWithIndex:item];
@@ -209,7 +207,10 @@
 /** 点击了某一行 */
 - (void)picLTableView:(PicLibraryTableView *)picLTableView didSelectCellWithModel:(PicLibraryModel *)model
 {
-    
+    PicDetailViewController *vc = [[PicDetailViewController alloc] init];
+    vc.model   = model;
+    vc.classID = picLTableView.classID;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark end PicLibraryTableViewDelegate
 
@@ -221,6 +222,8 @@
     PicLibraryTableView *tableView = [self getCurrentTableViewWithIndex:currentIndex];
     if (!tableView) {
         [self createTableViewWithIndex:currentIndex];
+        [self getNetData];
+    }else if ((!tableView.dataList) || tableView.dataList.count <= 0) {
         [self getNetData];
     }
 }
