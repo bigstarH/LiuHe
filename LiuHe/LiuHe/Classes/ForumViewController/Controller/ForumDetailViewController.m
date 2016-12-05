@@ -7,14 +7,20 @@
 //
 
 #import <SVProgressHUD/SVProgressHUD.h>
+#import "ForumCommentViewController.h"
 #import "ForumDetailViewController.h"
 #import "XQFasciatePageControl.h"
+#import "NSString+Extension.h"
+#import "ForumDetailHeader.h"
+#import "ForumCommentCell.h"
 #import "XQCycleImageView.h"
+#import "ForumReplyModel.h"
 #import "NetworkManager.h"
 #import "AdvertModel.h"
 #import "ForumModel.h"
+#import "XQToast.h"
 
-@interface ForumDetailViewController () <XQCycleImageViewDelegate>
+@interface ForumDetailViewController () <XQCycleImageViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSArray *imageArr;
 
@@ -22,7 +28,7 @@
 
 @property (nonatomic, weak) XQFasciatePageControl *pageControl;
 
-@property (nonatomic, strong) ForumModel *model;
+@property (nonatomic, weak) UITableView *tableView;
 
 @end
 
@@ -58,9 +64,28 @@
     self.navigationBar.leftBarButtonItem  = leftItem;
 }
 
+- (void)createReplyBtn
+{
+    // 创建“回复”按钮
+    XQBarButtonItem *replyBtn = [[XQBarButtonItem alloc] initWithTitle:@"回復"];
+    [replyBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [replyBtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateHighlighted];
+    [replyBtn addTarget:self action:@selector(replyEvent) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationBar.rightBarButtonItem = replyBtn;
+}
+
 - (void)replyEvent
 {
-    NSLog(@"replyEvent");
+    BOOL didLogin = [UserDefaults boolForKey:USER_DIDLOGIN];
+    if (!didLogin) {
+        [[XQToast makeText:@"您還沒有登錄，請先登錄"] show];
+        return;
+    }
+    ForumCommentViewController *vc = [[ForumCommentViewController alloc] init];
+    vc.type   = FCVCTypeNew;
+    vc.mSid   = self.model.sid;
+    vc.mTitle = self.model.title;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark end 设置导航栏
 
@@ -81,13 +106,6 @@
 
 - (void)setCycleImageData
 {
-    // 创建“回复”按钮
-    XQBarButtonItem *replyBtn = [[XQBarButtonItem alloc] initWithTitle:@"回復"];
-    [replyBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [replyBtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateHighlighted];
-    [replyBtn addTarget:self action:@selector(replyEvent) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationBar.rightBarButtonItem = replyBtn;
-    
     // 设置“轮播”数据
     NSMutableArray *array = [NSMutableArray array];
     for (AdvertModel *model in self.imageArr) {
@@ -107,7 +125,79 @@
     [page setCurrentPageIndicatorTintColor:[UIColor orangeColor]];
     [self.view addSubview:page];
 }
+
+/** 创建详情页 */
+- (void)createDetailView
+{
+    ForumDetailHeader *header = [[ForumDetailHeader alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0)];
+    [header setModel:self.model];
+    
+    CGFloat tableY = CGRectGetMaxY(self.cycleImageView.frame);
+    CGFloat tableH = SCREEN_HEIGHT - tableY;
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tableY, SCREEN_WIDTH, tableH)];
+    self.tableView = tableView;
+    [tableView setTableHeaderView:header];
+    [tableView setTableFooterView:[[UIView alloc] init]];
+    [tableView setDelegate:self];
+    [tableView setDataSource:self];
+    [self.view addSubview:tableView];
+}
 #pragma mark end 初始化控件
+
+#pragma mark - start 私有方法
+- (void)setForumModelWithDict:(NSDictionary *)dict
+{
+    NSString *newstext   = dict[@"newstext"];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithData:[newstext dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+    ForumModel *model    = [ForumModel forumModelWithDict:dict];
+    model.userNameWidth  = self.model.userNameWidth;
+    model.groupNameWidth = self.model.groupNameWidth;
+    model.dateString     = self.model.dateString;
+    model.newstext       = str.string;
+    self.model           = model;
+    
+    UIFont *font      = [UIFont boldSystemFontOfSize:fontSize(16)];
+    CGSize maxSize    = CGSizeMake(SCREEN_WIDTH - WIDTH(24), CGFLOAT_MAX);
+    CGSize realSize   = [model.title realSize:maxSize font:font];
+    model.titleHeight = realSize.height + HEIGHT(10);
+    
+    font = [UIFont systemFontOfSize:fontSize(16)];
+    realSize = [model.newstext realSize:maxSize font:font];
+    model.contentHeight = realSize.height + HEIGHT(10);
+    
+    for (int i = 0; i < model.hf.count; i++) {
+        ForumReplyModel *rmodel = model.hf[i];
+        realSize = [rmodel.hftext realSize:maxSize font:font];
+        rmodel.textHeight = realSize.height + HEIGHT(10);
+        rmodel.cellHeight = rmodel.textHeight + HEIGHT(29) + HEIGHT(20) + HEIGHT(12);
+    }
+}
+#pragma mark end 私有方法
+
+#pragma mark - start UITableViewDelegate, UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.model.hf.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ForumReplyModel *rmodel = self.model.hf[indexPath.row];
+    return rmodel.cellHeight;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ForumCommentCell *cell = [ForumCommentCell forumCommentCell:tableView];
+    [cell setModel:self.model.hf[indexPath.row]];
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+#pragma mark end UITableViewDelegate, UITableViewDataSource
 
 #pragma mark - start XQCycleImageViewDelegate
 - (void)cycleImageView:(XQCycleImageView *)cycleImageView didClickAtIndex:(int)index
@@ -130,10 +220,12 @@
 {
     [SVProgressHUD showWithStatus:@"正在加載中..."];
     __weak typeof(self) ws = self;
-    [[NetworkManager shareManager] forumPostDetailWithSid:self.sid
+    [[NetworkManager shareManager] forumPostDetailWithSid:self.model.sid
                                                   success:^(NSDictionary *dict) {
+                                                      [ws createReplyBtn];
+                                                      [ws setForumModelWithDict:dict];
+                                                      [ws createDetailView];
                                                       [SVProgressHUD dismiss];
-                                                      ws.model = [ForumModel forumModelWithDict:dict];
                                                   } failure:^(NSString *error) {
                                                       [SVProgressHUD showErrorWithStatus:error];
                                                   }];

@@ -8,6 +8,7 @@
 
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "CollectionWebViewController.h"
+#import "ForumCommentViewController.h"
 #import "MyReplyViewController.h"
 #import "XQSegmentedControl.h"
 #import "NetworkManager.h"
@@ -27,11 +28,20 @@
 
 @implementation MyReplyViewController
 
+- (void)dealloc
+{
+    [NotificationCenter removeObserver:self];
+    [SVProgressHUD dismiss];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = RGBCOLOR(245, 242, 241);
     self.type = 1;
+    
+    // 帖子编辑成功时通知
+    [NotificationCenter addObserver:self selector:@selector(replyEditSuccess:) name:FORUM_REPLY_EDIT_SUCCESS object:nil];
     
     [self createView];
     [self getMyReply];
@@ -63,6 +73,13 @@
     [segControl addTarget:self action:@selector(segmentEvent:) forControlEvents:UIControlEventValueChanged];
     return segControl;
 }
+
+#pragma mark - start 编辑帖子成功时通知
+- (void)replyEditSuccess:(NSNotification *)notification
+{
+    [self getMyReply];
+}
+#pragma mark end 编辑帖子成功时通知
 
 - (void)createView
 {
@@ -101,6 +118,24 @@
     }
 }
 
+- (void)goToForumCommentVCWithRow:(NSInteger)row
+{
+    NSString *sid   = @"";
+    if (self.type == 0) {
+        ReplyModel *model = [self.unReplyArray objectAtIndex:row];
+        sid = model.sid;
+    }else {
+        ReplyModel *model = [self.replyArray objectAtIndex:row];
+        sid = model.sid;
+    }
+    ForumCommentViewController *vc = [[ForumCommentViewController alloc] init];
+    vc.type   = FCVCTypeEdit;
+    vc.status = self.type;
+    vc.mSid   = sid;
+    vc.mTitle = @"";
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark - start UITableViewDelegate, UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -109,11 +144,11 @@
 
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    __weak typeof(self) ws = self;
+    __weak typeof(self) ws = self;
     UITableViewRowAction *edit = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault
                                                                     title:@"编辑"
                                                                   handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-//                                                                      [ws goToPostDetailVCWithRow:indexPath.row];
+                                                                      [ws goToForumCommentVCWithRow:indexPath.row];
                                                                   }];
     edit.backgroundColor = MAIN_COLOR;
     return @[edit];

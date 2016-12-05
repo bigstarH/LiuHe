@@ -8,8 +8,9 @@
 
 #import "BaseViewController.h"
 
+@class ForumModel;
 @interface ForumDetailViewController : BaseViewController
 
-@property (nonatomic, copy) NSString *sid;
+@property (nonatomic, strong) ForumModel *model;
 
 @end

@@ -336,6 +336,23 @@ static id networkInstance;
                }];
 }
 
+- (void)userReplyDetailWithEnews:(NSString *)enews sid:(NSString *)sid success:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews"  : enews,
+                            @"sid"    : sid,
+                            @"uid"    : [UserModel getCurrentUser].uid,
+                            @"rnd"    : [UserModel getCurrentUser].rnd,
+                            @"uname"  : [UserModel getCurrentUser].userName};
+    [self.manager POST:USER_POST_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSLog(@"dict = %@", dict);
+                    successBlock ? successBlock(dict) : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
+               }];
+}
+
 - (void)lotteryStartWithSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     [self.manager POST:USER_POST_URL parameters:@{@"enews" : @"IosKj"} progress:nil
@@ -477,6 +494,36 @@ static id networkInstance;
                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
                    successBlock ? successBlock(dict) : nil;
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
+               }];
+}
+
+- (void)forumPostReplyWithEnews:(NSString *)enews sid:(NSString *)sid classID:(NSString *)classID linkid:(NSString *)linkid title:(NSString *)title text:(NSString *)text success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    [param setObject:enews forKey:@"enews"];
+    [param setObject:classID forKey:@"classid"];
+    [param setObject:linkid forKey:@"linkid"];
+    [param setObject:title forKey:@"title"];
+    [param setObject:text forKey:@"text"];
+    [param setObject:[UserModel getCurrentUser].uid forKey:@"userid"];
+    [param setObject:[UserModel getCurrentUser].userName forKey:@"username"];
+    [param setObject:[UserModel getCurrentUser].rnd forKey:@"rnd"];
+    if (sid) {
+        [param setObject:sid forKey:@"id"];
+    }
+    
+    [self.manager POST:POST_RELEASE_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSInteger code = [[dict objectForKey:@"zt"] integerValue];
+                   NSString *ts   = [dict objectForKey:@"ts"];
+                   if (code == 1) {
+                       successBlock ? successBlock(ts) : nil;
+                   }else {
+                       failureBlock ? failureBlock(ts) : nil;
+                   }
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                    failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];

@@ -72,7 +72,7 @@
     label         = [[UILabel alloc] init];
     label.font    = [UIFont systemFontOfSize:fontSize(16)];
     self.titleLab = label;
-    label.numberOfLines   = 0;
+    label.numberOfLines = 0;
     [self.contentView addSubview:label];
     
     label        = [[UILabel alloc] init];

@@ -217,7 +217,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ForumModel *model = self.dataList[indexPath.row];
     ForumDetailViewController *vc = [[ForumDetailViewController alloc] initWithHidesBottomBar:YES];
-    vc.sid = model.sid;
+    vc.model = model;
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark end UITableViewDelegate, UITableViewDataSource
@@ -266,6 +266,9 @@
                                                  for (int i = 0; i < array.count; i++) {
                                                      NSDictionary *dict = array[i];
                                                      ForumModel *data = [ForumModel forumModelWithDict:dict];
+                                                     if (data.rnum.intValue > 0) {
+                                                         NSLog(@"titile = %@", data.title);
+                                                     }
                                                      [ws dealWithModel:data];
                                                      [dataList addObject:data];
                                                  }

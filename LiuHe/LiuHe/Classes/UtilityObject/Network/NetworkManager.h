@@ -87,46 +87,61 @@
 - (void)userReplyWithEnews:(NSString *)enews
                    success:(void (^)(NSArray *array))successBlock
                    failure:(void (^)(NSString *error))failureBlock;
-/** 16 六合开奖号码 */
+/** 16 我的回复——详情 */
+- (void)userReplyDetailWithEnews:(NSString *)enews
+                             sid:(NSString *)sid
+                         success:(void (^)(NSDictionary *dict))successBlock
+                         failure:(void (^)(NSString *error))failureBlock;
+
+/** 17 六合开奖号码 */
 - (void)lotteryStartWithSuccess:(void (^)(NSDictionary *dict))successBlock
                         failure:(void (^)(NSString *error))failureBlock;
-/** 17 下期开奖事件 */
+/** 18 下期开奖事件 */
 - (void)lotteryNextTimeWithSuccess:(void (^)(NSString *time))successBlock
                            failure:(void (^)(NSString *error))failureBlock;
-/** 18 历史记录列表 */
+/** 19 历史记录列表 */
 - (void)lotteryHistoryWithSuccess:(void (^)(NSArray *array))successBlock
                           failure:(void (^)(NSString *error))failureBlock;
-/** 19 六合资料 */
+/** 20 六合资料 */
 - (void)dataWithClassID:(NSString *)classID
                    star:(NSString *)star
                 success:(void (^)(NSArray *array))successBlock
                 failure:(void (^)(NSString *error))failureBlock;
-/** 20 六合资料——详情内容 */
+/** 21 六合资料——详情内容 */
 - (void)dataDetailWithSid:(NSString *)sid
                   success:(void (^)(NSDictionary *dict))successBlock
                   failure:(void (^)(NSString *error))failureBlock;
 
-/** 21 六合图库列表 */
+/** 22 六合图库列表 */
 - (void)picLibraryWithClassID:(NSString *)classID
                          star:(NSString *)star
                       success:(void (^)(NSArray *array))successBlock
                       failure:(void (^)(NSString *error))failureBlock;
-/** 22 收藏 */
+/** 23 收藏 */
 - (void)collectingWithClassID:(NSString *)classID
                            ID:(NSString *)ID
                       success:(void (^)(NSString *string))successBlock
                       failure:(void (^)(NSString *error))failureBlock;
-/** 23 六合寻宝 */
+/** 24 六合寻宝 */
 - (void)treasureWithSuccess:(void (^)(NSArray *array))successBlock
                     failure:(void (^)(NSString *error))failureBlock;
-/** 24 论坛帖子 */
+/** 25 论坛帖子 */
 - (void)forumPostWithStar:(NSString *)star
                   success:(void (^)(NSArray *array))successBlock
                   failure:(void (^)(NSString *error))failureBlock;
-/** 25 论坛帖子详情内容 */
+/** 26 论坛帖子详情内容 */
 - (void)forumPostDetailWithSid:(NSString *)sid
                        success:(void (^)(NSDictionary *dict))successBlock
                        failure:(void (^)(NSString *error))failureBlock;
+/** 27 评论帖子 */
+- (void)forumPostReplyWithEnews:(NSString *)enews
+                            sid:(NSString *)sid
+                        classID:(NSString *)classID
+                         linkid:(NSString *)linkid
+                           title:(NSString *)title
+                            text:(NSString *)text
+                         success:(void (^)(NSString *str))successBlock
+                         failure:(void (^)(NSString *error))failureBlock;
 #pragma mark end 网络请求
 
 @end

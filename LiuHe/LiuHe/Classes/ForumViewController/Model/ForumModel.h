@@ -42,6 +42,10 @@
 
 @property (nonatomic) CGFloat replyWith;
 
+@property (nonatomic) CGFloat titleHeight;
+
+@property (nonatomic) CGFloat contentHeight;
+
 + (instancetype)forumModelWithDict:(NSDictionary *)dict;
 
 @end

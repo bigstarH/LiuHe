@@ -75,6 +75,11 @@
 		48DBCB401DE9C8E500B989D6 /* XQTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBCB3F1DE9C8E500B989D6 /* XQTextView.m */; };
 		48DBCB431DE9D99300B989D6 /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBCB421DE9D99300B989D6 /* AboutUsViewController.m */; };
 		48DBCB461DE9DB3800B989D6 /* DisclaimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBCB451DE9DB3800B989D6 /* DisclaimerViewController.m */; };
+		48DFD2EA1DF4FD64006AF778 /* ForumReplyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DFD2E91DF4FD64006AF778 /* ForumReplyModel.m */; };
+		48DFD2ED1DF501FB006AF778 /* ForumDetailHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DFD2EC1DF501FB006AF778 /* ForumDetailHeader.m */; };
+		48DFD2F31DF51A6B006AF778 /* ForumCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DFD2F21DF51A6B006AF778 /* ForumCommentCell.m */; };
+		48DFD2F61DF53E9E006AF778 /* ForumCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DFD2F51DF53E9E006AF778 /* ForumCommentViewController.m */; };
+		48DFD2FA1DF56FE3006AF778 /* ShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DFD2F91DF56FE3006AF778 /* ShareManager.m */; };
 		48E271D31DE708A200CA3F4D /* MyDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271D21DE708A200CA3F4D /* MyDataViewController.m */; };
 		48E271D71DE708FC00CA3F4D /* XQActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271D61DE708FC00CA3F4D /* XQActionSheet.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271DA1DE7253200CA3F4D /* SettingViewController.m */; };
@@ -238,6 +243,16 @@
 		48DBCB421DE9D99300B989D6 /* AboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutUsViewController.m; sourceTree = "<group>"; };
 		48DBCB441DE9DB3800B989D6 /* DisclaimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclaimerViewController.h; sourceTree = "<group>"; };
 		48DBCB451DE9DB3800B989D6 /* DisclaimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisclaimerViewController.m; sourceTree = "<group>"; };
+		48DFD2E81DF4FD64006AF778 /* ForumReplyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumReplyModel.h; sourceTree = "<group>"; };
+		48DFD2E91DF4FD64006AF778 /* ForumReplyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumReplyModel.m; sourceTree = "<group>"; };
+		48DFD2EB1DF501FB006AF778 /* ForumDetailHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumDetailHeader.h; sourceTree = "<group>"; };
+		48DFD2EC1DF501FB006AF778 /* ForumDetailHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumDetailHeader.m; sourceTree = "<group>"; };
+		48DFD2F11DF51A6B006AF778 /* ForumCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumCommentCell.h; sourceTree = "<group>"; };
+		48DFD2F21DF51A6B006AF778 /* ForumCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumCommentCell.m; sourceTree = "<group>"; };
+		48DFD2F41DF53E9E006AF778 /* ForumCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumCommentViewController.h; sourceTree = "<group>"; };
+		48DFD2F51DF53E9E006AF778 /* ForumCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumCommentViewController.m; sourceTree = "<group>"; };
+		48DFD2F81DF56FE3006AF778 /* ShareManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareManager.h; sourceTree = "<group>"; };
+		48DFD2F91DF56FE3006AF778 /* ShareManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareManager.m; sourceTree = "<group>"; };
 		48E271D11DE708A200CA3F4D /* MyDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDataViewController.h; sourceTree = "<group>"; };
 		48E271D21DE708A200CA3F4D /* MyDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDataViewController.m; sourceTree = "<group>"; };
 		48E271D51DE708FC00CA3F4D /* XQActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQActionSheet.h; sourceTree = "<group>"; };
@@ -279,6 +294,10 @@
 			children = (
 				482655CB1DF4241500122766 /* ForumCell.h */,
 				482655CC1DF4241500122766 /* ForumCell.m */,
+				48DFD2F11DF51A6B006AF778 /* ForumCommentCell.h */,
+				48DFD2F21DF51A6B006AF778 /* ForumCommentCell.m */,
+				48DFD2EB1DF501FB006AF778 /* ForumDetailHeader.h */,
+				48DFD2EC1DF501FB006AF778 /* ForumDetailHeader.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -288,6 +307,8 @@
 			children = (
 				482655CF1DF4272B00122766 /* ForumModel.h */,
 				482655D01DF4272B00122766 /* ForumModel.m */,
+				48DFD2E81DF4FD64006AF778 /* ForumReplyModel.h */,
+				48DFD2E91DF4FD64006AF778 /* ForumReplyModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -467,6 +488,8 @@
 				483AC5EE1DE52749009E0E64 /* ForumViewController.m */,
 				482655D21DF4751B00122766 /* ForumDetailViewController.h */,
 				482655D31DF4751B00122766 /* ForumDetailViewController.m */,
+				48DFD2F41DF53E9E006AF778 /* ForumCommentViewController.h */,
+				48DFD2F51DF53E9E006AF778 /* ForumCommentViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -571,6 +594,7 @@
 		483AC60D1DE54051009E0E64 /* UtilityObject */ = {
 			isa = PBXGroup;
 			children = (
+				48DFD2F71DF56FBE006AF778 /* ShareManager */,
 				48D83C981DEBD0FC00E62100 /* SystemManager */,
 				483AC6141DE541C9009E0E64 /* Category */,
 				483AC60E1DE54051009E0E64 /* Network */,
@@ -745,6 +769,15 @@
 				48DBCB3F1DE9C8E500B989D6 /* XQTextView.m */,
 			);
 			path = XQTextView;
+			sourceTree = "<group>";
+		};
+		48DFD2F71DF56FBE006AF778 /* ShareManager */ = {
+			isa = PBXGroup;
+			children = (
+				48DFD2F81DF56FE3006AF778 /* ShareManager.h */,
+				48DFD2F91DF56FE3006AF778 /* ShareManager.m */,
+			);
+			path = ShareManager;
 			sourceTree = "<group>";
 		};
 		48E271D41DE708FC00CA3F4D /* XQActionSheet */ = {
@@ -930,7 +963,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		AF058A7CC8AF06704AACB1A8 /* [CP] Copy Pods Resources */ = {
@@ -987,6 +1020,8 @@
 				489932A71DF146DC0041A016 /* TreasureViewController.m in Sources */,
 				483AC58E1DE525AF009E0E64 /* AppDelegate.m in Sources */,
 				488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */,
+				48DFD2F61DF53E9E006AF778 /* ForumCommentViewController.m in Sources */,
+				48DFD2F31DF51A6B006AF778 /* ForumCommentCell.m in Sources */,
 				48BE5ABD1DF01F7E004ACB90 /* DataModel.m in Sources */,
 				483AC5E81DE526CB009E0E64 /* XQBarButtonItem.m in Sources */,
 				48DBCB3C1DE9C7C100B989D6 /* FeedBackViewController.m in Sources */,
@@ -999,6 +1034,7 @@
 				489932C51DF18BA50041A016 /* PicLibraryTableView.m in Sources */,
 				48BE5AA51DEFC412004ACB90 /* WebViewController.m in Sources */,
 				48D83CB31DEC64A000E62100 /* CollectionModel.m in Sources */,
+				48DFD2FA1DF56FE3006AF778 /* ShareManager.m in Sources */,
 				48D83CB71DEC6A3800E62100 /* XQAlertView.m in Sources */,
 				48E271D31DE708A200CA3F4D /* MyDataViewController.m in Sources */,
 				483AC6291DE5C240009E0E64 /* UIImage+Extension.m in Sources */,
@@ -1028,6 +1064,7 @@
 				483010401DED1B4800B11BE9 /* CollectionWebViewController.m in Sources */,
 				48E271D71DE708FC00CA3F4D /* XQActionSheet.m in Sources */,
 				483AC5E51DE526CB009E0E64 /* BaseNavigationController.m in Sources */,
+				48DFD2EA1DF4FD64006AF778 /* ForumReplyModel.m in Sources */,
 				483AC5FF1DE52749009E0E64 /* MineHeadView.m in Sources */,
 				483AC5E91DE526CB009E0E64 /* XQNavigationBar.m in Sources */,
 				483010471DED2C0000B11BE9 /* ReplyModel.m in Sources */,
@@ -1037,6 +1074,7 @@
 				483AC60C1DE533F8009E0E64 /* XQFasciatePageControl.m in Sources */,
 				489932BB1DF156250041A016 /* DataCell.m in Sources */,
 				483AC6171DE541F3009E0E64 /* NSString+Extension.m in Sources */,
+				48DFD2ED1DF501FB006AF778 /* ForumDetailHeader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1173,7 +1211,7 @@
 				INFOPLIST_FILE = LiuHe/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = huxingqin.LiuHe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LiuHeCBT.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1189,7 +1227,7 @@
 				INFOPLIST_FILE = LiuHe/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = huxingqin.LiuHe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LiuHeCBT.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
