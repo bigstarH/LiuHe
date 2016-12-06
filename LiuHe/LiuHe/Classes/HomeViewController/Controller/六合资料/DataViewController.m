@@ -10,7 +10,6 @@
 #import "DataDetailViewController.h"
 #import "DataViewController.h"
 #import "NSString+Extension.h"
-#import "UIImage+Extension.h"
 #import "NetworkManager.h"
 #import "DataTableView.h"
 #import "SystemManager.h"
@@ -103,13 +102,13 @@
 
 - (void)showMoreMenu
 {
-    XQSpringMenuItem *favor = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageWithColor:RGBCOLOR(183, 97, 226)] title:@"心水資料"];
-    XQSpringMenuItem *text  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageWithColor:RGBCOLOR(228, 82, 124)] title:@"文字資料"];
-    XQSpringMenuItem *sup   = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageWithColor:RGBCOLOR(240, 110, 99)] title:@"高手資料"];
-    XQSpringMenuItem *fx    = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageWithColor:RGBCOLOR(253, 161, 40)] title:@"公式資料"];
-    XQSpringMenuItem *jp    = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageWithColor:RGBCOLOR(61, 183, 129)] title:@"精品殺項"];
-    XQSpringMenuItem *card  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageWithColor:RGBCOLOR(95, 180, 216)] title:@"香港掛牌"];
-    XQSpringMenuItem *year  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageWithColor:RGBCOLOR(106, 204, 203)] title:@"全年资料"];
+    XQSpringMenuItem *favor = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"心水資料"] title:@"心水資料"];
+    XQSpringMenuItem *text  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"文字資料"] title:@"文字資料"];
+    XQSpringMenuItem *sup   = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"高手資料"] title:@"高手資料"];
+    XQSpringMenuItem *fx    = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"公式資料"] title:@"公式資料"];
+    XQSpringMenuItem *jp    = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"精品殺項"] title:@"精品殺項"];
+    XQSpringMenuItem *card  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"香港掛牌"] title:@"香港掛牌"];
+    XQSpringMenuItem *year  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"全年資料"] title:@"全年資料"];
     
     NSArray *array      = @[favor, text, sup, fx, jp, card, year];
     XQSpringMenu *menu  = [XQSpringMenu springMenuWithItems:array];

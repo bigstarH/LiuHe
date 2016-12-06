@@ -6,9 +6,12 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
+#import <UMSocialCore/UMSocialCore.h>
 #import "AppDelegate.h"
 #import "NetworkManager.h"
 #import "UserModel.h"
+
+static NSString *UMengAppKey = @"5838115c734be42627000d73";
 
 @interface AppDelegate ()
 
@@ -30,6 +33,9 @@
     
     // 用户登录
     [self userLogin];
+    
+    // 友盟SDK
+    [self initUMengUShareSDK];
     return YES;
 }
 
@@ -47,6 +53,48 @@
                                                     password:model.password
                                                      success:nil failure:nil];
     }
+}
+
+#pragma mark - start 友盟分享
+- (void)initUMengUShareSDK
+{
+    //打开日志
+    [[UMSocialManager defaultManager] openLog:YES];
+    
+    //设置友盟appkey
+    [[UMSocialManager defaultManager] setUmSocialAppkey:UMengAppKey];
+    
+    //设置微信的appKey和appSecret
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:@"wx97de6ce81fe10292" appSecret:@"2df199edc429bf3afb857b75cfbf144b" redirectURL:@"http://mobile.umeng.com/social"];
+}
+#pragma mark end 友盟分享
+
+// 支持所有iOS系统
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url];
+    if (!result) {
+        // 其他如支付等SDK的回调
+    }
+    return result;
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
+{
+    BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url];
+    if (!result) {
+        // 其他如支付等SDK的回调
+    }
+    return result;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url];
+    if (!result) {
+        // 其他如支付等SDK的回调
+    }
+    return result;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

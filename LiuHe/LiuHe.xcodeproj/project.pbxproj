@@ -28,7 +28,6 @@
 		483AC5E71DE526CB009E0E64 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC5DB1DE526CA009E0E64 /* BaseViewController.m */; };
 		483AC5E81DE526CB009E0E64 /* XQBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC5DE1DE526CA009E0E64 /* XQBarButtonItem.m */; };
 		483AC5E91DE526CB009E0E64 /* XQNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC5E01DE526CA009E0E64 /* XQNavigationBar.m */; };
-		483AC5EA1DE526CB009E0E64 /* XQCycleImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC5E41DE526CB009E0E64 /* XQCycleImageView.m */; };
 		483AC5FD1DE52749009E0E64 /* ForumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC5EE1DE52749009E0E64 /* ForumViewController.m */; };
 		483AC5FE1DE52749009E0E64 /* UserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC5F81DE52749009E0E64 /* UserViewController.m */; };
 		483AC5FF1DE52749009E0E64 /* MineHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC5FC1DE52749009E0E64 /* MineHeadView.m */; };
@@ -80,6 +79,8 @@
 		48DFD2F31DF51A6B006AF778 /* ForumCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DFD2F21DF51A6B006AF778 /* ForumCommentCell.m */; };
 		48DFD2F61DF53E9E006AF778 /* ForumCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DFD2F51DF53E9E006AF778 /* ForumCommentViewController.m */; };
 		48DFD2FA1DF56FE3006AF778 /* ShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DFD2F91DF56FE3006AF778 /* ShareManager.m */; };
+		48E0EC8E1DF65E1900E4B296 /* XQCycleImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E0EC8D1DF65E1900E4B296 /* XQCycleImageView.m */; };
+		48E0EC921DF65EFF00E4B296 /* ShareMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E0EC911DF65EFF00E4B296 /* ShareMenu.m */; };
 		48E271D31DE708A200CA3F4D /* MyDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271D21DE708A200CA3F4D /* MyDataViewController.m */; };
 		48E271D71DE708FC00CA3F4D /* XQActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271D61DE708FC00CA3F4D /* XQActionSheet.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271DA1DE7253200CA3F4D /* SettingViewController.m */; };
@@ -146,8 +147,6 @@
 		483AC5DE1DE526CA009E0E64 /* XQBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQBarButtonItem.m; sourceTree = "<group>"; };
 		483AC5DF1DE526CA009E0E64 /* XQNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQNavigationBar.h; sourceTree = "<group>"; };
 		483AC5E01DE526CA009E0E64 /* XQNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQNavigationBar.m; sourceTree = "<group>"; };
-		483AC5E31DE526CB009E0E64 /* XQCycleImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQCycleImageView.h; sourceTree = "<group>"; };
-		483AC5E41DE526CB009E0E64 /* XQCycleImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQCycleImageView.m; sourceTree = "<group>"; };
 		483AC5ED1DE52749009E0E64 /* ForumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumViewController.h; sourceTree = "<group>"; };
 		483AC5EE1DE52749009E0E64 /* ForumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumViewController.m; sourceTree = "<group>"; };
 		483AC5F71DE52749009E0E64 /* UserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewController.h; sourceTree = "<group>"; };
@@ -253,6 +252,10 @@
 		48DFD2F51DF53E9E006AF778 /* ForumCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumCommentViewController.m; sourceTree = "<group>"; };
 		48DFD2F81DF56FE3006AF778 /* ShareManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareManager.h; sourceTree = "<group>"; };
 		48DFD2F91DF56FE3006AF778 /* ShareManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareManager.m; sourceTree = "<group>"; };
+		48E0EC8C1DF65E1900E4B296 /* XQCycleImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQCycleImageView.h; sourceTree = "<group>"; };
+		48E0EC8D1DF65E1900E4B296 /* XQCycleImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQCycleImageView.m; sourceTree = "<group>"; };
+		48E0EC901DF65EFF00E4B296 /* ShareMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareMenu.h; sourceTree = "<group>"; };
+		48E0EC911DF65EFF00E4B296 /* ShareMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareMenu.m; sourceTree = "<group>"; };
 		48E271D11DE708A200CA3F4D /* MyDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDataViewController.h; sourceTree = "<group>"; };
 		48E271D21DE708A200CA3F4D /* MyDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDataViewController.m; sourceTree = "<group>"; };
 		48E271D51DE708FC00CA3F4D /* XQActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQActionSheet.h; sourceTree = "<group>"; };
@@ -449,26 +452,18 @@
 		483AC5E11DE526CB009E0E64 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
+				48E0EC8F1DF65EE600E4B296 /* ShareMenu */,
 				48D83CB41DEC6A3800E62100 /* XQAlertView */,
 				48E271D41DE708FC00CA3F4D /* XQActionSheet */,
+				48E0EC8B1DF65E1900E4B296 /* XQCycleImageView */,
 				48D83CA21DEC0EA200E62100 /* XQSegmentedControl */,
 				48BE5AB41DF01550004ACB90 /* XQSpringMenu */,
 				483AC61E1DE5B18B009E0E64 /* XQTextField */,
 				48DBCB3D1DE9C8CD00B989D6 /* XQTextView */,
 				48D83C941DEBC02400E62100 /* XQToast */,
 				483AC6091DE533F8009E0E64 /* XQFasciatePageControl */,
-				483AC5E21DE526CB009E0E64 /* CycleImageView */,
 			);
 			path = CustomView;
-			sourceTree = "<group>";
-		};
-		483AC5E21DE526CB009E0E64 /* CycleImageView */ = {
-			isa = PBXGroup;
-			children = (
-				483AC5E31DE526CB009E0E64 /* XQCycleImageView.h */,
-				483AC5E41DE526CB009E0E64 /* XQCycleImageView.m */,
-			);
-			path = CycleImageView;
 			sourceTree = "<group>";
 		};
 		483AC5EB1DE52749009E0E64 /* ForumViewController */ = {
@@ -780,6 +775,24 @@
 			path = ShareManager;
 			sourceTree = "<group>";
 		};
+		48E0EC8B1DF65E1900E4B296 /* XQCycleImageView */ = {
+			isa = PBXGroup;
+			children = (
+				48E0EC8C1DF65E1900E4B296 /* XQCycleImageView.h */,
+				48E0EC8D1DF65E1900E4B296 /* XQCycleImageView.m */,
+			);
+			path = XQCycleImageView;
+			sourceTree = "<group>";
+		};
+		48E0EC8F1DF65EE600E4B296 /* ShareMenu */ = {
+			isa = PBXGroup;
+			children = (
+				48E0EC901DF65EFF00E4B296 /* ShareMenu.h */,
+				48E0EC911DF65EFF00E4B296 /* ShareMenu.m */,
+			);
+			path = ShareMenu;
+			sourceTree = "<group>";
+		};
 		48E271D41DE708FC00CA3F4D /* XQActionSheet */ = {
 			isa = PBXGroup;
 			children = (
@@ -891,6 +904,7 @@
 				TargetAttributes = {
 					483AC5851DE525AF009E0E64 = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = V7KL9N5525;
 						ProvisioningStyle = Automatic;
 					};
 					483AC59E1DE525AF009E0E64 = {
@@ -1007,6 +1021,7 @@
 				488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */,
 				489932C21DF188190041A016 /* PicLibraryModel.m in Sources */,
 				4897355A1DEEABAE006ADA94 /* LotteryNumberModel.m in Sources */,
+				48E0EC8E1DF65E1900E4B296 /* XQCycleImageView.m in Sources */,
 				483AC5FE1DE52749009E0E64 /* UserViewController.m in Sources */,
 				489932C81DF1940A0041A016 /* PicLibraryCell.m in Sources */,
 				48D83CA11DEC0D9500E62100 /* MyPostViewController.m in Sources */,
@@ -1039,7 +1054,6 @@
 				48E271D31DE708A200CA3F4D /* MyDataViewController.m in Sources */,
 				483AC6291DE5C240009E0E64 /* UIImage+Extension.m in Sources */,
 				48DBCB461DE9DB3800B989D6 /* DisclaimerViewController.m in Sources */,
-				483AC5EA1DE526CB009E0E64 /* XQCycleImageView.m in Sources */,
 				489735641DEF021A006ADA94 /* HistoryDetailViewController.m in Sources */,
 				484258771DF254E800B1E8E0 /* PicDetailViewController.m in Sources */,
 				483010441DED27DC00B11BE9 /* MyReplyViewController.m in Sources */,
@@ -1055,6 +1069,7 @@
 				48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */,
 				483AC58B1DE525AF009E0E64 /* main.m in Sources */,
 				482655D41DF4751B00122766 /* ForumDetailViewController.m in Sources */,
+				48E0EC921DF65EFF00E4B296 /* ShareMenu.m in Sources */,
 				489932BC1DF156250041A016 /* HistoryCell.m in Sources */,
 				483010571DEDB85600B11BE9 /* CountDowner.m in Sources */,
 				48D83CA51DEC0EA200E62100 /* XQSegmentedControl.m in Sources */,
@@ -1206,6 +1221,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEVELOPMENT_TEAM = V7KL9N5525;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/LiuHe/LiuHe.pch";
 				INFOPLIST_FILE = LiuHe/Info.plist;
@@ -1222,6 +1238,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEVELOPMENT_TEAM = V7KL9N5525;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/LiuHe/LiuHe.pch";
 				INFOPLIST_FILE = LiuHe/Info.plist;
