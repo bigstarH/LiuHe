@@ -10,9 +10,11 @@
 #import "DataDetailViewController.h"
 #import "NSString+Extension.h"
 #import "NetworkManager.h"
+#import "ShareManager.h"
 #import "DataModel.h"
+#import "ShareMenu.h"
 
-@interface DataDetailViewController ()
+@interface DataDetailViewController () <ShareMenuDelegate>
 
 @property (nonatomic, weak) UIScrollView *scrollView;
 
@@ -53,7 +55,9 @@
 /** 按钮分享事件 */
 - (void)shareEvent
 {
-    NSLog(@"分享");
+    ShareMenu *menu = [ShareMenu shareMenu];
+    menu.delegate   = self;
+    [menu show];
 }
 #pragma mark end 设置导航栏
 
@@ -96,6 +100,39 @@
     self.originY    = CGRectGetMaxY(label.frame) + HEIGHT(8);
 }
 #pragma mark end 初始化控件
+
+#pragma mark - start ShareMenuDelegate
+/** 分享事件 */
+- (void)shareMenu:(ShareMenu *)shareMenu didSelectMenuItemWithType:(ShareMenuItemType)type
+{
+    switch (type) {
+        case ShareMenuItemTypeWeChat:  // 微信
+        {
+            NSLog(@"微信");
+            [ShareManager weChatShareWithImageUrl:@"http://img1.shenchuang.com/2016/1125/1480067250934.jpg" currentVC:self success:nil failure:nil];
+            break;
+        }
+        case ShareMenuItemTypeWechatTimeLine:  // 朋友圈
+        {
+            NSLog(@"朋友圈");
+            [ShareManager weChatTimeLineShareWithImageUrl:@"http://img1.shenchuang.com/2016/1125/1480067250934.jpg" currentVC:self success:^(NSString *result) {
+                NSLog(@"result = %@", result);
+            } failure:^(NSString *error) {
+                NSLog(@"error = %@", error);
+            }];
+            break;
+        }
+        case ShareMenuItemTypeQQ:  // QQ
+            NSLog(@"QQ");
+            break;
+        case ShareMenuItemTypeQZone:  // QQ空间
+            NSLog(@"QQ空间");
+            break;
+        default:
+            break;
+    }
+}
+#pragma mark end ShareMenuDelegate
 
 #pragma mark - start 网络请求
 - (void)getDataDetail

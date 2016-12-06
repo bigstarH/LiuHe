@@ -44,7 +44,6 @@
 {
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     self.thumbView         = imageView;
-    [imageView setBackgroundColor:RGBCOLOR(245, 245, 245)];
     [self.contentView addSubview:imageView];
     
     UILabel *label = [[UILabel alloc] init];
@@ -93,7 +92,7 @@
 
 - (void)setCellData:(PicLibraryModel *)model
 {
-    [self.thumbView sd_setImageWithURL:[NSURL URLWithString:model.urlString] placeholderImage:nil];
+    [self.thumbView sd_setImageWithURL:[NSURL URLWithString:model.urlString] placeholderImage:[UIImage imageNamed:@"empty_photo"]];
     self.titleLab.text = model.text;
     self.timeLab.text  = model.dateString;
 }

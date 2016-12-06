@@ -81,6 +81,8 @@
 		48DFD2FA1DF56FE3006AF778 /* ShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DFD2F91DF56FE3006AF778 /* ShareManager.m */; };
 		48E0EC8E1DF65E1900E4B296 /* XQCycleImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E0EC8D1DF65E1900E4B296 /* XQCycleImageView.m */; };
 		48E0EC921DF65EFF00E4B296 /* ShareMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E0EC911DF65EFF00E4B296 /* ShareMenu.m */; };
+		48E0EC951DF6EA1300E4B296 /* PictureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E0EC941DF6EA1300E4B296 /* PictureCell.m */; };
+		48E0EC991DF6F64A00E4B296 /* XQCircleProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E0EC981DF6F64A00E4B296 /* XQCircleProgressView.m */; };
 		48E271D31DE708A200CA3F4D /* MyDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271D21DE708A200CA3F4D /* MyDataViewController.m */; };
 		48E271D71DE708FC00CA3F4D /* XQActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271D61DE708FC00CA3F4D /* XQActionSheet.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271DA1DE7253200CA3F4D /* SettingViewController.m */; };
@@ -256,6 +258,10 @@
 		48E0EC8D1DF65E1900E4B296 /* XQCycleImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQCycleImageView.m; sourceTree = "<group>"; };
 		48E0EC901DF65EFF00E4B296 /* ShareMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareMenu.h; sourceTree = "<group>"; };
 		48E0EC911DF65EFF00E4B296 /* ShareMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareMenu.m; sourceTree = "<group>"; };
+		48E0EC931DF6EA1300E4B296 /* PictureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureCell.h; sourceTree = "<group>"; };
+		48E0EC941DF6EA1300E4B296 /* PictureCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureCell.m; sourceTree = "<group>"; };
+		48E0EC971DF6F64A00E4B296 /* XQCircleProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQCircleProgressView.h; sourceTree = "<group>"; };
+		48E0EC981DF6F64A00E4B296 /* XQCircleProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQCircleProgressView.m; sourceTree = "<group>"; };
 		48E271D11DE708A200CA3F4D /* MyDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDataViewController.h; sourceTree = "<group>"; };
 		48E271D21DE708A200CA3F4D /* MyDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDataViewController.m; sourceTree = "<group>"; };
 		48E271D51DE708FC00CA3F4D /* XQActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQActionSheet.h; sourceTree = "<group>"; };
@@ -455,6 +461,7 @@
 				48E0EC8F1DF65EE600E4B296 /* ShareMenu */,
 				48D83CB41DEC6A3800E62100 /* XQAlertView */,
 				48E271D41DE708FC00CA3F4D /* XQActionSheet */,
+				48E0EC961DF6F64A00E4B296 /* XQCircleProgressView */,
 				48E0EC8B1DF65E1900E4B296 /* XQCycleImageView */,
 				48D83CA21DEC0EA200E62100 /* XQSegmentedControl */,
 				48BE5AB41DF01550004ACB90 /* XQSpringMenu */,
@@ -684,6 +691,8 @@
 				489932C71DF1940A0041A016 /* PicLibraryCell.m */,
 				489932B91DF156250041A016 /* HistoryCell.h */,
 				489932BA1DF156250041A016 /* HistoryCell.m */,
+				48E0EC931DF6EA1300E4B296 /* PictureCell.h */,
+				48E0EC941DF6EA1300E4B296 /* PictureCell.m */,
 			);
 			path = CellView;
 			sourceTree = "<group>";
@@ -791,6 +800,15 @@
 				48E0EC911DF65EFF00E4B296 /* ShareMenu.m */,
 			);
 			path = ShareMenu;
+			sourceTree = "<group>";
+		};
+		48E0EC961DF6F64A00E4B296 /* XQCircleProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				48E0EC971DF6F64A00E4B296 /* XQCircleProgressView.h */,
+				48E0EC981DF6F64A00E4B296 /* XQCircleProgressView.m */,
+			);
+			path = XQCircleProgressView;
 			sourceTree = "<group>";
 		};
 		48E271D41DE708FC00CA3F4D /* XQActionSheet */ = {
@@ -1037,6 +1055,7 @@
 				488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */,
 				48DFD2F61DF53E9E006AF778 /* ForumCommentViewController.m in Sources */,
 				48DFD2F31DF51A6B006AF778 /* ForumCommentCell.m in Sources */,
+				48E0EC951DF6EA1300E4B296 /* PictureCell.m in Sources */,
 				48BE5ABD1DF01F7E004ACB90 /* DataModel.m in Sources */,
 				483AC5E81DE526CB009E0E64 /* XQBarButtonItem.m in Sources */,
 				48DBCB3C1DE9C7C100B989D6 /* FeedBackViewController.m in Sources */,
@@ -1046,6 +1065,7 @@
 				483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */,
 				48D83CA81DEC460300E62100 /* PostModel.m in Sources */,
 				48D83C971DEBC02400E62100 /* XQToast.m in Sources */,
+				48E0EC991DF6F64A00E4B296 /* XQCircleProgressView.m in Sources */,
 				489932C51DF18BA50041A016 /* PicLibraryTableView.m in Sources */,
 				48BE5AA51DEFC412004ACB90 /* WebViewController.m in Sources */,
 				48D83CB31DEC64A000E62100 /* CollectionModel.m in Sources */,

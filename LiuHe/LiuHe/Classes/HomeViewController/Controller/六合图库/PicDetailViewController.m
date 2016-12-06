@@ -11,9 +11,17 @@
 #import "PicDetailViewController.h"
 #import "PicLibraryModel.h"
 #import "NetworkManager.h"
+#import "PictureCell.h"
+#import "ColumnView.h"
 #import "XQToast.h"
 
-@interface PicDetailViewController () <UIScrollViewDelegate>
+@interface PicDetailViewController () <UIScrollViewDelegate, ColumnViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource>
+
+@property (nonatomic, strong) NSArray *dataList;
+
+@property (nonatomic, weak) UICollectionView *collectionView;
+
+@property (nonatomic, weak) ColumnView *columnView;
 
 @property (nonatomic, weak) UIView *maskView;
 
@@ -29,7 +37,6 @@
 
 - (void)dealloc
 {
-    NSLog(@"PicDetailViewController dealloc");
     [SVProgressHUD dismiss];
 }
 
@@ -38,7 +45,11 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [self createView];
+    // 创建栏目栏
+    [self createColumnView];
+    
+    // 创建CollectionView
+    [self createCollectionView];
 }
 
 #pragma mark - start 设置导航栏
@@ -71,77 +82,49 @@
 #pragma mark end 设置导航栏
 
 #pragma mark - start 初始化控件
-- (void)createView
+/** 创建栏目栏 */
+- (void)createColumnView
 {
-    CGFloat originY = 64 + HEIGHT(10);
-    if (_model.qishu) {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, HEIGHT(30))];
-        label.text     = [NSString stringWithFormat:@"第%@期", _model.qishu];
-        label.font     = [UIFont systemFontOfSize:fontSize(14)];
-        [label setTextAlignment:NSTextAlignmentCenter];
-        [self.view addSubview:label];
-        originY = CGRectGetMaxY(label.frame);
+//    NSMutableArray *list  = [NSMutableArray array];
+    NSMutableArray *array = [NSMutableArray array];
+    for (int i = _model.qishu.intValue; i > 0 ; i--) {
+        NSString *str = [NSString stringWithFormat:@"第%d期", i];
+        [array addObject:str];
+//        [list addObject:@(i)];
     }
+    ColumnView *columnView = [[ColumnView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, HEIGHT(35))];
+    self.columnView        = columnView;
+    columnView.itemWidth   = SCREEN_WIDTH * 0.23;
+    columnView.delegate    = self;
+    columnView.items       = array;
+    [columnView setBackgroundColor:RGBCOLOR(245, 245, 245)];
+    [self.view addSubview:columnView];
     
-    CGFloat imageX  = WIDTH(20);
-    CGFloat imageW  = SCREEN_WIDTH - imageX * 2;
-    _originFrame    = CGRectMake(imageX, originY, imageW, imageW * 1.2);
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:_originFrame];
-    imageView.contentMode  = UIViewContentModeScaleAspectFill;
-    self.imageView         = imageView;
-    [imageView.layer setMasksToBounds:YES];
-    [imageView setBackgroundColor:RGBCOLOR(245, 245, 245)];
-    [SVProgressHUD show];
-    __weak typeof(self) ws = self;
-    [imageView sd_setImageWithURL:[NSURL URLWithString:_model.urlString]
-                 placeholderImage:nil
-                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                            [SVProgressHUD dismiss];
-                            if (error == nil) {
-                                [ws dealWithImage:image];
-                            }
-                        }];
-    [imageView setUserInteractionEnabled:YES];
-    [imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showBigPic)]];
-    [self.view addSubview:imageView];
+    self.dataList = array;
+}
+
+/** 创建CollectionView */
+- (void)createCollectionView
+{
+    CGFloat originY = CGRectGetMaxY(self.columnView.frame);
+    
+    CGFloat height  = SCREEN_HEIGHT - originY;
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.minimumLineSpacing          = 0;
+    [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    UICollectionView *collectionView   = [[UICollectionView alloc] initWithFrame:CGRectMake(0, originY, SCREEN_WIDTH, height) collectionViewLayout:layout];
+    self.collectionView       = collectionView;
+    collectionView.delegate   = self;
+    collectionView.dataSource = self;
+    [collectionView setPagingEnabled:YES];
+    [collectionView setShowsHorizontalScrollIndicator:NO];
+    [collectionView setBackgroundColor:[UIColor whiteColor]];
+    [collectionView registerClass:[PictureCell class] forCellWithReuseIdentifier:@"CELLID"];
+    [self.view addSubview:collectionView];
 }
 #pragma mark end 初始化控件
 
 #pragma mark - start 手势事件
-/** 显示大图 */
-- (void)showBigPic
-{
-    UIView *maskView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    maskView.alpha   = 0.0;
-    self.maskView    = maskView;
-    [maskView setBackgroundColor:[UIColor blackColor]];
-    [KeyWindow addSubview:maskView];
-    
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:maskView.frame];
-    scrollView.delegate      = self;
-    [scrollView setMinimumZoomScale:1.0];
-    [scrollView setMaximumZoomScale:1.6];
-    [scrollView setMultipleTouchEnabled:YES];
-    [scrollView setBackgroundColor:[UIColor clearColor]];
-    [scrollView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeBigPic:)]];
-    [KeyWindow addSubview:scrollView];
-    
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.originFrame];
-    [imageView setContentMode:UIViewContentModeScaleAspectFit];
-    [imageView sd_setImageWithURL:[NSURL URLWithString:_model.urlString] placeholderImage:nil];
-    self.bigImageView      = imageView;
-    self.imageView.hidden  = YES;
-    [scrollView addSubview:imageView];
-    
-    [UIView animateWithDuration:0.2 animations:^{
-        CGRect frame     = imageView.frame;
-        frame.size       = CGSizeMake(SCREEN_WIDTH - WIDTH(10), SCREEN_HEIGHT);
-        imageView.frame  = frame;
-        imageView.center = self.view.center;
-        maskView.alpha   = 1.0;
-    }];
-}
-
 /** 移除大图，恢复原图 */
 - (void)removeBigPic:(UITapGestureRecognizer *)tap
 {
@@ -160,25 +143,40 @@
 }
 #pragma mark end 手势事件
 
-#pragma mark - start 私有方法
-/** 处理图片显示 */
-- (void)dealWithImage:(UIImage *)image
+#pragma mark - start ColumnViewDelegate
+- (void)columnView:(ColumnView *)columnView didSelectedAtItem:(NSInteger)item
 {
-    CGRect frame = _imageView.frame;
-    if (image.size.width >= image.size.height) {  // 宽 >= 高
-        CGFloat imageH    = frame.size.width * image.size.height / image.size.width;
-        frame.size.height = imageH;
-        _imageView.frame  = frame;
-    }else {
-        CGFloat imageH    = frame.size.height;
-        CGFloat imageW    = imageH * image.size.width / image.size.height;
-        frame.size.width  = imageW;
-        frame.origin.x    = (SCREEN_WIDTH - imageW) * 0.5;
-        _imageView.frame  = frame;
-    }
-    _originFrame = _imageView.frame;
+    NSLog(@"item = %zd", item);
 }
-#pragma mark end 私有方法
+#pragma mark end ColumnViewDelegate
+
+#pragma mark - start UICollectionViewDelegateFlowLayout
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(SCREEN_WIDTH, collectionView.bounds.size.height);
+}
+#pragma mark end UICollectionViewDelegateFlowLayout
+
+#pragma mark - start UICollectionViewDelegate, UICollectionViewDataSource
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.dataList.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    PictureCell *cell = (PictureCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"CELLID" forIndexPath:indexPath];
+    NSInteger index = self.model.qishu.integerValue - indexPath.item;
+    NSString *url   = [NSString stringWithFormat:@"%@%zd/%@.jpg", _model.url, index, _model.type];
+    [cell setImageWithUrl:url];
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+#pragma mark end UICollectionViewDelegate, UICollectionViewDataSource
 
 #pragma mark - start UIScrollViewDelegate
 /** 实现图片的缩放 */
