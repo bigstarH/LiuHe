@@ -28,14 +28,26 @@
 /** 微信 */
 @property (nonatomic, weak) UITextField *weChatTF;
 
+@property (nonatomic, weak) UIView *contentView;
+
+@property (nonatomic, weak) UIView *keyBoardToolBar;
+
 @end
 
 @implementation MyDataViewController
+
+- (void)dealloc
+{
+    [NotificationCenter removeObserver:self];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = RGBCOLOR(245, 242, 241);
+    
+    // 添加键盘出现／消失通知
+    [self addNotification];
     
     [self createView];
     
@@ -52,6 +64,19 @@
         [hud hideAnimated:YES];
         [MBProgressHUD showFailureInView:ws.view mesg:error];
     }];
+}
+
+- (void)addNotification
+{
+    [NotificationCenter addObserver:self
+                           selector:@selector(keyboardWillShow:)
+                               name:UIKeyboardWillShowNotification
+                             object:nil];
+    
+    [NotificationCenter addObserver:self
+                           selector:@selector(keyboardWillHide:)
+                               name:UIKeyboardWillHideNotification
+                             object:nil];
 }
 
 - (void)setNavigationBarStyle
@@ -77,7 +102,7 @@
     [view setBackgroundColor:[UIColor whiteColor]];
     [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self
                                                                        action:@selector(selectHeader:)]];
-    [self.view addSubview:view];
+    [self.view insertSubview:view belowSubview:self.navigationBar];
     
     CGFloat originX  = WIDTH(10);
     CGFloat headLabW = WIDTH(80);
@@ -105,24 +130,27 @@
     
     // 真实姓名
     originY += viewH + HEIGHT(12);
-    CGFloat tfH     = HEIGHT(36);
-    CGRect frame    = CGRectMake(0, originY, SCREEN_WIDTH, tfH);
+    CGFloat tfH      = HEIGHT(36);
+    CGRect frame     = CGRectMake(0, originY, SCREEN_WIDTH, tfH * 4);
+    UIView *contentV = [[UIView alloc] initWithFrame:frame];
+    self.contentView = contentV;
+    [contentV setBackgroundColor:[UIColor whiteColor]];
+    [self.view insertSubview:contentV belowSubview:self.navigationBar];
+    
+    frame = CGRectMake(0, 0, SCREEN_WIDTH, tfH);
     self.realNameTF = [self createTFWithFrame:frame placeholder:@"請輸入真實姓名" leftStr:@"姓名" hideBottomLine:NO];
     
     // 手机
-    originY += tfH;
-    frame        = CGRectMake(0, originY, SCREEN_WIDTH, tfH);
+    frame        = CGRectMake(0, tfH, SCREEN_WIDTH, tfH);
     self.phoneTF = [self createTFWithFrame:frame placeholder:@"請輸入手機號碼" leftStr:@"手機號碼" hideBottomLine:NO];
     self.phoneTF.clearButtonMode = UITextFieldViewModeWhileEditing;
     
     // QQ
-    originY += tfH;
-    frame     = CGRectMake(0, originY, SCREEN_WIDTH, tfH);
+    frame     = CGRectMake(0, tfH * 2, SCREEN_WIDTH, tfH);
     self.QQTF = [self createTFWithFrame:frame placeholder:@"請輸入QQ號碼" leftStr:@"QQ" hideBottomLine:NO];
     
     // 微信
-    originY += tfH;
-    frame         = CGRectMake(0, originY, SCREEN_WIDTH, tfH);
+    frame         = CGRectMake(0, tfH * 3, SCREEN_WIDTH, tfH);
     self.weChatTF = [self createTFWithFrame:frame placeholder:@"請輸入微信號" leftStr:@"微信" hideBottomLine:YES];
     
     if (model) {
@@ -141,6 +169,23 @@
     [modity.layer setCornerRadius:HEIGHT(5)];
     [modity addTarget:self action:@selector(modityEvent:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:modity];
+    
+    // 键盘上方的ToolBar
+    CGFloat barH    = HEIGHT(38);
+    UIView *toolBar = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, barH)];
+    self.keyBoardToolBar = toolBar;
+    [toolBar setBackgroundColor:RGBCOLOR(235, 235, 235)];
+    [self.view addSubview:toolBar];
+    
+    CGFloat buttonW   = WIDTH(65);
+    CGFloat sureBtnX  = SCREEN_WIDTH - buttonW;
+    UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    [sureBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [sureBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize(15)]];
+    [sureBtn setFrame:CGRectMake(sureBtnX, 0, buttonW, barH)];
+    [sureBtn addTarget:self action:@selector(sureEvent:) forControlEvents:UIControlEventTouchUpInside];
+    [toolBar addSubview:sureBtn];
 }
 
 - (UITextField *)createTFWithFrame:(CGRect)frame placeholder:(NSString *)placeholder leftStr:(NSString *)leftStr hideBottomLine:(BOOL)hide
@@ -149,9 +194,8 @@
     textField.leftViewMode = UITextFieldViewModeAlways;
     textField.placeholder  = placeholder;
     textField.font         = [UIFont systemFontOfSize:fontSize(15)];
-    [textField setBackgroundColor:[UIColor whiteColor]];
     [textField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-    [self.view addSubview:textField];
+    [self.contentView addSubview:textField];
     
     UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH(90), frame.size.height)];
     CGFloat leftLabX = WIDTH(10);
@@ -168,7 +212,7 @@
         CGFloat lineY = CGRectGetMaxY(frame) - 1;
         UIView *line  = [[UIView alloc] initWithFrame:CGRectMake(leftLabX, lineY, lineW, 1)];
         [line setBackgroundColor:RGBCOLOR(203, 203, 203)];
-        [self.view addSubview:line];
+        [self.contentView addSubview:line];
     }
     return textField;
 }
@@ -194,6 +238,11 @@
     [sheet showInView:self.view];
 }
 
+- (void)sureEvent:(UIButton *)sender
+{
+    [self.view endEditing:YES];
+}
+
 /** "修改资料"按钮点击事件 */
 - (void)modityEvent:(UIButton *)sender
 {
@@ -217,7 +266,7 @@
                               headImage:image
                                 success:^(NSString *str) {
                                     [hud hideAnimated:YES];
-                                    [MBProgressHUD showSuccessInView:ws.view mesg:str];
+                                    [MBProgressHUD showSuccessInView:KeyWindow mesg:str];
                                     model.trueName = ws.realNameTF.text;
                                     model.phone    = ws.phoneTF.text;
                                     model.weChat   = ws.weChatTF.text;
@@ -283,4 +332,62 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 #pragma mark end UIImagePickerControllerDelegate
+
+#pragma mark - start 键盘展示和消失通知事件
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    CGFloat animateTime = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    self.keyBoardToolBar.transform  = CGAffineTransformIdentity;
+    self.contentView.transform      = CGAffineTransformIdentity;
+    self.header.superview.transform = CGAffineTransformIdentity;
+    
+    CGRect  frame  = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat height = frame.size.height + self.keyBoardToolBar.bounds.size.height;
+    [UIView animateWithDuration:animateTime animations:^{
+        self.keyBoardToolBar.transform = CGAffineTransformMakeTranslation(0, -height);
+    }];
+    
+    CGFloat keyBoardMinY = SCREEN_HEIGHT - height;
+    CGFloat distance     = 0;
+    if ([self.realNameTF isFirstResponder]) {
+        CGRect mFrame = [self.contentView convertRect:self.realNameTF.frame toView:self.view];
+        CGFloat realNameMaxY = CGRectGetMaxY(mFrame);
+        if (keyBoardMinY < realNameMaxY) {
+            distance  = keyBoardMinY - realNameMaxY;
+        }
+    }else if ([self.phoneTF isFirstResponder]) {
+        CGRect mFrame = [self.contentView convertRect:self.phoneTF.frame toView:self.view];
+        CGFloat phoneMaxY = CGRectGetMaxY(mFrame);
+        if (keyBoardMinY < phoneMaxY) {
+            distance  = keyBoardMinY - phoneMaxY;
+        }
+    }else if ([self.QQTF isFirstResponder]) {
+        CGRect mFrame  = [self.contentView convertRect:self.QQTF.frame toView:self.view];
+        CGFloat qqMaxY = CGRectGetMaxY(mFrame);
+        if (keyBoardMinY < qqMaxY) {
+            distance   = keyBoardMinY - qqMaxY;
+        }
+    }else {
+        CGRect mFrame  = [self.contentView convertRect:self.weChatTF.frame toView:self.view];
+        CGFloat weChatMaxY = CGRectGetMaxY(mFrame);
+        if (keyBoardMinY < weChatMaxY) {
+            distance  = keyBoardMinY - weChatMaxY;
+        }
+    }
+    [UIView animateWithDuration:animateTime animations:^{
+        self.contentView.transform = CGAffineTransformMakeTranslation(0, distance);
+        self.header.superview.transform = CGAffineTransformMakeTranslation(0, distance);
+    }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    CGFloat animateTime = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    [UIView animateWithDuration:animateTime animations:^{
+        self.keyBoardToolBar.transform  = CGAffineTransformIdentity;
+        self.contentView.transform      = CGAffineTransformIdentity;
+        self.header.superview.transform = CGAffineTransformIdentity;
+    }];
+}
+#pragma mark end 键盘展示和消失通知事件
 @end

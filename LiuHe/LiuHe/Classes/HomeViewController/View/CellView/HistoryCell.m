@@ -58,6 +58,8 @@
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
+    
     if (!CGRectEqualToRect(self.timeLabel.frame, CGRectZero)) return;
     
     CGFloat width      = self.bounds.size.width;

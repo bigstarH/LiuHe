@@ -346,7 +346,6 @@ static id networkInstance;
     [self.manager POST:USER_POST_URL parameters:param progress:nil
                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-                   NSLog(@"dict = %@", dict);
                     successBlock ? successBlock(dict) : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                    failureBlock ? failureBlock(@"網絡錯誤") : nil;

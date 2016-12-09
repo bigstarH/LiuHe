@@ -164,7 +164,7 @@
     self.timeLab.text     = model.dateString;
     self.readLab.text     = [NSString stringWithFormat:@"已有%@人阅读", model.onclick];
     self.contentLab.text  = model.newstext;
-    self.commentLab.text  = [NSString stringWithFormat:@"评论列表(%d) ",model.rnum.intValue];
+    self.commentLab.text  = [NSString stringWithFormat:@"回復列表(%d) ",model.rnum.intValue];
     [self setUIFrame];
 }
 @end

@@ -169,7 +169,7 @@
                           content:self.contentTV.text
                           success:^(NSString *str) {
                               [hud hideAnimated:YES];
-                              [MBProgressHUD showSuccessInView:ws.view mesg:str];
+                              [MBProgressHUD showSuccessInView:KeyWindow mesg:str];
                               if (ws.type == VCTypePostEdit) {
                                   [NotificationCenter postNotificationName:POST_EDIT_SUCCESS object:nil userInfo:nil];
                               }

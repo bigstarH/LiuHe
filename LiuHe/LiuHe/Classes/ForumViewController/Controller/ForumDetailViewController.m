@@ -34,11 +34,6 @@
 
 @implementation ForumDetailViewController
 
-- (void)dealloc
-{
-    NSLog(@"ForumDetailViewController dealloc");
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -78,6 +73,7 @@
     BOOL didLogin = [UserDefaults boolForKey:USER_DIDLOGIN];
     if (!didLogin) {
         [[XQToast makeText:@"您還沒有登錄，請先登錄"] show];
+        [self.tabBarController setSelectedIndex:2];
         return;
     }
     ForumCommentViewController *vc = [[ForumCommentViewController alloc] init];

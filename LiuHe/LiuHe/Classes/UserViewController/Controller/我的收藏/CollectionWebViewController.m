@@ -22,11 +22,6 @@
 
 @implementation CollectionWebViewController
 
-- (void)dealloc
-{
-    NSLog(@"CollectionWebViewController dealloc");
-}
-
 - (instancetype)initWithLinkStr:(NSString *)linkStr
 {
     if (self = [super init]) {

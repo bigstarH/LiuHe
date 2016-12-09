@@ -184,6 +184,12 @@
     _rightView = rightView;
 }
 
+- (void)setKeyboardType:(UIKeyboardType)keyboardType
+{
+    _keyboardType = keyboardType;
+    self.textField.keyboardType = keyboardType;
+}
+
 - (void)setSecureTextEntry:(BOOL)secureTextEntry
 {
     _secureTextEntry = secureTextEntry;

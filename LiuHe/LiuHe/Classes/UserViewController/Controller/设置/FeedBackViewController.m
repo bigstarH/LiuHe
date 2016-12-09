@@ -79,7 +79,7 @@
     originY += tfH;
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, originY, SCREEN_WIDTH, HEIGHT(120))];
     [view setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:view];
+    [self.view insertSubview:view belowSubview:self.navigationBar];
     CGFloat contentTVX    = WIDTH(9);
     CGFloat contentTVW    = SCREEN_WIDTH - contentTVX * 2;
     XQTextView *contentTV = [[XQTextView alloc] initWithFrame:CGRectMake(contentTVX, 0, contentTVW, HEIGHT(120))];
@@ -129,18 +129,18 @@
     textField.font          = [UIFont systemFontOfSize:fontSize(15)];
     [textField setBackgroundColor:[UIColor whiteColor]];
     [textField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-    [self.view addSubview:textField];
+    [self.view insertSubview:textField belowSubview:self.navigationBar];
     
     UIView *leftView    = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH(12), frame.size.height)];
     textField.leftView  = leftView;
     UIView *rightView   = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH(12), frame.size.height)];
     textField.rightView = rightView;
     
-    CGFloat lineW = frame.size.width - WIDTH(24);
-    CGFloat lineY = CGRectGetMaxY(frame) - 1;
-    UIView *line  = [[UIView alloc] initWithFrame:CGRectMake(WIDTH(12), lineY, lineW, 1)];
+    CGFloat lineW = frame.size.width;
+    CGFloat lineY = CGRectGetHeight(frame) - 1;
+    UIView *line  = [[UIView alloc] initWithFrame:CGRectMake(0, lineY, lineW, 1)];
     [line setBackgroundColor:RGBCOLOR(203, 203, 203)];
-    [self.view addSubview:line];
+    [textField addSubview:line];
     return textField;
 }
 
@@ -171,7 +171,7 @@
                                                 content:self.contentTV.text
                                                 success:^(NSString *str) {
                                                     [hud hideAnimated:YES];
-                                                    [MBProgressHUD showSuccessInView:ws.view mesg:str];
+                                                    [MBProgressHUD showSuccessInView:KeyWindow mesg:str];
                                                     [ws.navigationController popViewControllerAnimated:YES];
                                                 } failure:^(NSString *error) {
                                                     [hud hideAnimated:YES];
@@ -205,6 +205,30 @@
     [UIView animateWithDuration:animateTime animations:^{
         self.keyBoardToolBar.transform = CGAffineTransformMakeTranslation(0, -height);
     }];
+    
+    CGFloat keyBoardMinY = SCREEN_HEIGHT - height;
+    CGFloat distance     = 0;
+    if ([self.nameTF isFirstResponder]) {
+        CGFloat nameMaxY = CGRectGetMaxY(self.nameTF.frame);
+        if (keyBoardMinY < nameMaxY) {
+            distance     = keyBoardMinY - nameMaxY;
+        }
+    }else if ([self.phoneTF isFirstResponder]) {
+        CGFloat phoneMaxY = CGRectGetMaxY(self.phoneTF.frame);
+        if (keyBoardMinY < phoneMaxY) {
+            distance     = keyBoardMinY - phoneMaxY;
+        }
+    }else {
+        CGFloat contentMaxY = CGRectGetMaxY(self.contentTV.superview.frame);
+        if (keyBoardMinY < contentMaxY) {
+            distance     = keyBoardMinY - contentMaxY;
+        }
+    }
+    [UIView animateWithDuration:animateTime animations:^{
+        self.nameTF.transform = CGAffineTransformMakeTranslation(0, distance);
+        self.phoneTF.transform = CGAffineTransformMakeTranslation(0, distance);
+        self.contentTV.superview.transform = CGAffineTransformMakeTranslation(0, distance);
+    }];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
@@ -212,6 +236,9 @@
     CGFloat animateTime = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     [UIView animateWithDuration:animateTime animations:^{
         self.keyBoardToolBar.transform = CGAffineTransformIdentity;
+        self.nameTF.transform    = CGAffineTransformIdentity;
+        self.phoneTF.transform   = CGAffineTransformIdentity;
+        self.contentTV.superview.transform = CGAffineTransformIdentity;
     }];
 }
 #pragma mark end 键盘展示和消失通知事件

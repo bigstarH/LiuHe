@@ -81,9 +81,9 @@
     self.titleTF.enabled = NO;
     
     originY += tfH;
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, originY, SCREEN_WIDTH, HEIGHT(140))];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, originY, SCREEN_WIDTH, HEIGHT(130))];
     [view setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:view];
+    [self.view insertSubview:view belowSubview:self.navigationBar];
     CGFloat contentTVX    = WIDTH(9);
     CGFloat contentTVW    = SCREEN_WIDTH - contentTVX * 2;
     XQTextView *contentTV = [[XQTextView alloc] initWithFrame:CGRectMake(contentTVX, 0, contentTVW, HEIGHT(120))];
@@ -133,18 +133,18 @@
     textField.font          = [UIFont systemFontOfSize:fontSize(15)];
     [textField setBackgroundColor:[UIColor whiteColor]];
     [textField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-    [self.view addSubview:textField];
+    [self.view insertSubview:textField belowSubview:self.navigationBar];
     
     UIView *leftView    = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH(12), frame.size.height)];
     textField.leftView  = leftView;
     UIView *rightView   = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH(12), frame.size.height)];
     textField.rightView = rightView;
     
-    CGFloat lineW = frame.size.width - WIDTH(24);
-    CGFloat lineY = CGRectGetMaxY(frame) - 1;
-    UIView *line  = [[UIView alloc] initWithFrame:CGRectMake(WIDTH(12), lineY, lineW, 1)];
+    CGFloat lineW = frame.size.width;
+    CGFloat lineY = CGRectGetHeight(frame) - 1;
+    UIView *line  = [[UIView alloc] initWithFrame:CGRectMake(0, lineY, lineW, 1)];
     [line setBackgroundColor:RGBCOLOR(203, 203, 203)];
-    [self.view addSubview:line];
+    [textField addSubview:line];
     return textField;
 }
 #pragma mark - start 初始化控件
@@ -178,13 +178,32 @@
     [UIView animateWithDuration:animateTime animations:^{
         self.keyBoardToolBar.transform = CGAffineTransformMakeTranslation(0, -height);
     }];
+    CGFloat keyBoardMinY  = SCREEN_HEIGHT - height;
+    CGFloat distance      = 0;
+    if ([self.titleTF isFirstResponder]) {
+        CGFloat titleMaxY = CGRectGetMaxY(self.titleTF.frame);
+        if (keyBoardMinY < titleMaxY) {
+            distance      = keyBoardMinY - titleMaxY;
+        }
+    }else {
+        CGFloat contentMaxY = CGRectGetMaxY(self.contentTV.superview.frame);
+        if (keyBoardMinY < contentMaxY) {
+            distance      = keyBoardMinY - contentMaxY;
+        }
+    }
+    [UIView animateWithDuration:animateTime animations:^{
+        self.titleTF.transform = CGAffineTransformMakeTranslation(0, distance);
+        self.contentTV.superview.transform = CGAffineTransformMakeTranslation(0, distance);
+    }];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
     CGFloat animateTime = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     [UIView animateWithDuration:animateTime animations:^{
-        self.keyBoardToolBar.transform = CGAffineTransformIdentity;
+        self.titleTF.transform = CGAffineTransformIdentity;
+        self.contentTV.superview.transform = CGAffineTransformIdentity;
+        self.keyBoardToolBar.transform     = CGAffineTransformIdentity;
     }];
 }
 #pragma mark end 键盘展示和消失通知事件

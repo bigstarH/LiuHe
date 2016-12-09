@@ -30,11 +30,14 @@
 
 @property (nonatomic, weak) UITableView *tableView;
 
-@property (nonatomic, weak) MBProgressHUD *hud;
-
 @end
 
 @implementation HistoryViewController
+
+- (void)dealloc
+{
+    NSLog(@"HistoryViewController dealloc");
+}
 
 - (void)viewDidLoad
 {
@@ -46,11 +49,9 @@
     [self createTableView];
     
     // 获得广告轮播图
-    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:@"正在加載中..." removeOnHide:YES];
-    self.hud           = hud;
     [self getAdvertisementPic];
     // 获取历史记录
-    [self getLotteryHistoryWithMore:NO];
+    [self getLotteryHistoryWithMore:NO needHUD:YES];
 }
 
 #pragma mark - start 设置导航栏
@@ -103,7 +104,7 @@
     
     __weak typeof(self) ws = self;
     tableView.mj_header    = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-                                 [ws getLotteryHistoryWithMore:NO];
+                                 [ws getLotteryHistoryWithMore:NO needHUD:NO];
                              }];
 }
 
@@ -227,11 +228,16 @@
 }
 
 /** 获取历史记录 */
-- (void)getLotteryHistoryWithMore:(BOOL)more
+- (void)getLotteryHistoryWithMore:(BOOL)more needHUD:(BOOL)needHUD
 {
     __weak typeof(self) ws = self;
+    
+    MBProgressHUD *hud = nil;
+    if (needHUD) {
+        hud = [MBProgressHUD hudView:self.view text:@"正在加載中..." removeOnHide:YES];
+    }
     [[NetworkManager shareManager] lotteryHistoryWithSuccess:^(NSArray *array) {
-        [ws.hud hideAnimated:YES];
+        [hud hideAnimated:YES];
         [ws.tableView.mj_header endRefreshing];
         NSMutableArray *list = [NSMutableArray array];
         for (int i = 0; i < array.count; i++) {
@@ -242,7 +248,7 @@
         ws.dataList = list;
         [ws.tableView reloadData];
     } failure:^(NSString *error) {
-        [ws.hud hideAnimated:YES];
+        [hud hideAnimated:YES];
         [ws.tableView.mj_header endRefreshing];
         [MBProgressHUD showFailureInView:ws.view mesg:error];
     }];

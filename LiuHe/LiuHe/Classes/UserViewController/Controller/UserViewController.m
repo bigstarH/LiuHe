@@ -56,7 +56,6 @@
 #pragma mark - start 设置导航栏
 - (void)setNavigationBarStyle
 {
-    self.navigationBar.imageView.alpha = 0;
     self.title = @"我的";
     
     XQBarButtonItem *rightBtn1 = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"signIn"]];
