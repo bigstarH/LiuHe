@@ -7,7 +7,7 @@
 //
 
 #import <UIImageView+WebCache.h>
-#import <SVProgressHUD/SVProgressHUD.h>
+#import "MBProgressHUD+Extension.h"
 #import "TreasureViewController.h"
 #import "NetworkManager.h"
 #import "ShareManager.h"
@@ -26,7 +26,7 @@
 
 - (void)dealloc
 {
-    [SVProgressHUD dismiss];
+    NSLog(@"TreasureViewController dealloc");
 }
 
 - (void)viewDidLoad
@@ -149,9 +149,9 @@
 - (void)getNetData
 {
     __weak typeof(self) ws = self;
-    [SVProgressHUD show];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:@"正在加載中..." removeOnHide:YES];
     [[NetworkManager shareManager] treasureWithSuccess:^(NSArray *array) {
-        [SVProgressHUD dismiss];
+        [hud hideAnimated:YES];
         [ws createView];
         NSMutableArray *list   = [NSMutableArray array];
         for (int i = 0; i < array.count; i++) {
@@ -162,7 +162,8 @@
         ws.dataList = list;
         [ws.tableView reloadData];
     } failure:^(NSString *error) {
-        [SVProgressHUD showErrorWithStatus:error];
+        [hud hideAnimated:YES];
+        [MBProgressHUD showFailureInView:ws.view mesg:error];
     }];
 }
 #pragma mark end 网络请求

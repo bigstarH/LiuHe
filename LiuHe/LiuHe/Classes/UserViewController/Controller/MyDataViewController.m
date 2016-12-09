@@ -6,8 +6,8 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import <UIImageView+WebCache.h>
+#import "MBProgressHUD+Extension.h"
 #import "MyDataViewController.h"
 #import "UIImage+Extension.h"
 #import "NetworkManager.h"
@@ -39,23 +39,19 @@
     
     [self createView];
     
-    [SVProgressHUD show];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     __weak typeof(self) ws  = self;
     NetworkManager *manager = [NetworkManager shareManager];
     [manager userInfoWithSuccess:^(NSDictionary *dict) {
-        [SVProgressHUD dismiss];
+        [hud hideAnimated:YES];
         UserModel *model = [UserModel userModelWithDict:dict];
         model.headUrlStr = dict[@"userpic"];
         [model saveUserInfoWithMyData];
         [ws setMyInfoWithModel:model];
     } failure:^(NSString *error) {
-        [SVProgressHUD dismiss];
+        [hud hideAnimated:YES];
+        [MBProgressHUD showFailureInView:ws.view mesg:error];
     }];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [SVProgressHUD dismiss];
 }
 
 - (void)setNavigationBarStyle
@@ -212,7 +208,7 @@
         image = nil;
     }
     
-    [SVProgressHUD show];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     __weak typeof(self) ws = self;
     [manager modifyUserInfoWithTrueName:self.realNameTF.text
                                   phone:self.phoneTF.text
@@ -220,8 +216,8 @@
                            weChatNumber:self.weChatTF.text
                               headImage:image
                                 success:^(NSString *str) {
-                                    [SVProgressHUD showSuccessWithStatus:str];
-                                    [SVProgressHUD dismissWithDelay:1];
+                                    [hud hideAnimated:YES];
+                                    [MBProgressHUD showSuccessInView:ws.view mesg:str];
                                     model.trueName = ws.realNameTF.text;
                                     model.phone    = ws.phoneTF.text;
                                     model.weChat   = ws.weChatTF.text;
@@ -235,7 +231,8 @@
                                     [NotificationCenter postNotificationName:USER_MODIFY_SUCCESS object:nil userInfo:dict];
                                     [ws.navigationController popViewControllerAnimated:YES];
                                 } failure:^(NSString *error) {
-                                  [SVProgressHUD showErrorWithStatus:error];
+                                    [hud hideAnimated:YES];
+                                    [MBProgressHUD showFailureInView:ws.view mesg:error];
                                 }];
 }
 

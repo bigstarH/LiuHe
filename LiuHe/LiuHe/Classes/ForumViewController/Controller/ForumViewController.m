@@ -7,9 +7,9 @@
 //
 
 #import <MJRefresh/MJRefresh.h>
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "PostReleaseViewController.h"
 #import "ForumDetailViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "XQFasciatePageControl.h"
 #import "ForumViewController.h"
 #import "NSString+Extension.h"
@@ -33,6 +33,8 @@
 @property (nonatomic, weak) XQFasciatePageControl *pageControl;
 
 @property (nonatomic, weak) UITableView *tableView;
+
+@property (nonatomic, weak) MBProgressHUD *hud;
 /** 论坛帖子数据数组 */
 @property (nonatomic, strong) NSArray *dataList;
 /** 分页 */
@@ -57,7 +59,9 @@
     [self getAdvertisementPic];
     // 获取论坛数据
     self.loadFailure = NO;
-    [SVProgressHUD showWithStatus:@"正在加載中..."];
+    
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:@"正在加載中..." removeOnHide:NO];
+    self.hud = hud;
     [self getForumPostWithMore:NO];
 }
 
@@ -65,17 +69,11 @@
 {
     [super viewDidAppear:animated];
     if ((!self.dataList) || self.dataList.count <= 0) {
-        [SVProgressHUD showWithStatus:@"正在加載中..."];
         if (_loadFailure) {
+            [self.hud showAnimated:YES];
             [self getForumPostWithMore:NO];
         }
     }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [SVProgressHUD dismiss];
 }
 
 #pragma mark - start 设置导航栏
@@ -284,14 +282,14 @@
     __weak typeof(self) ws = self;
     [[NetworkManager shareManager] forumPostWithStar:[NSString stringWithFormat:@"%zd", self.star]
                                              success:^(NSArray *array) {
-                                                 [SVProgressHUD dismiss];
+                                                 [ws.hud hideAnimated:YES];
                                                  [ws endRefreshing];
                                                  NSMutableArray *dataList = [NSMutableArray array];
                                                  ws.tableView.mj_header.hidden = NO;
                                                  if (more) {  // 上拉加载更多数据
                                                      if ((!array) || array.count <= 0) {
                                                          ws.tableView.mj_footer.hidden = YES;
-                                                         [SVProgressHUD showErrorWithStatus:@"沒有更多數據了"];
+                                                         [MBProgressHUD showFailureInView:ws.view mesg:@"沒有更多數據了"];
                                                          return ;
                                                      }
                                                      [dataList addObjectsFromArray:ws.dataList];
@@ -315,7 +313,8 @@
                                              } failure:^(NSString *error) {
                                                  ws.loadFailure = YES;
                                                  [ws endRefreshing];
-                                                 [SVProgressHUD showErrorWithStatus:error];
+                                                 [ws.hud hideAnimated:YES];
+                                                 [MBProgressHUD showFailureInView:ws.view mesg:error];
                                              }];
 }
 
@@ -335,7 +334,7 @@
                                             [ws setCycleImageData];
                                             [ws.cycleImageView startPlayImageView];
                                         } failure:^(NSString *error) {
-                                            [SVProgressHUD showErrorWithStatus:error];
+                                            [MBProgressHUD showFailureInView:ws.view mesg:error];
                                         }];
 }
 #pragma mark end 网络请求

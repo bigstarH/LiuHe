@@ -355,18 +355,18 @@ static id networkInstance;
 
 - (void)lotteryStartWithSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
 {
-    [self.manager POST:USER_POST_URL parameters:@{@"enews" : @"IosKj"} progress:nil
-               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-                   NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
-                   if (code == 1) {
-                       successBlock ? successBlock(responseDict) : nil;
-                   }else {
-                       failureBlock ? failureBlock(@"") : nil;
-                   }
-               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
-               }];
+    [self.manager GET:LOTTERY_RESULT_URL parameters:nil progress:nil
+              success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                  NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                  NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
+                  if (code == 1) {
+                      successBlock ? successBlock(responseDict) : nil;
+                  }else {
+                      failureBlock ? failureBlock(@"") : nil;
+                  }
+              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                  failureBlock ? failureBlock(@"網絡錯誤") : nil;
+              }];
 }
 
 - (void)lotteryNextTimeWithSuccess:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
@@ -436,6 +436,17 @@ static id networkInstance;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                    failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
+}
+
+- (void)picLibraryWithUrl:(NSString *)url success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    [self.manager GET:url parameters:nil progress:nil
+              success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                  NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                  successBlock ? successBlock(array) : nil;
+              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                  failureBlock ? failureBlock(@"網絡錯誤") : nil;
+              }];
 }
 
 - (void)collectingWithClassID:(NSString *)classID ID:(NSString *)ID success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock

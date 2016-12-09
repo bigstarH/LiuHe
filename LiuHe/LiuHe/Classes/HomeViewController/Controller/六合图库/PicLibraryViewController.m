@@ -6,8 +6,8 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "PicLibraryViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "PicDetailViewController.h"
 #import "PicLibraryTableView.h"
 #import "PicLibraryModel.h"
@@ -31,7 +31,7 @@
 
 - (void)dealloc
 {
-    [SVProgressHUD dismiss];
+    NSLog(@"PicLibraryViewController dealloc");
 }
 
 - (void)viewDidLoad
@@ -45,7 +45,7 @@
     [self createTableViewWithIndex:0];
     
     // 网络请求
-    [self getNetData];
+    [self getNetData:YES];
 }
 
 #pragma mark - start 设置导航栏
@@ -98,10 +98,10 @@
     CGRect  frame  = CGRectMake(SCREEN_WIDTH * index, 0, SCREEN_WIDTH, height);
     PicLibraryTableView *tableView = [[PicLibraryTableView alloc] initWithFrame:frame];
     tableView.tag        = PLTableViewTypeColours + index;
+    tableView.star       = starBegin;
     tableView.delegate   = self;
     tableView.rowHeight  = HEIGHT(60);
     tableView.classID    = [self getCurrentClassIDWithIndex:index];
-    [tableView setHideMJHeader:YES];
     [tableView setHideMJFooter:YES];
     [self.scrollView addSubview:tableView];
 }
@@ -133,22 +133,33 @@
     }
 }
 
+/** 返回URL */
+- (NSString *)getCurrentUrlWithTag:(NSInteger)tag
+{
+    switch (tag) {
+        case 0:  // 彩色图库
+            return PHOTO_COLOURS_URL;
+        case 1:  // 玄机图库
+            return PHOTO_MYSTERY_URL;
+        case 2:  // 黑白图库
+            return PHOTO_BAW_URL;
+        case 3:  // 全年图库
+            return PHOTO_YEAR_URL;
+        default:
+            return @"";
+    }
+}
+
 /** 处理PicLibraryModel模型 */
-- (void)dealWithModel:(PicLibraryModel *)model
+- (void)dealWithModel:(PicLibraryModel *)model tag:(PLTableViewType)tag
 {
     model.dateString = [SystemManager dateStringWithTime:[model.newstime doubleValue]
                                                formatter:@"yyyy-MM-dd HH:mm:ss"];
     NSString *url    = model.url;
-    NSString *text   = model.title;
-    if (model.qishu) {
-        url  = [NSString stringWithFormat:@"%@%@/", model.url, model.qishu];
+    if (tag != PLTableViewTypeYear) {
+        url  = [NSString stringWithFormat:@"%@%@/%@.jpg", model.url, model.qishu, model.type];
     }
-    if (model.type) {
-        url  = [NSString stringWithFormat:@"%@%@.jpg", url, model.type];
-        text = [NSString stringWithFormat:@"%@ %@", model.type, model.title];
-    }
-    model.urlString = url;
-    model.text      = text;
+    model.urlString  = url;
 }
 #pragma mark end 私有方法
 
@@ -193,9 +204,7 @@
     PicLibraryTableView *tableView = [self getCurrentTableViewWithIndex:item];
     if (!tableView) {
         [self createTableViewWithIndex:item];
-        [self getNetData];
-    }else if ((!tableView.dataList) || tableView.dataList.count <= 0) {
-        [self getNetData];
+        [self getNetData:YES];
     }
 }
 #pragma mark end ColumnViewDelegate
@@ -205,40 +214,34 @@
 - (void)picLTableView:(PicLibraryTableView *)picLTableView refreshingDataWithMore:(BOOL)more
 {
     if (more == NO) {
-        picLTableView.star  = 0;
-    }
-    __weak typeof(self) ws  = self;
-    NetworkManager *manager = [NetworkManager shareManager];
-    [manager picLibraryWithClassID:picLTableView.classID
-                              star:[NSString stringWithFormat:@"%zd", picLTableView.star]
-                           success:^(NSArray *array) {
-                               [picLTableView endRefreshing];
-                               NSMutableArray *dataList = [NSMutableArray array];
-                               if (more) {
+        [self getNetData:NO];
+    }else {
+        __weak typeof(self) ws  = self;
+        NetworkManager *manager = [NetworkManager shareManager];
+        [manager picLibraryWithClassID:picLTableView.classID
+                                  star:[NSString stringWithFormat:@"%zd", picLTableView.star]
+                               success:^(NSArray *array) {
+                                   [picLTableView endRefreshing];
                                    if ((!array) || array.count <= 0) {
                                        [picLTableView setHideMJFooter:YES];
-                                       [SVProgressHUD showErrorWithStatus:@"沒有更多數據了"];
+                                       [MBProgressHUD showFailureInView:ws.view mesg:@"沒有更多數據了"];
                                        return ;
                                    }
-                                   [dataList addObjectsFromArray:picLTableView.dataList];
-                               }else {
-                                   if (array.count >= pageSize) {
-                                       [picLTableView setHideMJFooter:NO];
+                                   NSMutableArray *dataList = [picLTableView.dataList mutableCopy];
+                                   for (int i = 0; i < array.count; i++) {
+                                       NSDictionary *dict = array[i];
+                                       PicLibraryModel *data = [PicLibraryModel picLibraryWithDict:dict];
+                                       [ws dealWithModel:data tag:picLTableView.tag];
+                                       [dataList addObject:data];
                                    }
-                               }
-                               for (int i = 0; i < array.count; i++) {
-                                   NSDictionary *dict = array[i];
-                                   PicLibraryModel *data = [PicLibraryModel picLibraryWithDict:dict];
-                                   [ws dealWithModel:data];
-                                   [dataList addObject:data];
-                               }
-                               picLTableView.star     = picLTableView.star + 20;
-                               picLTableView.dataList = dataList;
-                               [picLTableView.tableView reloadData];
-                           } failure:^(NSString *error) {
-                               [picLTableView endRefreshing];
-                               [SVProgressHUD showErrorWithStatus:error];
-                           }];
+                                   picLTableView.star     = picLTableView.star + 20;
+                                   picLTableView.dataList = dataList;
+                                   [picLTableView.tableView reloadData];
+                               } failure:^(NSString *error) {
+                                   [picLTableView endRefreshing];
+                                   [MBProgressHUD showFailureInView:ws.view mesg:error];
+                               }];
+    }
 }
 
 /** 点击了某一行 */
@@ -247,6 +250,7 @@
     PicDetailViewController *vc = [[PicDetailViewController alloc] init];
     vc.model   = model;
     vc.classID = picLTableView.classID;
+    vc.isYearLibrary = picLTableView.tag == PLTableViewTypeYear;
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark end PicLibraryTableViewDelegate
@@ -256,45 +260,47 @@
 {
     NSInteger currentIndex = scrollView.contentOffset.x / SCREEN_WIDTH;
     self.index = currentIndex;
-    [self.columnView scrollToCurrentIndex:currentIndex];
+    [self.columnView scrollToCurrentIndex:currentIndex animated:YES];
     PicLibraryTableView *tableView = [self getCurrentTableViewWithIndex:currentIndex];
     if (!tableView) {
         [self createTableViewWithIndex:currentIndex];
-        [self getNetData];
-    }else if ((!tableView.dataList) || tableView.dataList.count <= 0) {
-        [self getNetData];
+        [self getNetData:YES];
     }
 }
 #pragma mark end UIScrollViewDelegate
 
 #pragma mark - start 网络请求
-- (void)getNetData
+- (void)getNetData:(BOOL)needHUD
 {
     PicLibraryTableView *tableView = [self getCurrentTableViewWithIndex:self.index];
     NetworkManager *manager = [NetworkManager shareManager];
     __weak typeof(self) ws  = self;
-    [SVProgressHUD showWithStatus:@"正在加載中..."];
-    [manager picLibraryWithClassID:tableView.classID
-                              star:[NSString stringWithFormat:@"%zd", tableView.star]
-                           success:^(NSArray *array) {
-                               [SVProgressHUD dismiss];
-                               [tableView setHideMJHeader:NO];
-                               if (array.count >= pageSize) {
-                                   [tableView setHideMJFooter:NO];
-                               }
-                               NSMutableArray *dataList = [NSMutableArray array];
-                               tableView.star = 20;
-                               for (int i = 0; i < array.count; i++) {
-                                   NSDictionary *dict = array[i];
-                                   PicLibraryModel *data = [PicLibraryModel picLibraryWithDict:dict];
-                                   [ws dealWithModel:data];
-                                   [dataList addObject:data];
-                               }
-                               tableView.dataList = dataList;
-                               [tableView.tableView reloadData];
-                           } failure:^(NSString *error) {
-                               [SVProgressHUD showErrorWithStatus:error];
-                           }];
+    MBProgressHUD *hud      = nil;
+    if (needHUD) {
+        hud = [MBProgressHUD hudView:self.view text:@"正在加載中..." removeOnHide:YES];
+    }
+    [manager picLibraryWithUrl:[self getCurrentUrlWithTag:self.index]
+                       success:^(NSArray *array) {
+                           [hud hideAnimated:YES];
+                           [tableView endRefreshing];
+                           if (array.count >= pageSize) {
+                               [tableView setHideMJFooter:NO];
+                           }
+                           NSMutableArray *dataList = [NSMutableArray array];
+                           tableView.star = starBegin;
+                           for (int i = 0; i < array.count; i++) {
+                               NSDictionary *dict = array[i];
+                               PicLibraryModel *data = [PicLibraryModel picLibraryWithDict:dict];
+                               [ws dealWithModel:data tag:tableView.tag];
+                               [dataList addObject:data];
+                           }
+                           tableView.dataList = dataList;
+                           [tableView.tableView reloadData];
+                       } failure:^(NSString *error) {
+                           [tableView endRefreshing];
+                           [hud hideAnimated:YES];
+                           [MBProgressHUD showFailureInView:ws.view mesg:error];
+                       }];
 }
 #pragma mark end 网络请求
 @end

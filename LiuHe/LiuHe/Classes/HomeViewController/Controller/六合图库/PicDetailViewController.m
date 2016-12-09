@@ -7,15 +7,16 @@
 //
 
 #import <UIImageView+WebCache.h>
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "PicDetailViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "PicLibraryModel.h"
+#import "PictureBrowser.h"
 #import "NetworkManager.h"
 #import "PictureCell.h"
 #import "ColumnView.h"
 #import "XQToast.h"
 
-@interface PicDetailViewController () <UIScrollViewDelegate, ColumnViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource>
+@interface PicDetailViewController () <ColumnViewDelegate, PictureCellDelegate, PictureBrowserDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic, strong) NSArray *dataList;
 
@@ -23,13 +24,11 @@
 
 @property (nonatomic, weak) ColumnView *columnView;
 
-@property (nonatomic, weak) UIView *maskView;
-
-@property (nonatomic, weak) UIImageView *imageView;
-/** imageView原来的位置尺寸 */
-@property (nonatomic) CGRect originFrame;
+@property (nonatomic, weak) PictureBrowser *browser;
 
 @property (nonatomic, weak) UIImageView *bigImageView;
+
+@property (nonatomic) NSInteger currentIndex;
 
 @end
 
@@ -37,13 +36,14 @@
 
 - (void)dealloc
 {
-    [SVProgressHUD dismiss];
+    NSLog(@"PicDetailViewController dealloc");
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    self.currentIndex         = 0;
     
     // 创建栏目栏
     [self createColumnView];
@@ -69,14 +69,15 @@
 /** 按钮收藏事件 */
 - (void)collectEvent
 {
-    [SVProgressHUD show];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     [[NetworkManager shareManager] collectingWithClassID:self.classID
                                                       ID:_model.sid
                                                  success:^(NSString *string) {
-                                                     [SVProgressHUD dismiss];
+                                                     [hud hideAnimated:YES];
                                                      [[XQToast makeText:string] show];
                                                  } failure:^(NSString *error) {
-                                                     [SVProgressHUD showErrorWithStatus:error];
+                                                     [hud hideAnimated:YES];
+                                                     [MBProgressHUD showFailureInView:self.view mesg:error];
                                                  }];
 }
 #pragma mark end 设置导航栏
@@ -85,28 +86,33 @@
 /** 创建栏目栏 */
 - (void)createColumnView
 {
-//    NSMutableArray *list  = [NSMutableArray array];
     NSMutableArray *array = [NSMutableArray array];
-    for (int i = _model.qishu.intValue; i > 0 ; i--) {
-        NSString *str = [NSString stringWithFormat:@"第%d期", i];
-        [array addObject:str];
-//        [list addObject:@(i)];
+    NSMutableArray *list  = [NSMutableArray array];
+    if (self.isYearLibrary) {
+        [array addObject:_model.urlString];
+        [list addObject:_model.urlString];
+    }else {
+        for (int i = _model.qishu.intValue; i > 0 ; i--) {
+            NSString *str = [NSString stringWithFormat:@"第%d期", i];
+            NSString *url = [NSString stringWithFormat:@"%@%03d/%@.jpg", _model.url, i, _model.type];
+            [array addObject:str];
+            [list addObject:url];
+        }
+        ColumnView *columnView = [[ColumnView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, HEIGHT(35))];
+        self.columnView        = columnView;
+        columnView.itemWidth   = SCREEN_WIDTH * 0.23;
+        columnView.delegate    = self;
+        columnView.items       = array;
+        [columnView setBackgroundColor:RGBCOLOR(245, 245, 245)];
+        [self.view addSubview:columnView];
     }
-    ColumnView *columnView = [[ColumnView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, HEIGHT(35))];
-    self.columnView        = columnView;
-    columnView.itemWidth   = SCREEN_WIDTH * 0.23;
-    columnView.delegate    = self;
-    columnView.items       = array;
-    [columnView setBackgroundColor:RGBCOLOR(245, 245, 245)];
-    [self.view addSubview:columnView];
-    
-    self.dataList = array;
+    self.dataList = list;
 }
 
 /** 创建CollectionView */
 - (void)createCollectionView
 {
-    CGFloat originY = CGRectGetMaxY(self.columnView.frame);
+    CGFloat originY = self.isYearLibrary ? 65 : CGRectGetMaxY(self.columnView.frame);
     
     CGFloat height  = SCREEN_HEIGHT - originY;
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
@@ -124,31 +130,37 @@
 }
 #pragma mark end 初始化控件
 
-#pragma mark - start 手势事件
-/** 移除大图，恢复原图 */
-- (void)removeBigPic:(UITapGestureRecognizer *)tap
+#pragma mark - start 懒加载
+- (PictureBrowser *)browser
 {
-    UIScrollView *scrollView = (UIScrollView *)tap.view;
-    
-    CGRect frame = [self.view convertRect:self.originFrame toView:scrollView];
-    [UIView animateWithDuration:0.2 animations:^{
-        self.maskView.alpha     = 0.0;
-        self.bigImageView.frame = frame;
-    } completion:^(BOOL finished) {
-        self.imageView.hidden = NO;
-        [self.maskView removeFromSuperview];
-        [self.bigImageView removeFromSuperview];
-        [scrollView removeFromSuperview];
-    }];
+    if (!_browser) {
+        PictureBrowser *browser = [PictureBrowser pictureBrowser:self.dataList];
+        _browser         = browser;
+        browser.delegate = self;
+        [self.view addSubview:browser];
+    }
+    return _browser;
 }
-#pragma mark end 手势事件
+#pragma mark end 懒加载
 
 #pragma mark - start ColumnViewDelegate
 - (void)columnView:(ColumnView *)columnView didSelectedAtItem:(NSInteger)item
 {
-    NSLog(@"item = %zd", item);
+    self.currentIndex = item;
+    CGFloat offsetX   = item * _collectionView.bounds.size.width;
+    [_collectionView setContentOffset:CGPointMake(offsetX, 0) animated:NO];
 }
 #pragma mark end ColumnViewDelegate
+
+#pragma mark - start PictureBrowserDelegate
+/** 点击了浏览器的第index张图片 */
+- (void)pictureBrowser:(PictureBrowser *)browser didClickItemAtIndex:(NSInteger)index
+{
+    self.bigImageView.hidden = NO;
+    [self columnView:self.columnView didSelectedAtItem:index];
+    [self.columnView scrollToCurrentIndex:self.currentIndex animated:NO];
+}
+#pragma mark end PictureBrowserDelegate
 
 #pragma mark - start UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -166,31 +178,45 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     PictureCell *cell = (PictureCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"CELLID" forIndexPath:indexPath];
-    NSInteger index = self.model.qishu.integerValue - indexPath.item;
-    NSString *url   = [NSString stringWithFormat:@"%@%zd/%@.jpg", _model.url, index, _model.type];
+    cell.delegate     = self;
+    NSString *url     = self.dataList[indexPath.item];
     [cell setImageWithUrl:url];
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+/** 点击了图片 */
+- (void)pictureCell:(PictureCell *)cell didClickWithImageView:(UIImageView *)imageView originFrame:(CGRect)originFrame
 {
+    self.bigImageView = imageView;
+    CGRect frame  = [cell.contentView convertRect:originFrame toView:self.browser];
+    [self.browser hideCollectionView:YES];
     
+    NSString *url = self.dataList[self.currentIndex];
+    UIImageView *tempImgV = [[UIImageView alloc] initWithFrame:frame];
+    [tempImgV setContentMode:UIViewContentModeScaleAspectFill];
+    [tempImgV sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil];
+    [imageView setHidden:YES];
+    [self.browser addSubview:tempImgV];
+    
+    CGRect endFrame   = frame;
+    endFrame.origin.x = (SCREEN_WIDTH - frame.size.width) * 0.5;
+    endFrame.origin.y = (SCREEN_HEIGHT - frame.size.height) * 0.5;
+    [self.browser setOriginFrame:frame];
+    [UIView animateWithDuration:0.3 animations:^{
+        tempImgV.frame = endFrame;
+    } completion:^(BOOL finished) {
+        [tempImgV removeFromSuperview];
+        [self.browser hideCollectionView:NO];
+        [self.browser setCurrentIndex:self.currentIndex];
+    }];
 }
 #pragma mark end UICollectionViewDelegate, UICollectionViewDataSource
 
 #pragma mark - start UIScrollViewDelegate
-/** 实现图片的缩放 */
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    return self.bigImageView;
-}
-
-/** 实现图片在缩放过程中居中 */
-- (void)scrollViewDidZoom:(UIScrollView *)scrollView
-{
-    CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width) ? (scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5 : 0.0;
-    CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height)?(scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
-    _bigImageView.center = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX, scrollView.contentSize.height * 0.5 + offsetY);
+    self.currentIndex = scrollView.contentOffset.x / scrollView.bounds.size.width;
+    [self.columnView scrollToCurrentIndex:self.currentIndex animated:YES];
 }
 #pragma mark end UIScrollViewDelegate
 @end

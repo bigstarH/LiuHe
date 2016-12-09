@@ -6,7 +6,7 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
+#import "MBProgressHUD+Extension.h"
 #import "RegisteViewController.h"
 #import "LoginViewController.h"
 #import "UIImage+Extension.h"
@@ -14,7 +14,7 @@
 #import "XQTextField.h"
 #import "XQToast.h"
 
-@interface LoginViewController ()
+@interface LoginViewController () <UITextFieldDelegate>
 
 @property (nonatomic, weak) XQTextField *accountTF;
 
@@ -26,7 +26,6 @@
 
 - (void)dealloc
 {
-    [SVProgressHUD dismiss];
     [NotificationCenter removeObserver:self];
 }
 
@@ -72,6 +71,7 @@
     CGFloat accountTFY     = 64 + HEIGHT(100);
     XQTextField *accountTF = [[XQTextField alloc] initWithFrame:CGRectMake(accountTFX, accountTFY, accountTFW, tfH)];
     self.accountTF         = accountTF;
+    accountTF.delegate     = self;
     accountTF.borderStyle  = UITextBorderStyleNone;
     accountTF.placeholder  = @"請輸入用户名";
     accountTF.textColor    = [UIColor whiteColor];
@@ -89,6 +89,7 @@
     CGFloat pswTFY     = CGRectGetMaxY(line.frame) + HEIGHT(3);
     XQTextField *pswTF = [[XQTextField alloc] initWithFrame:CGRectMake(accountTFX, pswTFY, accountTFW, tfH)];
     self.passwordTF    = pswTF;
+    pswTF.delegate     = self;
     pswTF.borderStyle  = UITextBorderStyleNone;
     pswTF.placeholder  = @"請輸入密碼";
     pswTF.textColor    = [UIColor whiteColor];
@@ -159,13 +160,14 @@
         return;
     }
     
-    [SVProgressHUD showWithStatus:@"正在登录中"];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:@"正在登录中..." removeOnHide:YES];
     __weak typeof(self) ws = self;
     [[NetworkManager shareManager] userLoginWithUsername:userName password:password success:^{
-        [SVProgressHUD dismiss];
+        [hud hideAnimated:YES];
         [ws.navigationController popViewControllerAnimated:YES];
     } failure:^(NSString *error) {
-        [SVProgressHUD showErrorWithStatus:error];
+        [hud hideAnimated:YES];
+        [MBProgressHUD showFailureInView:ws.view mesg:error];
     }];
 }
 
@@ -175,4 +177,12 @@
     RegisteViewController *regVC = [[RegisteViewController alloc] init];
     [self.navigationController pushViewController:regVC animated:YES];
 }
+
+#pragma mark - start UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+#pragma mark end UITextFieldDelegate
 @end

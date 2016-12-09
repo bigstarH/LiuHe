@@ -117,6 +117,10 @@
                          star:(NSString *)star
                       success:(void (^)(NSArray *array))successBlock
                       failure:(void (^)(NSString *error))failureBlock;
+/** 23 静态获取图库50条数据 */
+- (void)picLibraryWithUrl:(NSString *)url
+                  success:(void (^)(NSArray *array))successBlock
+                  failure:(void (^)(NSString *error))failureBlock;
 /** 23 收藏 */
 - (void)collectingWithClassID:(NSString *)classID
                            ID:(NSString *)ID
@@ -142,6 +146,7 @@
                             text:(NSString *)text
                          success:(void (^)(NSString *str))successBlock
                          failure:(void (^)(NSString *error))failureBlock;
+/**  */
 #pragma mark end 网络请求
 
 @end

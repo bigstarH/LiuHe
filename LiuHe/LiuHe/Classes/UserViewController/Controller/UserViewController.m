@@ -6,9 +6,9 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "MyCollectionViewController.h"
 #import "PostReleaseViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "ModifyPswViewController.h"
 #import "SettingViewController.h"
 #import "MyReplyViewController.h"
@@ -86,7 +86,7 @@
     [tableView setTableHeaderView:header];
     [tableView setTableFooterView:[[UIView alloc] init]];
     [tableView setShowsVerticalScrollIndicator:NO];
-    [tableView setScrollEnabled:NO];
+    [tableView setScrollEnabled:IPHONE_4S];
     [self.view insertSubview:tableView belowSubview:self.navigationBar];
     
     UserModel *model = [UserModel getCurrentUser];
@@ -145,9 +145,9 @@
     }
     if (sender.tag == 1) {  // 签到
         __weak typeof(self) ws = self;
-        [SVProgressHUD show];
+        MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
         [[NetworkManager shareManager] userSignInWithSuccess:^(NSDictionary *dict) {
-            [SVProgressHUD dismiss];
+            [hud hideAnimated:YES];
             NSString *ts         = [dict objectForKey:@"ts"];
             MineHeadView *header = (MineHeadView *)[ws.tableView tableHeaderView];
             [header setIntegral:[[dict objectForKey:@"fen"] intValue]];
@@ -155,7 +155,7 @@
             toast.centerShow = YES;
             [toast show];
         } failure:^(NSString *error) {
-            [SVProgressHUD dismiss];
+            [hud hideAnimated:YES];
             XQToast *toast   = [XQToast makeText:error];
             toast.centerShow = YES;
             [toast show];
@@ -264,7 +264,7 @@
         ModifyPswViewController *vc = [[ModifyPswViewController alloc] initWithHidesBottomBar:YES];
         [self.navigationController pushViewController:vc animated:YES];
     }else {  // 还未登录，提示先登录
-        [SVProgressHUD showErrorWithStatus:@"您還未登錄，請先登錄！"];
+        [[XQToast makeText:@"請先登錄"] show];
     }
 }
 #pragma mark end MineHeadViewDelegate

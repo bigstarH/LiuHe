@@ -6,9 +6,9 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "VideoLotteryViewController.h"
 #import "PicLibraryViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "TreasureViewController.h"
 #import "HistoryViewController.h"
 #import "XQFasciatePageControl.h"
@@ -36,6 +36,8 @@
 
 @property (nonatomic, weak) XQFasciatePageControl *pageControl;
 
+@property (nonatomic, weak) CountDowner *countDown;
+
 @end
 
 @implementation HomeViewController
@@ -51,8 +53,13 @@
     
     // 获取广告图片
     [self getAdvertisementPic];
+    
+    // 创建倒计时
+    [self createCountDowner];
+    
     // 获取下期开奖事件
-    [self getLotteryNextTime];
+    //    [self getLotteryNextTime];
+    [self getLotteryNumber];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -193,22 +200,17 @@
 }
 
 /** 创建倒计时 */
-- (void)createCountDownerWithTime:(NSTimeInterval)time
+- (void)createCountDowner
 {
     CGFloat width      = WIDTH(200);
     CGFloat originX    = (CGRectGetWidth(self.timeView.frame) - width) * 0.5;
     CGFloat originY    = CGRectGetMaxY(self.nextTimeLab.frame);
     CGFloat height     = CGRectGetHeight(self.timeView.frame) - originY;
-    NSDate *date       = [NSDate date];
-    NSTimeInterval dis = time - [date timeIntervalSince1970];
-    if (dis <= 0) {
-        dis  = 0;
-    }
     
-    CountDowner *count = [CountDowner countDownerWithTime:dis];
+    CountDowner *count = [CountDowner countDownerWithTime:0];
+    self.countDown     = count;
     count.frame        = CGRectMake(originX, originY, width, height);
     [count setBackgroundColor:MAIN_COLOR];
-    [count startCountDown];
     [self.timeView addSubview:count];
 }
 
@@ -353,21 +355,41 @@
                                             [ws setCycleImageData];
                                             [ws.cycleImageView startPlayImageView];
                                         } failure:^(NSString *error) {
-                                            [SVProgressHUD showErrorWithStatus:error];
+                                            [MBProgressHUD showFailureInView:ws.view mesg:error];
                                         }];
 }
 
 /** 获取下期开奖事件 */
-- (void)getLotteryNextTime
+//- (void)getLotteryNextTime
+//{
+//    __weak typeof(self) ws = self;
+//    [[NetworkManager shareManager] lotteryNextTimeWithSuccess:^(NSString *time) {
+//        NSString *formatter = @"MM月dd日  HH时mm分 EE";
+//        NSString *str = [SystemManager dateStringWithTime:[time doubleValue] formatter:formatter];
+//        ws.nextTimeLab.text = [NSString stringWithFormat:@"下期開獎時間：%@",str];
+//        [ws createCountDownerWithTime:[time doubleValue]];
+//    } failure:^(NSString *error) {
+//        [MBProgressHUD showFailureInView:ws.view mesg:error];
+//    }];
+//}
+
+/** 获取开奖号码 */
+- (void)getLotteryNumber
 {
-    __weak typeof(self) ws = self;
-    [[NetworkManager shareManager] lotteryNextTimeWithSuccess:^(NSString *time) {
+    __weak typeof(self) ws  = self;
+    [[NetworkManager shareManager] lotteryStartWithSuccess:^(NSDictionary *dict) {
+        NSString *time      = [dict objectForKey:@"xyqsjc"];
         NSString *formatter = @"MM月dd日  HH时mm分 EE";
         NSString *str = [SystemManager dateStringWithTime:[time doubleValue] formatter:formatter];
         ws.nextTimeLab.text = [NSString stringWithFormat:@"下期開獎時間：%@",str];
-        [ws createCountDownerWithTime:[time doubleValue]];
+        
+        NSDate *date        = [NSDate date];
+        NSTimeInterval dis  = [time doubleValue] - [date timeIntervalSince1970];
+        if (dis <= 0)  dis  = 0;
+        [ws.countDown setCountDownTime:dis];
+        [ws.countDown startCountDown];
     } failure:^(NSString *error) {
-        [SVProgressHUD showErrorWithStatus:error];
+        [MBProgressHUD showFailureInView:ws.view mesg:error];
     }];
 }
 #pragma mark end 网络请求

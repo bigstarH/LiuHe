@@ -6,8 +6,8 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "HistoryDetailViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "XQFasciatePageControl.h"
 #import "LotteryNumberModel.h"
 #import "XQCycleImageView.h"
@@ -246,7 +246,7 @@
                                             [ws setCycleImageData];
                                             [ws.cycleImageView startPlayImageView];
                                         } failure:^(NSString *error) {
-                                            [SVProgressHUD showErrorWithStatus:error];
+                                            [MBProgressHUD showFailureInView:ws.view mesg:error];
                                         }];
 }
 #pragma mark end 网络请求

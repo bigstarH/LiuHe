@@ -65,10 +65,31 @@ static NSString *cellID = @"cellID";
     self.collectionView.backgroundColor = backgroundColor;
 }
 
-- (void)scrollToCurrentIndex:(NSInteger)currentIndex
+- (void)scrollToCurrentIndex:(NSInteger)currentIndex animated:(BOOL)animated
 {
+    if (currentIndex > _currentIndex) {  // 向右滑动
+        CGFloat curMaxX = _collectionView.contentOffset.x + self.bounds.size.width;
+        CGFloat maxX    = (currentIndex + 1) * _itemWidth;
+        if (maxX >= curMaxX) {
+            CGFloat offsetX = _collectionView.contentOffset.x + maxX - curMaxX;
+            if (currentIndex != _items.count - 1) {
+                offsetX     = offsetX + _itemWidth;
+            }
+            [_collectionView setContentOffset:CGPointMake(offsetX, 0) animated:animated];
+        }
+    }else {  // 向左滑动
+        CGFloat curMinX = _collectionView.contentOffset.x;
+        CGFloat minX    = currentIndex * _itemWidth;
+        if (minX <= curMinX) {
+            CGFloat offsetX = _collectionView.contentOffset.x + minX - curMinX;
+            if (currentIndex != 0) {
+                offsetX     = offsetX - _itemWidth;
+            }
+            [_collectionView setContentOffset:CGPointMake(offsetX, 0) animated:animated];
+        }
+    }
     _currentIndex = currentIndex;
-    [self.collectionView reloadData];
+    [_collectionView reloadData];
 }
 
 #pragma mark - start UICollectionViewDataSource, UICollectionViewDelegate
@@ -108,8 +129,7 @@ static NSString *cellID = @"cellID";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_currentIndex == indexPath.item) return;
-    _currentIndex = indexPath.item;
-    [collectionView reloadData];
+    [self scrollToCurrentIndex:indexPath.item animated:NO];
     if (self.delegate) {
         [self.delegate columnView:self didSelectedAtItem:indexPath.item];
     }
@@ -127,5 +147,4 @@ static NSString *cellID = @"cellID";
     return UIEdgeInsetsZero;
 }
 #pragma mark end UICollectionViewDelegateFlowLayout
-
 @end

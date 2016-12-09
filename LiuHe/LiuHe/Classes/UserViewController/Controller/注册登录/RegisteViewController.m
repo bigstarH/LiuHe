@@ -6,7 +6,7 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
+#import "MBProgressHUD+Extension.h"
 #import "RegisteViewController.h"
 #import "UIImage+Extension.h"
 #import "NetworkManager.h"
@@ -148,7 +148,7 @@
         return;
     }
     
-    [SVProgressHUD show];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     __weak typeof(self) ws  = self;
     NetworkManager *manager = [NetworkManager shareManager];
     [manager userRegisterWithUserName:userName
@@ -157,11 +157,13 @@
                                 phone:phone
                                 email:nil
                               success:^{
-                                  [SVProgressHUD showSuccessWithStatus:@"恭喜您，会员注册成功"];
+                                  [hud hideAnimated:YES];
+                                  [MBProgressHUD showSuccessInView:ws.view mesg:@"恭喜您，会员注册成功"];
                                   [NotificationCenter postNotificationName:USER_REGISTER_SUCCESS object:nil userInfo:@{@"username" : userName}];
                                   [ws.navigationController popViewControllerAnimated:YES];
                               } failure:^(NSString *error) {
-                                  [SVProgressHUD showErrorWithStatus:error];
+                                  [hud hideAnimated:YES];
+                                  [MBProgressHUD showFailureInView:ws.view mesg:error];
                               }];
 }
 

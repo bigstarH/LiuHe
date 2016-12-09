@@ -6,8 +6,8 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "PostReleaseViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "UIImage+Extension.h"
 #import "NetworkManager.h"
 #import "XQTextView.h"
@@ -21,6 +21,8 @@
 
 @property (nonatomic, weak) UIView *keyBoardToolBar;
 
+@property (nonatomic, weak) UIView *contentView;
+
 @end
 
 @implementation PostReleaseViewController
@@ -28,7 +30,6 @@
 - (void)dealloc
 {
     [NotificationCenter removeObserver:self];
-    [SVProgressHUD dismiss];
 }
 
 - (void)viewDidLoad
@@ -71,18 +72,21 @@
 
 - (void)createView
 {
-    CGFloat originY = 64 + HEIGHT(18);
-    CGFloat tfH     = HEIGHT(36);
-    CGRect frame    = CGRectMake(0, originY, SCREEN_WIDTH, tfH);
-    self.titleTF    = [self createTFWithFrame:frame placeholder:@"請輸入標題"];
-    
-    originY += tfH;
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, originY, SCREEN_WIDTH, HEIGHT(140))];
+    CGFloat originY  = 64 + HEIGHT(18);
+    CGFloat tfH      = HEIGHT(36);
+    CGFloat tvH      = HEIGHT(120);
+    CGFloat viewH    = tfH + tvH;
+    UIView *view     = [[UIView alloc] initWithFrame:CGRectMake(0, originY, SCREEN_WIDTH, viewH)];
+    self.contentView = view;
     [view setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:view];
+    [self.view insertSubview:view belowSubview:self.navigationBar];
+    
+    CGRect frame     = CGRectMake(0, 0, SCREEN_WIDTH, tfH);
+    self.titleTF     = [self createTFWithFrame:frame placeholder:@"請輸入標題"];
+    
     CGFloat contentTVX    = WIDTH(9);
     CGFloat contentTVW    = SCREEN_WIDTH - contentTVX * 2;
-    XQTextView *contentTV = [[XQTextView alloc] initWithFrame:CGRectMake(contentTVX, 0, contentTVW, HEIGHT(120))];
+    XQTextView *contentTV = [[XQTextView alloc] initWithFrame:CGRectMake(contentTVX, tfH, contentTVW, tvH)];
     self.contentTV        = contentTV;
     contentTV.placeholder = @"請輸入內容";
     contentTV.font        = [UIFont systemFontOfSize:fontSize(15)];
@@ -127,9 +131,8 @@
     textField.rightViewMode = UITextFieldViewModeAlways;
     textField.placeholder   = placeholder;
     textField.font          = [UIFont systemFontOfSize:fontSize(15)];
-    [textField setBackgroundColor:[UIColor whiteColor]];
     [textField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-    [self.view addSubview:textField];
+    [self.contentView addSubview:textField];
     
     UIView *leftView    = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH(12), frame.size.height)];
     textField.leftView  = leftView;
@@ -140,7 +143,7 @@
     CGFloat lineY = CGRectGetMaxY(frame) - 1;
     UIView *line  = [[UIView alloc] initWithFrame:CGRectMake(WIDTH(12), lineY, lineW, 1)];
     [line setBackgroundColor:RGBCOLOR(203, 203, 203)];
-    [self.view addSubview:line];
+    [self.contentView addSubview:line];
     return textField;
 }
 
@@ -155,7 +158,7 @@
         [[XQToast makeText:@"內容不能為空哦"] show];
         return;
     }
-    [SVProgressHUD show];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     __weak typeof(self) ws  = self;
     NetworkManager *manager = [NetworkManager shareManager];
     NSString *enews = self.type == VCTypePostNew ? @"AppMAddInfo" : @"AppMEditInfo";
@@ -165,13 +168,15 @@
                             title:self.titleTF.text
                           content:self.contentTV.text
                           success:^(NSString *str) {
-                              [SVProgressHUD showSuccessWithStatus:str];
+                              [hud hideAnimated:YES];
+                              [MBProgressHUD showSuccessInView:ws.view mesg:str];
                               if (ws.type == VCTypePostEdit) {
                                   [NotificationCenter postNotificationName:POST_EDIT_SUCCESS object:nil userInfo:nil];
                               }
                               [ws.navigationController popViewControllerAnimated:YES];
                           } failure:^(NSString *error) {
-                              [SVProgressHUD showErrorWithStatus:error];
+                              [hud hideAnimated:YES];
+                              [MBProgressHUD showSuccessInView:ws.view mesg:error];
                           }];
 }
 
@@ -188,19 +193,20 @@
     if (self.status == 1) {
         enews = @"MybbsE";
     }
-    [SVProgressHUD show];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     __weak typeof(self) ws  = self;
     NetworkManager *manager = [NetworkManager shareManager];
     [manager userPostDetailWithEnews:enews
                                  sid:self.sid
                              success:^(NSDictionary *dict) {
-                                 [SVProgressHUD dismiss];
+                                 [hud hideAnimated:YES];
                                  NSString *title   = dict[@"bt"];
                                  NSString *content = dict[@"nr"];
                                  ws.titleTF.text   = title;
                                  ws.contentTV.text = content;
                              } failure:^(NSString *error) {
-                                 [SVProgressHUD showErrorWithStatus:error];
+                                 [hud hideAnimated:YES];
+                                 [MBProgressHUD showSuccessInView:ws.view mesg:error];
                              }];
 }
 #pragma mark end 获取“我的帖子”详情
@@ -214,6 +220,28 @@
     [UIView animateWithDuration:animateTime animations:^{
         self.keyBoardToolBar.transform = CGAffineTransformMakeTranslation(0, -height);
     }];
+    
+    if ([self.titleTF isFirstResponder]) {
+        CGRect mFrame = [self.contentView convertRect:self.titleTF.frame toView:self.view];
+        CGFloat contentMaxY  = CGRectGetMaxY(mFrame);
+        CGFloat keyBoardMinY = SCREEN_HEIGHT - height;
+        CGFloat dis          = keyBoardMinY - contentMaxY;
+        if (dis < 0) {
+            [UIView animateWithDuration:animateTime animations:^{
+                self.contentView.transform = CGAffineTransformMakeTranslation(0, dis);
+            }];
+        }
+    }else {
+        CGRect mFrame = [self.contentView convertRect:self.contentTV.frame toView:self.view];
+        CGFloat contentMaxY  = CGRectGetMaxY(mFrame);
+        CGFloat keyBoardMinY = SCREEN_HEIGHT - height;
+        CGFloat dis          = keyBoardMinY - contentMaxY;
+        if (dis < 0) {
+            [UIView animateWithDuration:animateTime animations:^{
+                self.contentView.transform = CGAffineTransformMakeTranslation(0, dis);
+            }];
+        }
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
@@ -221,6 +249,7 @@
     CGFloat animateTime = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     [UIView animateWithDuration:animateTime animations:^{
         self.keyBoardToolBar.transform = CGAffineTransformIdentity;
+        self.contentView.transform     = CGAffineTransformIdentity;
     }];
 }
 #pragma mark end 键盘展示和消失通知事件

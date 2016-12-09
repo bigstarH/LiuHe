@@ -8,7 +8,7 @@
 
 #import <WebKit/WebKit.h>
 #import <MJRefresh/MJRefresh.h>
-#import <SVProgressHUD/SVProgressHUD.h>
+#import "MBProgressHUD+Extension.h"
 #import "XQFasciatePageControl.h"
 #import "WebViewController.h"
 #import "XQCycleImageView.h"
@@ -24,8 +24,6 @@
 @property (nonatomic, weak) XQCycleImageView *cycleImageView;
 
 @property (nonatomic, weak) XQFasciatePageControl *pageControl;
-
-@property (nonatomic) BOOL refreshing;
 
 @property (nonatomic, copy) NSString *requestUrl;
 
@@ -122,7 +120,6 @@
         __weak WKWebView *wb   = webView;
         webView.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
             // 加载网页
-            ws.refreshing = YES;
             NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:ws.requestUrl]];
             [wb loadRequest:request];
         }];
@@ -138,7 +135,6 @@
         __weak UIWebView *wb = webView;
         webView.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
             // 加载网页
-            ws.refreshing = YES;
             NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:ws.requestUrl]];
             [wb loadRequest:request];
         }];
@@ -194,25 +190,16 @@
 #pragma mark end XQCycleImageViewDelegate
 
 #pragma mark - start WKNavigationDelegate
-- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
-{
-    if (self.refreshing) {
-        self.refreshing = NO;
-        return;
-    }
-    [SVProgressHUD show];
-}
 /** 页面加载完成之后调用 */
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation
 {
-    [SVProgressHUD dismiss];
     [webView.scrollView.mj_header endRefreshing];
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(nonnull NSError *)error
 {
     [webView.scrollView.mj_header endRefreshing];
-    [SVProgressHUD showErrorWithStatus:@"網絡不是很好哦，請檢查您的網絡"];
+    [MBProgressHUD showFailureInView:self.view mesg:@"網絡不是很好哦，請檢查您的網絡"];
 }
 #pragma mark end WKNavigationDelegate
 
@@ -225,7 +212,7 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [webView.scrollView.mj_header endRefreshing];
-    [SVProgressHUD showErrorWithStatus:@"網絡不是很好哦，請檢查您的網絡"];
+    [MBProgressHUD showFailureInView:self.view mesg:@"網絡不是很好哦，請檢查您的網絡"];
 }
 #pragma mark end UIWebViewDelegate
 
@@ -246,7 +233,7 @@
                                             [ws setCycleImageData];
                                             [ws.cycleImageView startPlayImageView];
                                         } failure:^(NSString *error) {
-                                            [SVProgressHUD showErrorWithStatus:error];
+                                            [MBProgressHUD showFailureInView:ws.view mesg:error];
                                         }];
 }
 #pragma mark end 网络请求

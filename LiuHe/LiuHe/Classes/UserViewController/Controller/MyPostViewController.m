@@ -6,8 +6,8 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "PostReleaseViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "MyPostViewController.h"
 #import "XQSegmentedControl.h"
 #import "NetworkManager.h"
@@ -33,7 +33,6 @@
 - (void)dealloc
 {
     [NotificationCenter removeObserver:self];
-    [SVProgressHUD dismiss];
 }
 
 - (void)viewDidLoad
@@ -220,11 +219,11 @@
     if (type == 0) { // 未审核
         enews = @"Mybbs1";
     }
-    [SVProgressHUD show];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     __weak typeof(self) ws = self;
     [[NetworkManager shareManager] userPostWithEnews:enews
                                              success:^(NSArray *array) {
-                                                 [SVProgressHUD dismiss];
+                                                 [hud hideAnimated:YES];
                                                  NSMutableArray *data = [NSMutableArray array];
                                                  for (int i = 0; i < array.count; i++) {
                                                      NSDictionary *dict = array[i];
@@ -238,7 +237,8 @@
                                                  }
                                                  [ws.tableView reloadData];
                                              } failure:^(NSString *error) {
-                                                 [SVProgressHUD showErrorWithStatus:error];
+                                                 [hud hideAnimated:YES];
+                                                 [MBProgressHUD showFailureInView:ws.view mesg:error];
                                              }];
 }
 #pragma mark end 网络请求

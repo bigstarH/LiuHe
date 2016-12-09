@@ -6,9 +6,9 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "CollectionWebViewController.h"
 #import "MyCollectionViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "CollectionModel.h"
 #import "NetworkManager.h"
 #import "XQAlertView.h"
@@ -79,17 +79,18 @@
     [alert addButtonWithTitle:@"再想一想" style:XQAlertButtonStyleCancel handle:nil];
     [alert addButtonWithTitle:@"確定" style:XQAlertButtonStyleDefault handle:^{
         CollectionModel *model = [ws.array objectAtIndex:indexPath.row];
-        [SVProgressHUD show];
+        MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
         [[NetworkManager shareManager] cancelCollectingWithSid:model.sid
                                                        success:^(NSString *str) {
-                                                           [SVProgressHUD dismiss];
+                                                           [hud hideAnimated:YES];
                                                            [[XQToast makeText:str] show];
                                                            NSMutableArray *array = [ws.array mutableCopy];
                                                            [array removeObject:model];
                                                            ws.array = array;
                                                            [ws.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                                                        } failure:^(NSString *error) {
-                                                           [SVProgressHUD showErrorWithStatus:error];
+                                                           [hud hideAnimated:YES];
+                                                           [MBProgressHUD showFailureInView:ws.view mesg:error];
                                                        }];
     }];
     [alert show];
@@ -138,10 +139,10 @@
 #pragma mark - start 网络请求——获取我的收藏
 - (void)getMyCollectionData
 {
-    [SVProgressHUD showWithStatus:@"正在加载数据..."];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:@"正在加载数据..." removeOnHide:YES];
     __weak typeof(self) ws = self;
     [[NetworkManager shareManager] userCollectionWithSuccess:^(NSArray *array) {
-        [SVProgressHUD dismiss];
+        [hud hideAnimated:YES];
         NSMutableArray *data = [NSMutableArray array];
         for (int i = 0; i < array.count; i++) {
             NSDictionary *dict     = array[i];
@@ -151,7 +152,8 @@
         ws.array = data;
         [ws.tableView reloadData];
     } failure:^(NSString *error) {
-        [SVProgressHUD showErrorWithStatus:error];
+        [hud hideAnimated:YES];
+        [MBProgressHUD showFailureInView:ws.view mesg:error];
     }];
 }
 #pragma mark end 网络请求——获取我的收藏

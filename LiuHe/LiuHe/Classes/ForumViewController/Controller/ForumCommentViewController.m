@@ -6,8 +6,8 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "ForumCommentViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "UIImage+Extension.h"
 #import "NetworkManager.h"
 #import "XQTextView.h"
@@ -30,7 +30,6 @@
 - (void)dealloc
 {
     [NotificationCenter removeObserver:self];
-    [SVProgressHUD dismiss];
 }
 
 - (void)addNotification
@@ -157,25 +156,11 @@
         [[XQToast makeText:@"內容不能為空哦"] show];
         return;
     }
-    [SVProgressHUD show];
     if (self.type == FCVCTypeNew) {
         [self releaseNewComment];
     }else {
         [self releaseEditComment];
     }
-//    NSString *enews = self.type == VCTypePostNew ? @"AppMAddInfo" : @"AppMEditInfo";
-//    NSString *sid   = self.type == VCTypePostNew ? nil : self.sid;
-//    [manager postReleaseWithEnews:enews
-//                              sid:sid
-//                            title:self.titleTF.text
-//                          content:self.contentTV.text
-//                          success:^(NSString *str) {
-//                              
-//                              if (ws.type == VCTypePostEdit) {
-//                                  [NotificationCenter postNotificationName:POST_EDIT_SUCCESS object:nil userInfo:nil];
-//                              }
-//                          } failure:^(NSString *error) {
-//                          }];
 }
 
 - (void)sureEvent:(UIButton *)sender
@@ -211,26 +196,28 @@
     if (self.status == 1) {
         enews = @"MyrepE";
     }
-    [SVProgressHUD show];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     __weak typeof(self) ws  = self;
     NetworkManager *manager = [NetworkManager shareManager];
     [manager userReplyDetailWithEnews:enews
                                   sid:self.mSid
                               success:^(NSDictionary *dict) {
-                                  [SVProgressHUD dismiss];
+                                  [hud hideAnimated:YES];
                                   NSString *title   = dict[@"bt"];
                                   NSString *content = dict[@"nr"];
                                   ws.titleTF.text   = title;
                                   ws.contentTV.text = content;
                                   ws.linkid         = dict[@"linkid"];
                               } failure:^(NSString *error) {
-                                  [SVProgressHUD showErrorWithStatus:error];
+                                  [hud hideAnimated:YES];
+                                  [MBProgressHUD showFailureInView:ws.view mesg:error];
                               }];
 }
 
 - (void)releaseNewComment
 {
     __weak typeof(self) ws  = self;
+    MBProgressHUD *hud      = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     NetworkManager *manager = [NetworkManager shareManager];
     [manager forumPostReplyWithEnews:@"AppMAddInfo"
                                  sid:nil
@@ -239,17 +226,19 @@
                                title:self.titleTF.text
                                 text:self.contentTV.text
                              success:^(NSString *str) {
-                                 [SVProgressHUD dismiss];
+                                 [hud hideAnimated:YES];
                                  [[XQToast makeText:str] show];
                                  [ws.navigationController popViewControllerAnimated:YES];
                              } failure:^(NSString *error) {
-                                 [SVProgressHUD showErrorWithStatus:error];
+                                 [hud hideAnimated:YES];
+                                 [MBProgressHUD showFailureInView:ws.view mesg:error];
                              }];
 }
 
 - (void)releaseEditComment
 {
     __weak typeof(self) ws  = self;
+    MBProgressHUD *hud      = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     NetworkManager *manager = [NetworkManager shareManager];
     [manager forumPostReplyWithEnews:@"AppMEditInfo"
                                  sid:self.mSid
@@ -258,14 +247,15 @@
                                title:self.titleTF.text
                                 text:self.contentTV.text
                              success:^(NSString *str) {
-                                 [SVProgressHUD dismiss];
+                                 [hud hideAnimated:YES];
                                  [[XQToast makeText:str] show];
                                  if (ws.type == FCVCTypeEdit) {
                                      [NotificationCenter postNotificationName:FORUM_REPLY_EDIT_SUCCESS object:nil userInfo:nil];
                                  }
                                  [ws.navigationController popViewControllerAnimated:YES];
                              } failure:^(NSString *error) {
-                                 [SVProgressHUD showErrorWithStatus:error];
+                                 [hud hideAnimated:YES];
+                                 [MBProgressHUD showFailureInView:ws.view mesg:error];
                              }];
 }
 #pragma mark end 网络请求

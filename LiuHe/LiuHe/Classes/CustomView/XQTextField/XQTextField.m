@@ -10,8 +10,6 @@
 
 @interface XQTextField () <UITextFieldDelegate>
 
-@property (nonatomic, weak) UITextField *textField;
-
 @property (nonatomic, weak) UILabel *label;
 
 @end
@@ -31,7 +29,7 @@
 - (void)createView
 {
     UITextField *textField = [[UITextField alloc] init];
-    self.textField         = textField;
+    _textField             = textField;
     textField.delegate     = self;
     [textField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
     [textField addTarget:self action:@selector(textfieldDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -122,6 +120,12 @@
 {
     _autocapitalizationType = autocapitalizationType;
     self.textField.autocapitalizationType = autocapitalizationType;
+}
+
+- (void)setReturnKeyType:(UIReturnKeyType)returnKeyType
+{
+    _returnKeyType = returnKeyType;
+    self.textField.returnKeyType = returnKeyType;
 }
 
 - (void)setLeftViewMode:(UITextFieldViewMode)leftViewMode

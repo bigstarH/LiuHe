@@ -10,6 +10,8 @@
 
 @interface XQTextField : UIView
 
+
+@property (nonatomic, weak, readonly) UITextField *textField;
 /** 文字对其方式 */
 @property (nonatomic) NSTextAlignment textAlignment;
 /** 左视图模式 */
@@ -38,6 +40,8 @@
 @property (nonatomic, weak) UIView *rightView;
 /** 密文模式 */
 @property (nonatomic, getter=isSecureTextEntry) BOOL secureTextEntry;
+/** returnKey */
+@property (nonatomic) UIReturnKeyType returnKeyType;
 
 @property (nonatomic) UITextAutocapitalizationType autocapitalizationType;
 /** 代理 */

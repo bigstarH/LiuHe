@@ -15,7 +15,8 @@ typedef NS_ENUM(NSInteger, PLTableViewType) {
     PLTableViewTypeYear    = 1004   /**< 全年图库 */
 };
 
-#define pageSize 20
+#define pageSize  20
+#define starBegin 50
 
 @class PicLibraryTableView;
 @class PicLibraryModel;

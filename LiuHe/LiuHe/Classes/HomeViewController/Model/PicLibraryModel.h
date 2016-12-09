@@ -25,8 +25,6 @@
 @property (nonatomic, copy) NSString *dateString;
 /** 图片地址 */
 @property (nonatomic, copy) NSString *urlString;
-/** 序号 + 标题 */
-@property (nonatomic, copy) NSString *text;
 
 + (instancetype)picLibraryWithDict:(NSDictionary *)dict;
 

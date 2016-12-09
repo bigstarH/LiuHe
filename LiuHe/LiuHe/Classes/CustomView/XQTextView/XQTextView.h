@@ -10,6 +10,8 @@
 
 @interface XQTextView : UIView
 
+@property (nonatomic, weak, readonly) UITextView *textView;
+
 @property (nonatomic, copy) NSString *placeholder;
 
 @property (nonatomic, copy) NSString *text;

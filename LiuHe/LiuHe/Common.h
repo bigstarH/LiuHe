@@ -10,7 +10,8 @@
 #define Common_h
 
 // NSUserDefaults 键值
-#define USER_DIDLOGIN   @"user_didLogin"
+#define USER_DIDLOGIN     @"user_didLogin"
+#define NEXT_LOTTERY_TIME @"NEXT_LOTTERY_TIME"
 
 // 通知名
 #define USER_LOGIN_SUCCESS        @"USER_LOGIN_SUCCESS"        // 用户登录成功

@@ -6,8 +6,8 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "DataDetailViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "DataViewController.h"
 #import "NSString+Extension.h"
 #import "NetworkManager.h"
@@ -32,7 +32,7 @@
 
 - (void)dealloc
 {
-    [SVProgressHUD dismiss];
+    NSLog(@"DataViewController dealloc");
 }
 
 - (void)viewDidLoad
@@ -80,7 +80,6 @@
     tableView.tag        = TableViewTypeFavor + tag;
     tableView.delegate   = self;
     tableView.classID    = [self getCurrentClassIDWithTag:tag];
-    [tableView setHideMJHeader:YES];
     [tableView setHideMJFooter:YES];
     [self.view insertSubview:tableView belowSubview:self.moreBtn];
     return tableView;
@@ -252,7 +251,7 @@
                          if (more) {
                              if ((!array) || array.count <= 0) {
                                  [dataTableView setHideMJFooter:YES];
-                                 [SVProgressHUD showErrorWithStatus:@"沒有更多數據了"];
+                                 [MBProgressHUD showFailureInView:ws.view mesg:@"沒有更多數據了"];
                                  return ;
                              }
                              [dataList addObjectsFromArray:dataTableView.dataList];
@@ -272,7 +271,7 @@
                          [dataTableView.tableView reloadData];
                      } failure:^(NSString *error) {
                          [dataTableView endRefreshing];
-                         [SVProgressHUD showErrorWithStatus:error];
+                         [MBProgressHUD showFailureInView:ws.view mesg:error];
                      }];
 }
 #pragma mark end DataTableViewDelegate
@@ -283,11 +282,11 @@
     DataTableView *tableView = [self getCurrentTableViewWithTag:self.type];
     __weak typeof(self) ws   = self;
     NetworkManager *manager  = [NetworkManager shareManager];
-    [SVProgressHUD showWithStatus:@"正在加載中..."];
+    MBProgressHUD *hud       = [MBProgressHUD hudView:self.view text:@"正在加載中..." removeOnHide:YES];
     [manager dataWithClassID:tableView.classID
                         star:[NSString stringWithFormat:@"%zd", tableView.star]
                      success:^(NSArray *array) {
-                         [SVProgressHUD dismiss];
+                         [hud hideAnimated:YES];
                          [tableView setHideMJHeader:NO];
                          if (array.count >= pageSize) {
                              [tableView setHideMJFooter:NO];
@@ -303,7 +302,8 @@
                          tableView.dataList = dataList;
                          [tableView.tableView reloadData];
                      } failure:^(NSString *error) {
-                         [SVProgressHUD showErrorWithStatus:error];
+                         [hud hideAnimated:YES];
+                         [MBProgressHUD showFailureInView:ws.view mesg:error];
                      }];
 }
 #pragma mark end 网络请求

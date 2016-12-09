@@ -6,8 +6,8 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "DataDetailViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "NSString+Extension.h"
 #import "NetworkManager.h"
 #import "ShareManager.h"
@@ -26,7 +26,7 @@
 
 - (void)dealloc
 {
-    [SVProgressHUD dismiss];
+    NSLog(@"DataDetailViewController dealloc");
 }
 
 - (void)viewDidLoad
@@ -138,11 +138,11 @@
 - (void)getDataDetail
 {
     __weak typeof(self) ws  = self;
-    [SVProgressHUD show];
+    MBProgressHUD *hud      = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     NetworkManager *manager = [NetworkManager shareManager];
     [manager dataDetailWithSid:_model.sid
                        success:^(NSDictionary *dict) {
-                           [SVProgressHUD dismiss];
+                           [hud hideAnimated:YES];
                            NSString *newstext = dict[@"newstext"];
                            NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithData:[newstext dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
                            UIFont *font    = [UIFont systemFontOfSize:fontSize(15)];
@@ -169,7 +169,8 @@
                            [ws.scrollView setContentSize:CGSizeMake(0, height)];
                            
                        } failure:^(NSString *error) {
-                           [SVProgressHUD showErrorWithStatus:error];
+                           [hud hideAnimated:YES];
+                           [MBProgressHUD showFailureInView:ws.view mesg:error];
                        }];
 }
 #pragma mark end 网络请求

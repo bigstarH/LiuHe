@@ -25,6 +25,6 @@
 
 @property (nonatomic, weak) id <ColumnViewDelegate> delegate;
 
-- (void)scrollToCurrentIndex:(NSInteger)currentIndex;
+- (void)scrollToCurrentIndex:(NSInteger)currentIndex animated:(BOOL)animated;
 
 @end

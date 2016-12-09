@@ -7,8 +7,8 @@
 //
 
 #import <WebKit/WebKit.h>
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "CollectionWebViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "ShareManager.h"
 #import "ShareMenu.h"
 
@@ -16,13 +16,15 @@
 
 @property (nonatomic, copy) NSString *linkStr;
 
+@property (nonatomic, weak) MBProgressHUD *hud;
+
 @end
 
 @implementation CollectionWebViewController
 
 - (void)dealloc
 {
-    [SVProgressHUD dismiss];
+    NSLog(@"CollectionWebViewController dealloc");
 }
 
 - (instancetype)initWithLinkStr:(NSString *)linkStr
@@ -44,8 +46,9 @@
         webView.navigationDelegate = self;
         [webView sizeToFit];
         [self.view addSubview:webView];
-        
-        [SVProgressHUD showWithStatus:@"正在加载中..."];
+    
+        MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:@"正在加载中..." removeOnHide:YES];
+        self.hud           = hud;
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_linkStr]];
         [webView loadRequest:request];
     }else {
@@ -56,6 +59,8 @@
         [self.view addSubview:webView];
         
         // 加载网页
+        MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:@"正在加载中..." removeOnHide:YES];
+        self.hud           = hud;
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_linkStr]];
         [webView loadRequest:request];
     }
@@ -117,24 +122,30 @@
 /** 页面加载完成之后调用 */
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation
 {
-    [SVProgressHUD dismiss];
+    [self.hud hideAnimated:YES];
+    self.hud = nil;
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(nonnull NSError *)error
 {
-    [SVProgressHUD showErrorWithStatus:@"網絡不是很好哦，請檢查您的網絡"];
+    [self.hud hideAnimated:YES];
+    self.hud = nil;
+    [MBProgressHUD showFailureInView:self.view mesg:@"網絡不是很好哦，請檢查您的網絡"];
 }
 #pragma mark end WKNavigationDelegate
 
 #pragma mark - start UIWebViewDelegate
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [SVProgressHUD dismiss];
+    [self.hud hideAnimated:YES];
+    self.hud = nil;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    [SVProgressHUD showErrorWithStatus:@"網絡不是很好哦，請檢查您的網絡"];
+    [self.hud hideAnimated:YES];
+    self.hud = nil;
+    [MBProgressHUD showFailureInView:self.view mesg:@"網絡不是很好哦，請檢查您的網絡"];
 }
 #pragma mark end UIWebViewDelegate
 @end

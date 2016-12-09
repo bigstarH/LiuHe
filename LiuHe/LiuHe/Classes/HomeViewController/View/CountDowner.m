@@ -46,6 +46,7 @@
     if (self  = [super init]) {
         total = time;
         [self setDefaultValue];
+        [self initTime];
         [self createView];
     }
     return self;
@@ -56,16 +57,19 @@
     setLayout  = YES;
     _fontSize  = fontSize(15);
     
+    _timeColor      = MAIN_COLOR;
+    _textColor      = [UIColor whiteColor];
+    _timeLabBgColor = [UIColor whiteColor];
+}
+
+- (void)initTime
+{
     _day       = total / (3600 * 24);
     int rest   = total - (3600 * 24) * _day;
     _hour      = rest / 3600;
     rest       = rest - _hour * 3600;
     _minite    = rest / 60;
     _second    = rest - 60 * _minite;
-    
-    _timeColor      = MAIN_COLOR;
-    _textColor      = [UIColor whiteColor];
-    _timeLabBgColor = [UIColor whiteColor];
 }
 
 - (void)createView
@@ -221,6 +225,12 @@
 - (int)getCountDown
 {
     return self.day * 24 * 3600 + self.hour * 3600 + self.minite * 60 + self.second;
+}
+
+- (void)setCountDownTime:(NSTimeInterval)time
+{
+    total = time;
+    [self initTime];
 }
 
 @end

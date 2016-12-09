@@ -6,7 +6,7 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
+#import "MBProgressHUD+Extension.h"
 #import "FeedBackViewController.h"
 #import "UIImage+Extension.h"
 #import "NetworkManager.h"
@@ -164,16 +164,18 @@
         [[XQToast makeText:@"請輸入正確的手機號碼"] show];
         return;
     }
-    [SVProgressHUD show];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     __weak typeof(self) ws = self;
     [[NetworkManager shareManager] userFeedBackWithName:self.nameTF.text
                                                   phone:self.phoneTF.text
                                                 content:self.contentTV.text
                                                 success:^(NSString *str) {
-                                                    [SVProgressHUD showSuccessWithStatus:str];
+                                                    [hud hideAnimated:YES];
+                                                    [MBProgressHUD showSuccessInView:ws.view mesg:str];
                                                     [ws.navigationController popViewControllerAnimated:YES];
                                                 } failure:^(NSString *error) {
-                                                    [SVProgressHUD showErrorWithStatus:error];
+                                                    [hud hideAnimated:YES];
+                                                    [MBProgressHUD showFailureInView:ws.view mesg:error];
                                                 }];
 }
 

@@ -10,8 +10,6 @@
 
 @interface XQTextView () <UITextViewDelegate>
 
-@property (nonatomic, weak) UITextView *textView;
-
 @property (nonatomic, weak) UILabel *label;
 
 @end
@@ -42,7 +40,7 @@
 - (void)createView
 {
     UITextView *textView = [[UITextView alloc] initWithFrame:CGRectZero];
-    self.textView        = textView;
+    _textView            = textView;
     textView.delegate    = self;
     [self addSubview:textView];
     

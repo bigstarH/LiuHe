@@ -25,6 +25,8 @@
 @property (nonatomic, copy) NSString *xyq;
 /** 下一期开奖时间 */
 @property (nonatomic, copy) NSString *xyqsj;
+/** 下一期开奖时间时间戳 */
+@property (nonatomic, copy) NSString *xyqsjc;
 /** 号码1 */
 @property (nonatomic, copy) NSString *z1m;
 /** 号码1生肖 */

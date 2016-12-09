@@ -17,4 +17,6 @@
 
 @property (nonatomic, copy) NSString *classID;
 
+@property (nonatomic) BOOL isYearLibrary;
+
 @end

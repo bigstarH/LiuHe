@@ -6,9 +6,9 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "ForumCommentViewController.h"
 #import "ForumDetailViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "XQFasciatePageControl.h"
 #import "NSString+Extension.h"
 #import "ForumDetailHeader.h"
@@ -37,7 +37,6 @@
 - (void)dealloc
 {
     NSLog(@"ForumDetailViewController dealloc");
-    [SVProgressHUD dismiss];
 }
 
 - (void)viewDidLoad
@@ -218,16 +217,17 @@
 /** 获取帖子详情 */
 - (void)getForumPostDetail
 {
-    [SVProgressHUD showWithStatus:@"正在加載中..."];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:@"正在加載中..." removeOnHide:YES];
     __weak typeof(self) ws = self;
     [[NetworkManager shareManager] forumPostDetailWithSid:self.model.sid
                                                   success:^(NSDictionary *dict) {
                                                       [ws createReplyBtn];
                                                       [ws setForumModelWithDict:dict];
                                                       [ws createDetailView];
-                                                      [SVProgressHUD dismiss];
+                                                      [hud hideAnimated:YES];
                                                   } failure:^(NSString *error) {
-                                                      [SVProgressHUD showErrorWithStatus:error];
+                                                      [hud hideAnimated:YES];
+                                                      [MBProgressHUD showFailureInView:ws.view mesg:error];
                                                   }];
 }
 
@@ -247,7 +247,7 @@
                                             [ws setCycleImageData];
                                             [ws.cycleImageView startPlayImageView];
                                         } failure:^(NSString *error) {
-                                            [SVProgressHUD showErrorWithStatus:error];
+                                            [MBProgressHUD showFailureInView:ws.view mesg:error];
                                         }];
 }
 #pragma mark end 网络请求

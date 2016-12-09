@@ -20,6 +20,8 @@
 
 + (instancetype)countDownerWithTime:(NSTimeInterval)time;
 
+- (void)setCountDownTime:(NSTimeInterval)time;
+
 - (void)startCountDown;
 
 - (void)stopCountDown;

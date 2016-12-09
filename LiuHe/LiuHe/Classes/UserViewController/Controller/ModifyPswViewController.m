@@ -6,8 +6,8 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "ModifyPswViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "UIImage+Extension.h"
 #import "NetworkManager.h"
 #import "UserModel.h"
@@ -117,35 +117,37 @@
 {
     NSString *oldPsw = self.oldPswTF.text;
     if ((!oldPsw) || [oldPsw isEqualToString:@""]) {
-        [SVProgressHUD showErrorWithStatus:@"請輸入原密碼"];
+        [MBProgressHUD showFailureInView:self.view mesg:@"請輸入原密碼"];
         return;
     }
     NSString *psw    = self.pswTF.text;
     if ((!psw) || [psw isEqualToString:@""]) {
-        [SVProgressHUD showErrorWithStatus:@"請輸入新密碼"];
+        [MBProgressHUD showFailureInView:self.view mesg:@"請輸入新密碼"];
         return;
     }
     NSString *rePsw  = self.rePswTF.text;
     if ((!rePsw) || [rePsw isEqualToString:@""]) {
-        [SVProgressHUD showErrorWithStatus:@"兩次輸入的密碼不同"];
+        [MBProgressHUD showFailureInView:self.view mesg:@"兩次輸入的密碼不同"];
         return;
     }
     if (![psw isEqualToString:rePsw]) {
-        [SVProgressHUD showErrorWithStatus:@"兩次輸入的密碼不同"];
+        [MBProgressHUD showFailureInView:self.view mesg:@"兩次輸入的密碼不同"];
         return;
     }
-    [SVProgressHUD show];
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     __weak typeof(self) ws  = self;
     NetworkManager *manager = [NetworkManager shareManager];
     [manager modifyPswWithOldPsw:oldPsw
                              psw:psw
                       confirmPsw:rePsw
                          success:^(NSString *userName, NSString *ts) {
-                             [SVProgressHUD showSuccessWithStatus:ts];
+                             [hud hideAnimated:YES];
+                             [MBProgressHUD showSuccessInView:ws.view mesg:ts];
                              [NotificationCenter postNotificationName:USER_MODIFYPSW_SUCCESS object:nil userInfo:@{@"username" : userName}];
                              [ws.navigationController popViewControllerAnimated:YES];
                          } failure:^(NSString *error) {
-                             [SVProgressHUD showErrorWithStatus:error];
+                             [hud hideAnimated:YES];
+                             [MBProgressHUD showFailureInView:ws.view mesg:error];
                          }];
 }
 

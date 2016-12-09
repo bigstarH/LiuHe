@@ -8,8 +8,8 @@
 
 #import <WebKit/WebKit.h>
 #import <MJRefresh/MJRefresh.h>
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "VideoLotteryViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "HistoryViewController.h"
 #import "XQFasciatePageControl.h"
 #import "XQCycleImageView.h"
@@ -255,7 +255,7 @@
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(nonnull NSError *)error
 {
     [webView.scrollView.mj_header endRefreshing];
-    [SVProgressHUD showErrorWithStatus:@"網絡不是很好哦，請檢查您的網絡"];
+    [MBProgressHUD showFailureInView:self.view mesg:@"網絡不是很好哦，請檢查您的網絡"];
 }
 #pragma mark end WKNavigationDelegate
 
@@ -268,7 +268,7 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [webView.scrollView.mj_header endRefreshing];
-    [SVProgressHUD showErrorWithStatus:@"網絡不是很好哦，請檢查您的網絡"];
+    [MBProgressHUD showFailureInView:self.view mesg:@"網絡不是很好哦，請檢查您的網絡"];
 }
 #pragma mark end UIWebViewDelegate
 
@@ -289,7 +289,7 @@
                                             [ws setCycleImageData];
                                             [ws.cycleImageView startPlayImageView];
                                         } failure:^(NSString *error) {
-                                            [SVProgressHUD showErrorWithStatus:error];
+                                            [MBProgressHUD showFailureInView:ws.view mesg:error];
                                         }];
 }
 
@@ -301,7 +301,7 @@
         LotteryNumberModel *model = [LotteryNumberModel lotteryNumberWithDict:dict];
         [ws createLotteryViewWithModel:model];
     } failure:^(NSString *error) {
-        [SVProgressHUD showErrorWithStatus:error];
+        [MBProgressHUD showFailureInView:ws.view mesg:error];
     }];
 }
 #pragma mark - start 网络请求

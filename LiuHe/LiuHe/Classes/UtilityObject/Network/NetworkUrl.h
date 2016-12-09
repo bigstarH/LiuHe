@@ -16,6 +16,12 @@
 #define GET_TREASURE_URL    @"http://ad.jizhou56.com:8090/appad/lhcbt_xb/index.json" // 六合寻宝
 #define GET_KAIJIANG_AD_URL @"http://ad.jizhou56.com:8090/appad/spkjad/index.json"   // 视频开奖广告
 #define LOTTERY_HISTORY_URL @"http://wap.jizhou56.com:8090/json/2016.json" // 历史记录
+#define LOTTERY_RESULT_URL  @"http://app.jizhou56.com:8090/kjbm.json" // 开奖结果
+
+#define PHOTO_COLOURS_URL   @"http://wap.jizhou56.com:8090/json/list/photocaise.json"  // 彩色图库 —— 静态50条
+#define PHOTO_MYSTERY_URL   @"http://wap.jizhou56.com:8090/json/list/photoxianji.json" // 玄机图库 —— 静态50条
+#define PHOTO_BAW_URL       @"http://wap.jizhou56.com:8090/json/list/photoheibai.json" // 黑白图库 —— 静态50条
+#define PHOTO_YEAR_URL      @"http://wap.jizhou56.com:8090/json/list/photoqianlian.json" // 全年图库 —— 静态50条
 
 // 我的
 // 用户相关

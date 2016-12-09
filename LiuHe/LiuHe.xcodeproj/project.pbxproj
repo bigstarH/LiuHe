@@ -39,6 +39,8 @@
 		483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6201DE5B1BA009E0E64 /* XQTextField.m */; };
 		483AC6291DE5C240009E0E64 /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AC6281DE5C240009E0E64 /* UIImage+Extension.m */; };
 		484258771DF254E800B1E8E0 /* PicDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484258761DF254E800B1E8E0 /* PicDetailViewController.m */; };
+		48529CF61DF7BEE600F6EA5A /* PictureBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 48529CF51DF7BEE600F6EA5A /* PictureBrowser.m */; };
+		48529CF91DF7BFC500F6EA5A /* PicBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48529CF81DF7BFC500F6EA5A /* PicBrowserCell.m */; };
 		488F1A151DE6CB4B005C6882 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 488F1A141DE6CB4B005C6882 /* UserModel.m */; };
 		488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF2F1DE863C50061E9EF /* LoginViewController.m */; };
 		488FFF331DE863C50061E9EF /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF311DE863C50061E9EF /* RegisteViewController.m */; };
@@ -61,6 +63,7 @@
 		48BE5ABA1DF01550004ACB90 /* XQSpringMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AB81DF01550004ACB90 /* XQSpringMenuItem.m */; };
 		48BE5ABD1DF01F7E004ACB90 /* DataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5ABC1DF01F7E004ACB90 /* DataModel.m */; };
 		48BE5AC31DF050DE004ACB90 /* DataDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AC21DF050DE004ACB90 /* DataDetailViewController.m */; };
+		48C05F0E1DF9355C005AEA1E /* MBProgressHUD+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C05F0D1DF9355C005AEA1E /* MBProgressHUD+Extension.m */; };
 		48D83C971DEBC02400E62100 /* XQToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C961DEBC02400E62100 /* XQToast.m */; };
 		48D83C9B1DEBD12000E62100 /* SystemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C9A1DEBD12000E62100 /* SystemManager.m */; };
 		48D83C9E1DEBDB3E00E62100 /* PostReleaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C9D1DEBDB3E00E62100 /* PostReleaseViewController.m */; };
@@ -174,6 +177,10 @@
 		483AC6281DE5C240009E0E64 /* UIImage+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extension.m"; sourceTree = "<group>"; };
 		484258751DF254E800B1E8E0 /* PicDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicDetailViewController.h; sourceTree = "<group>"; };
 		484258761DF254E800B1E8E0 /* PicDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicDetailViewController.m; sourceTree = "<group>"; };
+		48529CF41DF7BEE600F6EA5A /* PictureBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureBrowser.h; sourceTree = "<group>"; };
+		48529CF51DF7BEE600F6EA5A /* PictureBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureBrowser.m; sourceTree = "<group>"; };
+		48529CF71DF7BFC500F6EA5A /* PicBrowserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicBrowserCell.h; sourceTree = "<group>"; };
+		48529CF81DF7BFC500F6EA5A /* PicBrowserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicBrowserCell.m; sourceTree = "<group>"; };
 		488F1A131DE6CB4B005C6882 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
 		488F1A141DE6CB4B005C6882 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
 		488FFF2E1DE863C50061E9EF /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -218,6 +225,8 @@
 		48BE5ABC1DF01F7E004ACB90 /* DataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataModel.m; sourceTree = "<group>"; };
 		48BE5AC11DF050DE004ACB90 /* DataDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataDetailViewController.h; sourceTree = "<group>"; };
 		48BE5AC21DF050DE004ACB90 /* DataDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataDetailViewController.m; sourceTree = "<group>"; };
+		48C05F0C1DF9355C005AEA1E /* MBProgressHUD+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+Extension.h"; sourceTree = "<group>"; };
+		48C05F0D1DF9355C005AEA1E /* MBProgressHUD+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+Extension.m"; sourceTree = "<group>"; };
 		48D83C951DEBC02400E62100 /* XQToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQToast.h; sourceTree = "<group>"; };
 		48D83C961DEBC02400E62100 /* XQToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQToast.m; sourceTree = "<group>"; };
 		48D83C991DEBD12000E62100 /* SystemManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemManager.h; sourceTree = "<group>"; };
@@ -539,6 +548,7 @@
 				489932C41DF18BA50041A016 /* PicLibraryTableView.m */,
 				489932BD1DF157130041A016 /* ColumnView.h */,
 				489932BE1DF157130041A016 /* ColumnView.m */,
+				48529CF31DF7BEB800F6EA5A /* PictureBrowser */,
 				489932B61DF156250041A016 /* CellView */,
 			);
 			path = View;
@@ -621,6 +631,8 @@
 				483AC6161DE541F3009E0E64 /* NSString+Extension.m */,
 				483AC6271DE5C240009E0E64 /* UIImage+Extension.h */,
 				483AC6281DE5C240009E0E64 /* UIImage+Extension.m */,
+				48C05F0C1DF9355C005AEA1E /* MBProgressHUD+Extension.h */,
+				48C05F0D1DF9355C005AEA1E /* MBProgressHUD+Extension.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -632,6 +644,17 @@
 				483AC6201DE5B1BA009E0E64 /* XQTextField.m */,
 			);
 			path = XQTextField;
+			sourceTree = "<group>";
+		};
+		48529CF31DF7BEB800F6EA5A /* PictureBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				48529CF41DF7BEE600F6EA5A /* PictureBrowser.h */,
+				48529CF51DF7BEE600F6EA5A /* PictureBrowser.m */,
+				48529CF71DF7BFC500F6EA5A /* PicBrowserCell.h */,
+				48529CF81DF7BFC500F6EA5A /* PicBrowserCell.m */,
+			);
+			path = PictureBrowser;
 			sourceTree = "<group>";
 		};
 		488F1A121DE6CB3E005C6882 /* Model */ = {
@@ -1050,6 +1073,7 @@
 				482655D11DF4272B00122766 /* ForumModel.m in Sources */,
 				483010541DEDA6B000B11BE9 /* LotteryView.m in Sources */,
 				48BE5AC31DF050DE004ACB90 /* DataDetailViewController.m in Sources */,
+				48529CF61DF7BEE600F6EA5A /* PictureBrowser.m in Sources */,
 				489932A71DF146DC0041A016 /* TreasureViewController.m in Sources */,
 				483AC58E1DE525AF009E0E64 /* AppDelegate.m in Sources */,
 				488FFF361DE8645A0061E9EF /* ModifyPswViewController.m in Sources */,
@@ -1061,6 +1085,7 @@
 				48DBCB3C1DE9C7C100B989D6 /* FeedBackViewController.m in Sources */,
 				483AC5FD1DE52749009E0E64 /* ForumViewController.m in Sources */,
 				4897355E1DEEEBAD006ADA94 /* HistoryViewController.m in Sources */,
+				48529CF91DF7BFC500F6EA5A /* PicBrowserCell.m in Sources */,
 				483010511DED8F2F00B11BE9 /* VideoLotteryViewController.m in Sources */,
 				483AC6211DE5B1BA009E0E64 /* XQTextField.m in Sources */,
 				48D83CA81DEC460300E62100 /* PostModel.m in Sources */,
@@ -1086,6 +1111,7 @@
 				48BE5AB91DF01550004ACB90 /* XQSpringMenu.m in Sources */,
 				483AC6051DE52830009E0E64 /* MenuItem.m in Sources */,
 				489932AB1DF151500041A016 /* PicLibraryViewController.m in Sources */,
+				48C05F0E1DF9355C005AEA1E /* MBProgressHUD+Extension.m in Sources */,
 				48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */,
 				483AC58B1DE525AF009E0E64 /* main.m in Sources */,
 				482655D41DF4751B00122766 /* ForumDetailViewController.m in Sources */,

@@ -7,8 +7,8 @@
 //
 
 #import <MJRefresh/MJRefresh.h>
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "HistoryDetailViewController.h"
+#import "MBProgressHUD+Extension.h"
 #import "HistoryViewController.h"
 #import "XQFasciatePageControl.h"
 #import "XQCycleImageView.h"
@@ -30,6 +30,8 @@
 
 @property (nonatomic, weak) UITableView *tableView;
 
+@property (nonatomic, weak) MBProgressHUD *hud;
+
 @end
 
 @implementation HistoryViewController
@@ -44,7 +46,11 @@
     [self createTableView];
     
     // 获得广告轮播图
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:@"正在加載中..." removeOnHide:YES];
+    self.hud           = hud;
     [self getAdvertisementPic];
+    // 获取历史记录
+    [self getLotteryHistoryWithMore:NO];
 }
 
 #pragma mark - start 设置导航栏
@@ -99,7 +105,6 @@
     tableView.mj_header    = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
                                  [ws getLotteryHistoryWithMore:NO];
                              }];
-    [tableView.mj_header beginRefreshing];
 }
 
 /** 设置轮播数据 */
@@ -217,15 +222,16 @@
                                             [ws setCycleImageData];
                                             [ws.cycleImageView startPlayImageView];
                                         } failure:^(NSString *error) {
-                                            [SVProgressHUD showErrorWithStatus:error];
+                                            [MBProgressHUD showFailureInView:ws.view mesg:error];
                                         }];
 }
 
 /** 获取历史记录 */
 - (void)getLotteryHistoryWithMore:(BOOL)more
 {
-    __weak typeof(self) ws   = self;
+    __weak typeof(self) ws = self;
     [[NetworkManager shareManager] lotteryHistoryWithSuccess:^(NSArray *array) {
+        [ws.hud hideAnimated:YES];
         [ws.tableView.mj_header endRefreshing];
         NSMutableArray *list = [NSMutableArray array];
         for (int i = 0; i < array.count; i++) {
@@ -236,8 +242,9 @@
         ws.dataList = list;
         [ws.tableView reloadData];
     } failure:^(NSString *error) {
+        [ws.hud hideAnimated:YES];
         [ws.tableView.mj_header endRefreshing];
-        [SVProgressHUD showErrorWithStatus:error];
+        [MBProgressHUD showFailureInView:ws.view mesg:error];
     }];
 }
 #pragma mark end 网络请求
