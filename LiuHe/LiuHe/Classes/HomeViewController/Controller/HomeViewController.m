@@ -298,13 +298,13 @@
         case ShareMenuItemTypeWeChat:  // 微信
         {
             NSLog(@"微信");
-            [ShareManager weChatShareWithImageUrl:@"http://img1.shenchuang.com/2016/1125/1480067250934.jpg" currentVC:self success:nil failure:nil];
+            [ShareManager weChatShareWithCurrentVC:self success:nil failure:nil];
             break;
         }
         case ShareMenuItemTypeWechatTimeLine:  // 朋友圈
         {
             NSLog(@"朋友圈");
-            [ShareManager weChatTimeLineShareWithImageUrl:@"http://img1.shenchuang.com/2016/1125/1480067250934.jpg" currentVC:self success:^(NSString *result) {
+            [ShareManager weChatTimeLineShareWithCurrentVC:self success:^(NSString *result) {
                 NSLog(@"result = %@", result);
             } failure:^(NSString *error) {
                 NSLog(@"error = %@", error);

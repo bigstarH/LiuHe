@@ -102,42 +102,49 @@
 /** 19 历史记录列表 */
 - (void)lotteryHistoryWithSuccess:(void (^)(NSArray *array))successBlock
                           failure:(void (^)(NSString *error))failureBlock;
-/** 20 六合资料 */
+/** 20 静态获取资料50条数据 */
+- (void)dataWithUrl:(NSString *)url
+            success:(void (^)(NSArray *array))successBlock
+            failure:(void (^)(NSString *error))failureBlock;
+/** 21 六合资料 */
 - (void)dataWithClassID:(NSString *)classID
                    star:(NSString *)star
                 success:(void (^)(NSArray *array))successBlock
                 failure:(void (^)(NSString *error))failureBlock;
-/** 21 六合资料——详情内容 */
+/** 22 六合资料——详情内容 */
 - (void)dataDetailWithSid:(NSString *)sid
                   success:(void (^)(NSDictionary *dict))successBlock
                   failure:(void (^)(NSString *error))failureBlock;
 
-/** 22 六合图库列表 */
+/** 23 六合图库列表 */
 - (void)picLibraryWithClassID:(NSString *)classID
                          star:(NSString *)star
                       success:(void (^)(NSArray *array))successBlock
                       failure:(void (^)(NSString *error))failureBlock;
-/** 23 静态获取图库50条数据 */
+/** 24 静态获取图库50条数据 */
 - (void)picLibraryWithUrl:(NSString *)url
                   success:(void (^)(NSArray *array))successBlock
                   failure:(void (^)(NSString *error))failureBlock;
-/** 23 收藏 */
+/** 25 收藏 */
 - (void)collectingWithClassID:(NSString *)classID
                            ID:(NSString *)ID
                       success:(void (^)(NSString *string))successBlock
                       failure:(void (^)(NSString *error))failureBlock;
-/** 24 六合寻宝 */
+/** 26 六合寻宝 */
 - (void)treasureWithSuccess:(void (^)(NSArray *array))successBlock
                     failure:(void (^)(NSString *error))failureBlock;
-/** 25 论坛帖子 */
+/** 27 静态获取论坛帖子50条 */
+- (void)forumPostWithSuccess:(void (^)(NSArray *array))successBlock
+                     failure:(void (^)(NSString *error))failureBlock;
+/** 28 论坛帖子 */
 - (void)forumPostWithStar:(NSString *)star
                   success:(void (^)(NSArray *array))successBlock
                   failure:(void (^)(NSString *error))failureBlock;
-/** 26 论坛帖子详情内容 */
+/** 29 论坛帖子详情内容 */
 - (void)forumPostDetailWithSid:(NSString *)sid
                        success:(void (^)(NSDictionary *dict))successBlock
                        failure:(void (^)(NSString *error))failureBlock;
-/** 27 评论帖子 */
+/** 30 评论帖子 */
 - (void)forumPostReplyWithEnews:(NSString *)enews
                             sid:(NSString *)sid
                         classID:(NSString *)classID
@@ -146,7 +153,9 @@
                             text:(NSString *)text
                          success:(void (^)(NSString *str))successBlock
                          failure:(void (^)(NSString *error))failureBlock;
-/**  */
+/** 31 关于应用 */
+- (void)appInfoWithSuccess:(void (^)(NSDictionary *dict))successBlock
+                   failure:(void (^)(NSString *error))failureBlock;
 #pragma mark end 网络请求
 
 @end

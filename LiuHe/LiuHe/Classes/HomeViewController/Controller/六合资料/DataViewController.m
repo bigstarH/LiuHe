@@ -30,11 +30,6 @@
 
 @implementation DataViewController
 
-- (void)dealloc
-{
-    NSLog(@"DataViewController dealloc");
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -47,7 +42,7 @@
     [self createTableViewWithTag:0];
     
     // 加载数据
-    [self getNetData];
+    [self getNetDataWithHUD:YES];
 }
 
 #pragma mark - start 设置导航栏
@@ -160,14 +155,42 @@
             return @"13";
         case 5:
             return @"67";
-        default:
+        case 6:
             return @"14";
+        default:
+            return @"83";
+    }
+}
+
+/** 返回静态URL */
+- (NSString *)getCurrentUrlWithTag:(NSInteger)tag
+{
+    switch (tag) {
+        case 0:
+            return DATA_FAVORITE_URL;
+        case 1:
+            return DATA_TEXT_URL;
+        case 2:
+            return DATA_SUPER_URL;
+        case 3:
+            return DATA_FX_URL;
+        case 4:
+            return DATA_BOUTIQUE_URL;
+        case 5:
+            return DATA_CARD_URL;
+        case 6:
+            return DATA_YEAR_URL;
+        default:
+            return DATA_ATTRIBUTE_URL;
     }
 }
 
 - (void)caculateHeightWithModel:(DataModel *)model
 {
     NSString *title = model.title;
+    title = [title stringByReplacingOccurrencesOfString:@"六合管家" withString:@"六合藏宝"];
+    model.title     = title;
+    
     UIFont *font    = [UIFont systemFontOfSize:fontSize(15)];
     CGSize maxSize  = CGSizeMake(SCREEN_WIDTH - WIDTH(24), CGFLOAT_MAX);
     model.height    = [title realSize:maxSize font:font].height + HEIGHT(9) * 3 + HEIGHT(20);
@@ -185,13 +208,13 @@
         case ShareMenuItemTypeWeChat:  // 微信
         {
             NSLog(@"微信");
-            [ShareManager weChatShareWithImageUrl:@"http://img1.shenchuang.com/2016/1125/1480067250934.jpg" currentVC:self success:nil failure:nil];
+            [ShareManager weChatShareWithCurrentVC:self success:nil failure:nil];
             break;
         }
         case ShareMenuItemTypeWechatTimeLine:  // 朋友圈
         {
             NSLog(@"朋友圈");
-            [ShareManager weChatTimeLineShareWithImageUrl:@"http://img1.shenchuang.com/2016/1125/1480067250934.jpg" currentVC:self success:^(NSString *result) {
+            [ShareManager weChatTimeLineShareWithCurrentVC:self success:^(NSString *result) {
                 NSLog(@"result = %@", result);
             } failure:^(NSString *error) {
                 NSLog(@"error = %@", error);
@@ -218,7 +241,7 @@
     DataTableView *tableView = [self getCurrentTableViewWithTag:index];
     if (tableView == nil) {
         [self createTableViewWithTag:index];
-        [self getNetData];
+        [self getNetDataWithHUD:YES];
     }else {
         [self.view bringSubviewToFront:tableView];
     }
@@ -239,72 +262,69 @@
 - (void)dataTableView:(DataTableView *)dataTableView refreshingDataWithMore:(BOOL)more
 {
     if (more == NO) {
-        dataTableView.star  = 0;
-    }
-    __weak typeof(self) ws  = self;
-    NetworkManager *manager = [NetworkManager shareManager];
-    [manager dataWithClassID:dataTableView.classID
-                        star:[NSString stringWithFormat:@"%zd", dataTableView.star]
-                     success:^(NSArray *array) {
-                         [dataTableView endRefreshing];
-                         NSMutableArray *dataList = [NSMutableArray array];
-                         if (more) {
+        [self getNetDataWithHUD:NO];
+    }else {
+        __weak typeof(self) ws  = self;
+        NetworkManager *manager = [NetworkManager shareManager];
+        [manager dataWithClassID:dataTableView.classID
+                            star:[NSString stringWithFormat:@"%zd", dataTableView.star]
+                         success:^(NSArray *array) {
+                             [dataTableView endRefreshing];
                              if ((!array) || array.count <= 0) {
                                  [dataTableView setHideMJFooter:YES];
                                  [MBProgressHUD showFailureInView:ws.view mesg:@"沒有更多數據了"];
                                  return ;
                              }
-                             [dataList addObjectsFromArray:dataTableView.dataList];
-                         }else {
-                             if (array.count >= pageSize) {
-                                 [dataTableView setHideMJFooter:NO];
+                             NSMutableArray *dataList = [dataTableView.dataList mutableCopy];
+                             for (int i = 0; i < array.count; i++) {
+                                 NSDictionary *dict = array[i];
+                                 DataModel *data = [DataModel dataWithDict:dict];
+                                 [ws caculateHeightWithModel:data];
+                                 [dataList addObject:data];
                              }
-                         }
-                         for (int i = 0; i < array.count; i++) {
-                             NSDictionary *dict = array[i];
-                             DataModel *data = [DataModel dataWithDict:dict];
-                             [ws caculateHeightWithModel:data];
-                             [dataList addObject:data];
-                         }
-                         dataTableView.star     = dataTableView.star + 20;
-                         dataTableView.dataList = dataList;
-                         [dataTableView.tableView reloadData];
-                     } failure:^(NSString *error) {
-                         [dataTableView endRefreshing];
-                         [MBProgressHUD showFailureInView:ws.view mesg:error];
-                     }];
+                             dataTableView.star     = dataTableView.star + 20;
+                             dataTableView.dataList = dataList;
+                             [dataTableView.tableView reloadData];
+                         } failure:^(NSString *error) {
+                             [dataTableView endRefreshing];
+                             [MBProgressHUD showFailureInView:ws.view mesg:error];
+                         }];
+    }
 }
 #pragma mark end DataTableViewDelegate
 
 #pragma mark - start 网络请求
-- (void)getNetData
+- (void)getNetDataWithHUD:(BOOL)needHUD
 {
     DataTableView *tableView = [self getCurrentTableViewWithTag:self.type];
     __weak typeof(self) ws   = self;
     NetworkManager *manager  = [NetworkManager shareManager];
-    MBProgressHUD *hud       = [MBProgressHUD hudView:self.view text:@"正在加載中..." removeOnHide:YES];
-    [manager dataWithClassID:tableView.classID
-                        star:[NSString stringWithFormat:@"%zd", tableView.star]
-                     success:^(NSArray *array) {
-                         [hud hideAnimated:YES];
-                         [tableView setHideMJHeader:NO];
-                         if (array.count >= pageSize) {
-                             [tableView setHideMJFooter:NO];
-                         }
-                         NSMutableArray *dataList = [NSMutableArray array];
-                         tableView.star = 20;
-                         for (int i = 0; i < array.count; i++) {
-                             NSDictionary *dict = array[i];
-                             DataModel *data = [DataModel dataWithDict:dict];
-                             [ws caculateHeightWithModel:data];
-                             [dataList addObject:data];
-                         }
-                         tableView.dataList = dataList;
-                         [tableView.tableView reloadData];
-                     } failure:^(NSString *error) {
-                         [hud hideAnimated:YES];
-                         [MBProgressHUD showFailureInView:ws.view mesg:error];
-                     }];
+    MBProgressHUD *hud       = nil;
+    if (needHUD) {
+        hud = [MBProgressHUD hudView:self.view text:@"正在加載中..." removeOnHide:YES];
+    }
+    [manager dataWithUrl:[self getCurrentUrlWithTag:self.type]
+                 success:^(NSArray *array) {
+                     [tableView endRefreshing];
+                     [hud hideAnimated:YES];
+                     if (array.count >= pageSize) {
+                         [tableView setHideMJFooter:NO];
+                     }
+                     NSMutableArray *dataList = [NSMutableArray array];
+                     tableView.star = starBegin;
+                     for (int i = 0; i < array.count; i++) {
+                         NSDictionary *dict = array[i];
+                         DataModel *data = [DataModel dataWithDict:dict];
+                         [ws caculateHeightWithModel:data];
+                         [dataList addObject:data];
+                     }
+                     tableView.dataList = dataList;
+                     [tableView.tableView reloadData];
+                 } failure:^(NSString *error) {
+                     [hud hideAnimated:YES];
+                     [tableView endRefreshing];
+                     [MBProgressHUD showFailureInView:ws.view mesg:error];
+                 }];
 }
 #pragma mark end 网络请求
 @end

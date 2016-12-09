@@ -22,7 +22,8 @@
 #import "ForumCell.h"
 #import "XQToast.h"
 
-#define pageSize 20
+#define pageSize   20
+#define starBegin  50
 
 @interface ForumViewController () <XQCycleImageViewDelegate, ShareMenuDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -33,8 +34,6 @@
 @property (nonatomic, weak) XQFasciatePageControl *pageControl;
 
 @property (nonatomic, weak) UITableView *tableView;
-
-@property (nonatomic, weak) MBProgressHUD *hud;
 /** 论坛帖子数据数组 */
 @property (nonatomic, strong) NSArray *dataList;
 /** 分页 */
@@ -57,21 +56,18 @@
     
     // 获取广告数据
     [self getAdvertisementPic];
+    
     // 获取论坛数据
     self.loadFailure = NO;
-    
-    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:@"正在加載中..." removeOnHide:NO];
-    self.hud = hud;
-    [self getForumPostWithMore:NO];
+    [self getForumPostWithHUD:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     if ((!self.dataList) || self.dataList.count <= 0) {
-        if (_loadFailure) {
-            [self.hud showAnimated:YES];
-            [self getForumPostWithMore:NO];
+        if (self.loadFailure) {
+            [self getForumPostWithHUD:YES];
         }
     }
 }
@@ -232,13 +228,13 @@
         case ShareMenuItemTypeWeChat:  // 微信
         {
             NSLog(@"微信");
-            [ShareManager weChatShareWithImageUrl:@"http://img1.shenchuang.com/2016/1125/1480067250934.jpg" currentVC:self success:nil failure:nil];
+            [ShareManager weChatShareWithCurrentVC:self success:nil failure:nil];
             break;
         }
         case ShareMenuItemTypeWechatTimeLine:  // 朋友圈
         {
             NSLog(@"朋友圈");
-            [ShareManager weChatTimeLineShareWithImageUrl:@"http://img1.shenchuang.com/2016/1125/1480067250934.jpg" currentVC:self success:^(NSString *result) {
+            [ShareManager weChatTimeLineShareWithCurrentVC:self success:^(NSString *result) {
                 NSLog(@"result = %@", result);
             } failure:^(NSString *error) {
                 NSLog(@"error = %@", error);
@@ -273,49 +269,72 @@
 #pragma mark end XQCycleImageViewDelegate
 
 #pragma mark - start 网络请求
+- (void)getForumPostWithHUD:(BOOL)needHUD
+{
+    __weak typeof(self) ws = self;
+    MBProgressHUD *hud     = nil;
+    if (needHUD) {
+        hud = [MBProgressHUD hudView:self.view text:@"正在加載中..." removeOnHide:YES];
+    }
+    [[NetworkManager shareManager] forumPostWithSuccess:^(NSArray *array) {
+        [hud hideAnimated:YES];
+        [ws endRefreshing];
+        ws.tableView.mj_header.hidden = NO;
+        if (array.count >= pageSize) {
+            ws.tableView.mj_footer.hidden = NO;
+        }
+        NSMutableArray *dataList = [NSMutableArray array];
+        for (int i = 0; i < array.count; i++) {
+            NSDictionary *dict = array[i];
+            ForumModel *data   = [ForumModel forumModelWithDict:dict];
+            [ws dealWithModel:data];
+            [dataList addObject:data];
+        }
+        ws.star     = starBegin;
+        ws.dataList = dataList;
+        [ws.tableView reloadData];
+    } failure:^(NSString *error) {
+        ws.loadFailure = YES;
+        [ws endRefreshing];
+        [hud hideAnimated:YES];
+        [MBProgressHUD showFailureInView:ws.view mesg:error];
+    }];
+}
+
 /** 获取论坛数据 */
 - (void)getForumPostWithMore:(BOOL)more
 {
     if (more == NO) {
-        self.star = 0;
+        [self getForumPostWithHUD:NO];
+    }else {
+        __weak typeof(self) ws  = self;
+        NetworkManager *manager = [NetworkManager shareManager];
+        [manager forumPostWithStar:[NSString stringWithFormat:@"%zd", self.star]
+                           success:^(NSArray *array) {
+                               [ws endRefreshing];
+                               if ((!array) || array.count <= 0) {
+                                   ws.tableView.mj_footer.hidden = YES;
+                                   [MBProgressHUD showFailureInView:ws.view mesg:@"沒有更多數據了"];
+                                   return ;
+                               }
+                               NSMutableArray *dataList = [ws.dataList mutableCopy];
+                               for (int i = 0; i < array.count; i++) {
+                                   NSDictionary *dict = array[i];
+                                   ForumModel *data = [ForumModel forumModelWithDict:dict];
+                                   if (data.rnum.intValue > 0) {
+                                       NSLog(@"titile = %@", data.title);
+                                   }
+                                   [ws dealWithModel:data];
+                                   [dataList addObject:data];
+                               }
+                               ws.star     = ws.star + 20;
+                               ws.dataList = dataList;
+                               [ws.tableView reloadData];
+                           } failure:^(NSString *error) {
+                               [ws endRefreshing];
+                               [MBProgressHUD showFailureInView:ws.view mesg:error];
+                           }];
     }
-    __weak typeof(self) ws = self;
-    [[NetworkManager shareManager] forumPostWithStar:[NSString stringWithFormat:@"%zd", self.star]
-                                             success:^(NSArray *array) {
-                                                 [ws.hud hideAnimated:YES];
-                                                 [ws endRefreshing];
-                                                 NSMutableArray *dataList = [NSMutableArray array];
-                                                 ws.tableView.mj_header.hidden = NO;
-                                                 if (more) {  // 上拉加载更多数据
-                                                     if ((!array) || array.count <= 0) {
-                                                         ws.tableView.mj_footer.hidden = YES;
-                                                         [MBProgressHUD showFailureInView:ws.view mesg:@"沒有更多數據了"];
-                                                         return ;
-                                                     }
-                                                     [dataList addObjectsFromArray:ws.dataList];
-                                                 }else {
-                                                     if (array.count >= pageSize) {
-                                                         ws.tableView.mj_footer.hidden = NO;
-                                                     }
-                                                 }
-                                                 for (int i = 0; i < array.count; i++) {
-                                                     NSDictionary *dict = array[i];
-                                                     ForumModel *data = [ForumModel forumModelWithDict:dict];
-                                                     if (data.rnum.intValue > 0) {
-                                                         NSLog(@"titile = %@", data.title);
-                                                     }
-                                                     [ws dealWithModel:data];
-                                                     [dataList addObject:data];
-                                                 }
-                                                 ws.star     = ws.star + 20;
-                                                 ws.dataList = dataList;
-                                                 [ws.tableView reloadData];
-                                             } failure:^(NSString *error) {
-                                                 ws.loadFailure = YES;
-                                                 [ws endRefreshing];
-                                                 [ws.hud hideAnimated:YES];
-                                                 [MBProgressHUD showFailureInView:ws.view mesg:error];
-                                             }];
 }
 
 /** 获取广告轮播图 */

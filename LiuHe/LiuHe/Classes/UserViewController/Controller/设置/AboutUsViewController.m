@@ -6,16 +6,28 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
+#import <Photos/Photos.h>
+#import <UIImageView+WebCache.h>
 #import "AboutUsViewController.h"
 #import "NSString+Extension.h"
+#import "SystemManager.h"
+#import "XQActionSheet.h"
+#import "XQToast.h"
 
-@interface AboutUsViewController ()
+@interface AboutUsViewController () <XQActionSheetDelegate>
 
 @property (nonatomic, weak) UIScrollView *scrollView;
+
+@property (nonatomic, weak) UIImageView *imageView;
 
 @end
 
 @implementation AboutUsViewController
+
+- (void)dealloc
+{
+    NSLog(@"AboutUsViewController dealloc");
+}
 
 - (void)viewDidLoad
 {
@@ -52,7 +64,63 @@
     label.text     = text;
     [label setNumberOfLines:0];
     [scrollView addSubview:label];
-    [scrollView setContentSize:CGSizeMake(0, CGRectGetMaxY(label.frame))];
+    
+    labelH         = HEIGHT(50);
+    CGFloat labelY = scrollH - labelH - HEIGHT(10);
+    
+    CGFloat imageW = WIDTH(150);
+    CGFloat imageX = (SCREEN_WIDTH - imageW) * 0.5;
+    CGFloat imageY = labelY - imageW;
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(imageX, imageY, imageW, imageW)];
+    self.imageView         = imageView;
+    [imageView setBackgroundColor:RGBCOLOR(245, 245, 245)];
+    [imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:[SystemManager qrcodeURL]]
+                 placeholderImage:nil
+                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                            if (error == nil) {
+                                UILabel *tmpLab = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH(10), labelY, labelW, labelH)];
+                                tmpLab.font = [UIFont systemFontOfSize:fontSize(14)];
+                                tmpLab.text = @"您可邀請好友掃描上方的二維碼來下載曾道人哦,也可以直接點擊圖片保存到系統相冊。";
+                                [tmpLab setNumberOfLines:0];
+                                [tmpLab setTextAlignment:NSTextAlignmentCenter];
+                                [scrollView addSubview:tmpLab];
+                                [imageView setUserInteractionEnabled:YES];
+                            }
+                        }];
+    [scrollView addSubview:imageView];
+    [imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(saveImage:)]];
 }
 
+- (void)saveImage:(UITapGestureRecognizer *)tap
+{
+    XQActionSheet *sheet = [[XQActionSheet alloc] initWithTitle:nil
+                                                       delegate:self
+                                              cancelButtonTitle:@"取消"
+                                         destructiveButtonTitle:nil
+                                              otherButtonTitles:@"保存圖片到相冊", nil];
+    [sheet showInView:self.view];
+}
+
+- (void)actionSheetButtonDidClick:(XQActionSheet *)actionSheet ButtonType:(int)buttonType
+{
+    if (buttonType == 1) {
+        UIImage *image = self.imageView.image;
+        [self loadImageFinished:image];
+    }
+}
+
+- (void)loadImageFinished:(UIImage *)image
+{
+    UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), (__bridge void *)self);
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    if (error == nil) {
+        [[XQToast makeText:@"保存成功"] show];
+    }else {
+        [[XQToast makeText:@"保存失敗"] show];
+    }
+}
 @end

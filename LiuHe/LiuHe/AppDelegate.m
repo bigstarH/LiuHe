@@ -6,9 +6,11 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
+#import "MBProgressHUD+Extension.h"
 #import <UMSocialCore/UMSocialCore.h>
-#import "AppDelegate.h"
 #import "NetworkManager.h"
+#import "SystemManager.h"
+#import "AppDelegate.h"
 #import "UserModel.h"
 
 static NSString *UMengAppKey = @"5838115c734be42627000d73";
@@ -33,6 +35,8 @@ static NSString *UMengAppKey = @"5838115c734be42627000d73";
     
     // 用户登录
     [self userLogin];
+    // 获取app版本，二维码等信息
+    [self appInfomation];
     
     // 友盟SDK
     [self initUMengUShareSDK];
@@ -53,6 +57,16 @@ static NSString *UMengAppKey = @"5838115c734be42627000d73";
                                                     password:model.password
                                                      success:nil failure:nil];
     }
+}
+
+/** 获取app信息 */
+- (void)appInfomation
+{
+    [[NetworkManager shareManager] appInfoWithSuccess:^(NSDictionary *dict) {
+        [SystemManager setAppInfoWithDict:dict];
+    } failure:^(NSString *error) {
+        [MBProgressHUD showFailureInView:KeyWindow mesg:error];
+    }];
 }
 
 #pragma mark - start 友盟分享

@@ -7,17 +7,18 @@
 //
 
 #import <UMSocialCore/UMSocialCore.h>
+#import "SystemManager.h"
 #import "ShareManager.h"
 
 /** 分享 */
 @implementation ShareManager
 
-+ (void)weChatShareWithImageUrl:(NSString *)imageUrl currentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
++ (void)weChatShareWithCurrentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     UMSocialMessageObject *mesObject = [UMSocialMessageObject messageObject];
     
     UMShareImageObject *imageObject  = [[UMShareImageObject alloc] init];
-    imageObject.shareImage = imageUrl;
+    imageObject.shareImage = [SystemManager qrcodeURL];
     mesObject.shareObject  = imageObject;
     
     [self shareToPlatform:UMSocialPlatformType_WechatSession
@@ -27,12 +28,12 @@
                   failure:failureBlock];
 }
 
-+ (void)weChatTimeLineShareWithImageUrl:(NSString *)imageUrl currentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
++ (void)weChatTimeLineShareWithCurrentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     UMSocialMessageObject *mesObject = [UMSocialMessageObject messageObject];
     
     UMShareImageObject *imageObject  = [[UMShareImageObject alloc] init];
-    imageObject.shareImage = imageUrl;
+    imageObject.shareImage = [SystemManager qrcodeURL];
     mesObject.shareObject  = imageObject;
     
     [self shareToPlatform:UMSocialPlatformType_WechatTimeLine

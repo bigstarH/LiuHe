@@ -15,10 +15,12 @@ typedef NS_ENUM(NSInteger, TableViewType) {
     TableViewTypeFx       = 1004,  /**< 公式资料 */
     TableViewTypeBoutique = 1005,  /**< 精品杀项 */
     TableViewTypeCard     = 1006,  /**< 香港挂牌 */
-    TableViewTypeYear     = 1007   /**< 全年资料 */
+    TableViewTypeYear     = 1007,  /**< 全年资料 */
+    TableViewTypeAttr     = 1008   /**< 六合属性 */
 };
 
-#define pageSize 20
+#define pageSize   20
+#define starBegin  50
 
 @class DataTableView;
 @class DataModel;

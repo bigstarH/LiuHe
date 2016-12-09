@@ -10,8 +10,15 @@
 #define Common_h
 
 // NSUserDefaults 键值
-#define USER_DIDLOGIN     @"user_didLogin"
-#define NEXT_LOTTERY_TIME @"NEXT_LOTTERY_TIME"
+#define USER_DIDLOGIN             @"USER_DIDLOGIN"        // 用户是否登录
+#define APP_QRCODE                @"APP_QRCODE"           // 二维码图片
+#define APP_UPDATE_CONTENT        @"APP_UPDATE_CONTENT"   // ios更新内容
+#define APP_FILE_SIZE             @"APP_FILE_SIZE"        // 文件大小
+#define APP_MORE_APPLICATION      @"APP_MORE_APPLICATION" // 更多应用
+#define APP_NEW_VERSION           @"APP_NEW_VERSION"      // 最新版本
+#define APP_DOWNLOAD_URL          @"APP_DOWNLOAD_URL"     // 下载链接
+#define APP_SHARE_TEXT            @"APP_SHARE_TEXT"       // 分享文本
+#define APP_SHARE_LINK            @"APP_SHARE_LINK"       // 分享链接
 
 // 通知名
 #define USER_LOGIN_SUCCESS        @"USER_LOGIN_SUCCESS"        // 用户登录成功

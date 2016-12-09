@@ -391,6 +391,17 @@ static id networkInstance;
                }];
 }
 
+- (void)dataWithUrl:(NSString *)url success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    [self.manager GET:url parameters:nil progress:nil
+              success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                  NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                  successBlock ? successBlock(array) : nil;
+              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                  failureBlock ? failureBlock(@"網絡錯誤") : nil;
+              }];
+}
+
 - (void)dataWithClassID:(NSString *)classID star:(NSString *)star success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     NSDictionary *param = @{@"enews"   : @"zhiliaolist",
@@ -483,6 +494,17 @@ static id networkInstance;
               }];
 }
 
+- (void)forumPostWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    [self.manager GET:FORUM_POST_URL parameters:nil progress:nil
+              success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                  NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                  successBlock ? successBlock(array) : nil;
+              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                  failureBlock ? failureBlock(@"網絡錯誤") : nil;
+              }];
+}
+
 - (void)forumPostWithStar:(NSString *)star success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     NSDictionary *param = @{@"enews" : @"bbslist",
@@ -534,6 +556,17 @@ static id networkInstance;
                    }else {
                        failureBlock ? failureBlock(ts) : nil;
                    }
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
+               }];
+}
+
+- (void)appInfoWithSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    [self.manager POST:APP_INFO_URL parameters:@{@"enews" : @"6hcbt"} progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   successBlock ? successBlock(dict) : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                    failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];

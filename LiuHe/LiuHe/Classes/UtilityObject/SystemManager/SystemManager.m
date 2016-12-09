@@ -39,4 +39,58 @@ static NSDateFormatter *dateFormatter = nil;
     return strDate;
 }
 
++ (void)setAppInfoWithDict:(NSDictionary *)dict
+{
+    NSString *qrcode  = dict[@"qrcode"] ? dict[@"qrcode"] : @"";
+    NSString *feature = dict[@"iosfeature"] ? dict[@"iosfeature"] : @""; 
+    NSString *filelen = dict[@"filelen"] ? dict[@"filelen"] : @""; 
+    NSString *ioson   = dict[@"ioson"] ? dict[@"ioson"] : @"0"; 
+    NSString *iosvo   = dict[@"iosvo"] ? dict[@"iosvo"] : @"1";
+    NSString *ipaurl  = dict[@"ipaurl"] ? dict[@"ipaurl"] : @"";  
+    NSString *sharetext = dict[@"sharetext"] ? dict[@"sharetext"] : @""; 
+    NSString *sharelink = dict[@"sharelink"] ? dict[@"sharelink"] : @""; 
+    [UserDefaults setObject:qrcode forKey:APP_QRCODE];
+    [UserDefaults setObject:feature forKey:APP_UPDATE_CONTENT];
+    [UserDefaults setObject:filelen forKey:APP_FILE_SIZE];
+    [UserDefaults setObject:ioson forKey:APP_MORE_APPLICATION];
+    [UserDefaults setObject:iosvo forKey:APP_NEW_VERSION];
+    [UserDefaults setObject:ipaurl forKey:APP_DOWNLOAD_URL];
+    [UserDefaults setObject:sharetext forKey:APP_SHARE_TEXT];
+    [UserDefaults setObject:sharelink forKey:APP_SHARE_LINK];
+}
+
++ (NSString *)updateContent
+{
+    return [UserDefaults objectForKey:APP_UPDATE_CONTENT];
+}
+
++ (BOOL)moreApplication
+{
+    return [[UserDefaults objectForKey:APP_MORE_APPLICATION] boolValue];
+}
+
++ (NSString *)newVersion
+{
+    return [UserDefaults objectForKey:APP_NEW_VERSION];
+}
+
++ (NSString *)downloadURL
+{
+    return [UserDefaults objectForKey:APP_DOWNLOAD_URL];
+}
+
++ (NSString *)qrcodeURL
+{
+    return [UserDefaults objectForKey:APP_QRCODE];
+}
+
++ (NSString *)shareText
+{
+    return [UserDefaults objectForKey:APP_SHARE_TEXT];
+}
+
++ (NSString *)shareLink
+{
+    return [UserDefaults objectForKey:APP_SHARE_LINK];
+}
 @end
