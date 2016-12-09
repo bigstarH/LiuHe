@@ -24,11 +24,6 @@
 
 @implementation TreasureViewController
 
-- (void)dealloc
-{
-    NSLog(@"TreasureViewController dealloc");
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

@@ -29,11 +29,6 @@
 
 @implementation PicLibraryViewController
 
-- (void)dealloc
-{
-    NSLog(@"PicLibraryViewController dealloc");
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

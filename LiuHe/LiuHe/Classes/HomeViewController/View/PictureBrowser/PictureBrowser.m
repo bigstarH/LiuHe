@@ -35,7 +35,6 @@
 - (void)dealloc
 {
     self.imageUrls = nil;
-    NSLog(@"PictureBrowser dealloc");
 }
 
 - (void)createView

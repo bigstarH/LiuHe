@@ -24,11 +24,6 @@
 
 @implementation DataDetailViewController
 
-- (void)dealloc
-{
-    NSLog(@"DataDetailViewController dealloc");
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

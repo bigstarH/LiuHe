@@ -34,11 +34,6 @@
 
 @implementation HistoryViewController
 
-- (void)dealloc
-{
-    NSLog(@"HistoryViewController dealloc");
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

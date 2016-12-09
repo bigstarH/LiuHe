@@ -34,11 +34,6 @@
 
 @implementation PicDetailViewController
 
-- (void)dealloc
-{
-    NSLog(@"PicDetailViewController dealloc");
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

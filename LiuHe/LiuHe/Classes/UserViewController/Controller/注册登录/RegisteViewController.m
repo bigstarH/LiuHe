@@ -32,7 +32,6 @@
 - (void)dealloc
 {
     [NotificationCenter removeObserver:self];
-    NSLog(@"RegisteViewController dealloc");
 }
 
 - (void)viewDidLoad
