@@ -52,7 +52,7 @@
 /** 号码6生肖 */
 @property (nonatomic, copy) NSString *z6sx;
 /** 状态 */
-@property (nonatomic, copy) NSString *zt;
+@property (nonatomic, copy) NSNumber *zt;
 
 + (instancetype)lotteryNumberWithDict:(NSDictionary *)dict;
 

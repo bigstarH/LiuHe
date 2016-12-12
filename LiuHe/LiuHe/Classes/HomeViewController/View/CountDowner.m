@@ -18,6 +18,8 @@
 
 @property (nonatomic, weak) UILabel *secondLab;
 
+@property (nonatomic, copy) void (^handle)();
+
 @property (nonatomic, strong) NSTimer *timer;
 
 @property (nonatomic) int second;
@@ -121,11 +123,12 @@
     CGFloat width   = self.bounds.size.width;
     CGFloat height  = self.bounds.size.height;
     
-    CGFloat originX = WIDTH(4);
+    CGFloat originX = WIDTH(5);
     CGFloat labelW  = WIDTH(20);
     CGFloat timeW   = (width - originX * 2 - labelW * 4) * 0.25;
-    CGFloat timeY   = (height - timeW) * 0.5;
-    _dayLab.frame   = CGRectMake(originX, timeY, timeW, timeW);
+    CGFloat timeH   = timeW * 0.9;
+    CGFloat timeY   = (height - timeH) * 0.5;
+    _dayLab.frame   = CGRectMake(originX, timeY, timeW, timeH);
     [_dayLab setTextColor:_timeColor];
     [_dayLab setBackgroundColor:_timeLabBgColor];
     
@@ -133,7 +136,7 @@
     [self addLabelWithFrame:CGRectMake(originX, 0, labelW, height) text:@"天"];
     
     originX = originX + labelW;
-    _hourLab.frame  = CGRectMake(originX, timeY, timeW, timeW);
+    _hourLab.frame  = CGRectMake(originX, timeY, timeW, timeH);
     [_hourLab setTextColor:_timeColor];
     [_hourLab setBackgroundColor:_timeLabBgColor];
     
@@ -141,7 +144,7 @@
     [self addLabelWithFrame:CGRectMake(originX, 0, labelW, height) text:@"时"];
     
     originX = originX + labelW;
-    _miniteLab.frame = CGRectMake(originX, timeY, timeW, timeW);
+    _miniteLab.frame = CGRectMake(originX, timeY, timeW, timeH);
     [_miniteLab setTextColor:_timeColor];
     [_miniteLab setBackgroundColor:_timeLabBgColor];
     
@@ -149,7 +152,7 @@
     [self addLabelWithFrame:CGRectMake(originX, 0, labelW, height) text:@"分"];
     
     originX = originX + labelW;
-    _secondLab.frame = CGRectMake(originX, timeY, timeW, timeW);
+    _secondLab.frame = CGRectMake(originX, timeY, timeW, timeH);
     [_secondLab setTextColor:_timeColor];
     [_secondLab setBackgroundColor:_timeLabBgColor];
     
@@ -194,6 +197,7 @@
                     self.minite = 0;
                     self.second = 0;
                     [self stopCountDown];
+                    _handle ? _handle() : nil;
                 }else {
                     self.hour   = 23;
                     self.minite = 59;
@@ -225,6 +229,11 @@
 - (int)getCountDown
 {
     return self.day * 24 * 3600 + self.hour * 3600 + self.minite * 60 + self.second;
+}
+
+- (void)setComplitionHandle:(void (^)())handle
+{
+    _handle = handle;
 }
 
 - (void)setCountDownTime:(NSTimeInterval)time

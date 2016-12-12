@@ -11,10 +11,13 @@
 
 #define BASE_URL    @""
 
+// 开奖测试
+#define LOTTERY_KJCS_URL    @"http://120.76.44.201:8090/ceshi.json"
+
+
 // 首页
 #define GET_INDEXAD_AD_URL  @"http://ad.jizhou56.com:8090/appad/lhcbtad/index.json"  // 首页广告
 #define GET_TREASURE_URL    @"http://ad.jizhou56.com:8090/appad/lhcbt_xb/index.json" // 六合寻宝
-#define GET_KAIJIANG_AD_URL @"http://ad.jizhou56.com:8090/appad/spkjad/index.json"   // 视频开奖广告
 #define LOTTERY_HISTORY_URL @"http://wap.jizhou56.com:8090/json/2016.json" // 历史记录
 #define LOTTERY_RESULT_URL  @"http://app.jizhou56.com:8090/kjbm.json" // 开奖结果
 
@@ -36,6 +39,7 @@
 #define DATA_ATTRIBUTE_URL  @"http://wap.jizhou56.com:8090/json/list/shuxing.json" // 六合属性
 // 论坛
 #define FORUM_POST_URL      @"http://wap.jizhou56.com:8090/json/list/bbs.json"  // 论坛帖子
+
 
 // 我的
 // 用户相关

@@ -12,9 +12,11 @@
 #import "TreasureViewController.h"
 #import "HistoryViewController.h"
 #import "XQFasciatePageControl.h"
+#import "LotteryNumberModel.h"
 #import "HomeViewController.h"
 #import "DataViewController.h"
 #import "WebViewController.h"
+#import "UIImage+Extension.h"
 #import "XQCycleImageView.h"
 #import "NetworkManager.h"
 #import "SystemManager.h"
@@ -32,11 +34,19 @@
 
 @property (nonatomic, strong) NSArray *imageArr;
 
+@property (nonatomic, strong) NSTimer *timer;
+
 @property (nonatomic, weak) XQCycleImageView *cycleImageView;
 
 @property (nonatomic, weak) XQFasciatePageControl *pageControl;
 
 @property (nonatomic, weak) CountDowner *countDown;
+
+@property (nonatomic, weak) UIButton *showVideoBtn;
+
+@property (nonatomic, weak) UILabel *statusLab;
+
+@property (nonatomic) BOOL getNumber;
 
 @end
 
@@ -47,6 +57,7 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    self.getNumber = NO;
     
     [self createCycleImageView];
     [self createBottomButton];
@@ -58,8 +69,7 @@
     [self createCountDowner];
     
     // 获取下期开奖事件
-    //    [self getLotteryNextTime];
-    [self getLotteryNumber];
+    [self getLotteryNextTime];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -205,13 +215,40 @@
     CGFloat width      = WIDTH(200);
     CGFloat originX    = (CGRectGetWidth(self.timeView.frame) - width) * 0.5;
     CGFloat originY    = CGRectGetMaxY(self.nextTimeLab.frame);
-    CGFloat height     = CGRectGetHeight(self.timeView.frame) - originY;
+    CGFloat height     = CGRectGetHeight(self.timeView.frame) - originY - HEIGHT(5);
     
+    __weak typeof(self) ws = self;
     CountDowner *count = [CountDowner countDownerWithTime:0];
     self.countDown     = count;
     count.frame        = CGRectMake(originX, originY, width, height);
     [count setBackgroundColor:MAIN_COLOR];
+    [count setComplitionHandle:^{
+        if (ws.getNumber == YES) {
+            [ws getLotteryNumber];
+        }
+    }];
     [self.timeView addSubview:count];
+    
+    UIButton *button   = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.showVideoBtn  = button;
+    button.hidden      = YES;
+    [button setTitle:@"正在開獎，點擊觀看！！！" forState:UIControlStateNormal];
+    [button setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]] forState:UIControlStateNormal];
+    [button setBackgroundImage:[UIImage imageWithColor:[UIColor redColor]] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [button setFrame:count.frame];
+    [button.titleLabel setFont:[UIFont systemFontOfSize:fontSize(15)]];
+    [button addTarget:self action:@selector(goToVideoController) forControlEvents:UIControlEventTouchUpInside];
+    [self.timeView addSubview:button];
+    
+    UILabel *label     = [[UILabel alloc] initWithFrame:count.frame];
+    label.font         = [UIFont systemFontOfSize:fontSize(16)];
+    self.statusLab     = label;
+    label.hidden       = YES;
+    label.textColor    = [UIColor redColor];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    [self.timeView addSubview:label];
 }
 
 /** 设置每个菜单项的位置尺寸 */
@@ -290,6 +327,42 @@
 }
 #pragma mark end 初始化控件
 
+#pragma mark - start 私有方法
+- (void)initTimerWithTimeInterval:(NSTimeInterval)time
+{
+    [_timer invalidate];
+    _timer = nil;
+    _timer = [NSTimer scheduledTimerWithTimeInterval:(time / 1000)
+                                              target:self
+                                            selector:@selector(getLotteryNumber)
+                                            userInfo:nil
+                                             repeats:NO];
+}
+/** 跳转到开奖动画 */
+- (void)goToVideoController
+{
+    
+}
+
+/** 播放“准备开奖”音频 */
+- (void)playSoundsForPrepare
+{
+    
+}
+
+/** 播放“广告”音频 */
+- (void)playSoundsForAD
+{
+    
+}
+
+/** 播放“主持人讲话”音频 */
+- (void)playSoundsForMC
+{
+    
+}
+#pragma mark end 私有方法
+
 #pragma mark - start ShareMenuDelegate
 /** 分享事件 */
 - (void)shareMenu:(ShareMenu *)shareMenu didSelectMenuItemWithType:(ShareMenuItemType)type
@@ -297,13 +370,11 @@
     switch (type) {
         case ShareMenuItemTypeWeChat:  // 微信
         {
-            NSLog(@"微信");
             [ShareManager weChatShareWithCurrentVC:self success:nil failure:nil];
             break;
         }
         case ShareMenuItemTypeWechatTimeLine:  // 朋友圈
         {
-            NSLog(@"朋友圈");
             [ShareManager weChatTimeLineShareWithCurrentVC:self success:^(NSString *result) {
                 NSLog(@"result = %@", result);
             } failure:^(NSString *error) {
@@ -372,9 +443,7 @@
 //        [MBProgressHUD showFailureInView:ws.view mesg:error];
 //    }];
 //}
-
-/** 获取开奖号码 */
-- (void)getLotteryNumber
+- (void)getLotteryNextTime
 {
     __weak typeof(self) ws  = self;
     [[NetworkManager shareManager] lotteryStartWithSuccess:^(NSDictionary *dict) {
@@ -385,11 +454,71 @@
         
         NSDate *date        = [NSDate date];
         NSTimeInterval dis  = [time doubleValue] - [date timeIntervalSince1970];
-        if (dis <= 0)  dis  = 0;
-        [ws.countDown setCountDownTime:dis];
-        [ws.countDown startCountDown];
+        if (dis > 0)   {
+            ws.getNumber    = YES;
+            [ws.countDown setCountDownTime:dis];
+            [ws.countDown startCountDown];
+        }else {
+            ws.getNumber    = NO;
+            [self getLotteryNumber];
+        }
     } failure:^(NSString *error) {
+        ws.getNumber = NO;
         [MBProgressHUD showFailureInView:ws.view mesg:error];
+    }];
+}
+
+/** 获取开奖号码 */
+- (void)getLotteryNumber
+{
+    __weak typeof(self) ws = self;
+    [[NetworkManager shareManager] lotteryAnimateWithSuccess:^(NSDictionary *dict) {
+        NSLog(@"dict = %@", dict);
+        LotteryNumberModel *model = [LotteryNumberModel lotteryNumberWithDict:dict];
+        if ([model.zt intValue] == 1) {  // 开奖结束
+            NSString *time      = [dict objectForKey:@"xyqsjc"];
+            NSString *formatter = @"MM月dd日  HH时mm分 EE";
+            NSString *str = [SystemManager dateStringWithTime:[time doubleValue] formatter:formatter];
+            ws.nextTimeLab.text = [NSString stringWithFormat:@"下期開獎時間：%@",str];
+            
+            NSDate *date        = [NSDate date];
+            NSTimeInterval dis  = [time doubleValue] - [date timeIntervalSince1970];
+            ws.countDown.hidden = NO;
+            ws.statusLab.hidden = YES;
+            ws.showVideoBtn.hidden = YES;
+            [ws.countDown setCountDownTime:dis];
+            [ws.countDown startCountDown];
+        }else if ([model.zt intValue] == 2) {  // 准备开奖
+            ws.countDown.hidden    = YES;
+            ws.showVideoBtn.hidden = YES;
+            ws.statusLab.hidden    = NO;
+            ws.statusLab.text      = @"報碼準備中,請稍候";
+            ws.nextTimeLab.text    = [NSString stringWithFormat:@"第%@期：準備開獎", model.bq];
+            [ws playSoundsForPrepare];
+            [ws initTimerWithTimeInterval:[model.sxsj doubleValue]];
+        }else if ([model.zt intValue] == 3) {  // 正在开奖
+            ws.countDown.hidden    = YES;
+            ws.statusLab.hidden    = YES;
+            ws.showVideoBtn.hidden = NO;
+            ws.nextTimeLab.text    = [NSString stringWithFormat:@"第%@期：正在開獎", model.bq];
+        }else if ([model.zt intValue] == 4) {  // 广告中
+            ws.countDown.hidden    = YES;
+            ws.showVideoBtn.hidden = YES;
+            ws.statusLab.hidden    = NO;
+            ws.statusLab.text      = @"廣告中，請稍候";
+            ws.nextTimeLab.text    = [NSString stringWithFormat:@"第%@期：準備開獎", model.bq];
+            [ws playSoundsForAD];
+            [ws initTimerWithTimeInterval:[model.sxsj doubleValue]];
+        }else if ([model.zt intValue] == 5) {  // 主持人讲话中
+            ws.countDown.hidden    = YES;
+            ws.showVideoBtn.hidden = YES;
+            ws.statusLab.hidden    = NO;
+            ws.statusLab.text      = @"主持人講話中，請稍候";
+            ws.nextTimeLab.text    = [NSString stringWithFormat:@"第%@期：準備開獎", model.bq];
+            [ws playSoundsForMC];
+            [ws initTimerWithTimeInterval:[model.sxsj doubleValue]];
+        }
+    } failure:^(NSString *error) {
     }];
 }
 #pragma mark end 网络请求

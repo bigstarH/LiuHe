@@ -26,5 +26,7 @@
 
 - (void)stopCountDown;
 
+- (void)setComplitionHandle:(void (^)())handle;
+
 - (int)getCountDown;
 @end

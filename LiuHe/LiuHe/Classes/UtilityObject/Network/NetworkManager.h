@@ -14,6 +14,9 @@
 + (instancetype)shareManager;
 
 #pragma mark - start 网络请求
+/** 0  开奖动画 */
+- (void)lotteryAnimateWithSuccess:(void (^)(NSDictionary *dict))successBlock
+                          failure:(void (^)(NSString *error))failureBlock;
 /** 1  获取广告图 */
 - (void)getADWithURL:(NSString *)urlStr
              success:(void (^)(NSArray *imagesArray))successBlock

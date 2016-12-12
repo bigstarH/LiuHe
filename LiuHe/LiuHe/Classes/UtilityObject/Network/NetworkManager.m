@@ -45,6 +45,17 @@ static id networkInstance;
     return _manager;
 }
 
+- (void)lotteryAnimateWithSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    [self.manager GET:@"http://120.76.44.201:8090/ceshi.json" parameters:nil progress:nil
+              success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                  NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                  successBlock ? successBlock(dict) : nil;
+              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                  failureBlock ? failureBlock(@"網絡錯誤") : nil;
+              }];
+}
+
 - (void)getADWithURL:(NSString *)urlStr success:(void (^)(NSArray *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     [self.manager GET:urlStr parameters:nil progress:nil
