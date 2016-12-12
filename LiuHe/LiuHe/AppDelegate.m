@@ -11,6 +11,7 @@
 #import "NetworkManager.h"
 #import "SystemManager.h"
 #import "AppDelegate.h"
+#import "XQAlertView.h"
 #import "UserModel.h"
 
 static NSString *UMengAppKey = @"5838115c734be42627000d73";
@@ -64,9 +65,29 @@ static NSString *UMengAppKey = @"5838115c734be42627000d73";
 {
     [[NetworkManager shareManager] appInfoWithSuccess:^(NSDictionary *dict) {
         [SystemManager setAppInfoWithDict:dict];
+        [self checkVersion];
     } failure:^(NSString *error) {
         [MBProgressHUD showFailureInView:KeyWindow mesg:error];
     }];
+}
+
+/** 检查版本 */
+- (void)checkVersion
+{
+    NSString *newVersion = [SystemManager newVersion];
+    NSString *content = [SystemManager updateContent];
+    NSString *url     = [SystemManager downloadURL];
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    if (![version isEqualToString:newVersion]) {
+        XQAlertView *alert = [[XQAlertView alloc] initWithTitle:@"新版本" message:content];
+        [alert setThemeColor:MAIN_COLOR];
+        [alert addButtonWithTitle:@"下次再说" style:XQAlertButtonStyleCancel handle:nil];
+        [alert addButtonWithTitle:@"前往更新" style:XQAlertButtonStyleDefault handle:^{
+            NSURL *address = [NSURL URLWithString:url];
+            [[UIApplication sharedApplication] openURL:address];
+        }];
+        [alert show];
+    }
 }
 
 #pragma mark - start 友盟分享

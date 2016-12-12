@@ -11,10 +11,12 @@
 #import "MBProgressHUD+Extension.h"
 #import "CollectionModel.h"
 #import "NetworkManager.h"
+#import "ShareManager.h"
 #import "XQAlertView.h"
+#import "ShareMenu.h"
 #import "XQToast.h"
 
-@interface MyCollectionViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface MyCollectionViewController () <ShareMenuDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, weak) UITableView *tableView;
 
@@ -46,7 +48,9 @@
 
 - (void)shareEvent
 {
-    NSLog(@"分享");
+    ShareMenu *menu = [ShareMenu shareMenu];
+    menu.delegate   = self;
+    [menu show];
 }
 
 - (void)createView
@@ -75,7 +79,6 @@
     __weak typeof(self) ws = self;
     XQAlertView *alert = [[XQAlertView alloc] initWithTitle:@"提示" message:@"確定要取消收藏麽？"];
     alert.themeColor   = RGBCOLOR(238, 154, 0);
-    alert.titleColor   = [UIColor whiteColor];
     [alert addButtonWithTitle:@"再想一想" style:XQAlertButtonStyleCancel handle:nil];
     [alert addButtonWithTitle:@"確定" style:XQAlertButtonStyleDefault handle:^{
         CollectionModel *model = [ws.array objectAtIndex:indexPath.row];
@@ -95,6 +98,39 @@
     }];
     [alert show];
 }
+
+#pragma mark - start ShareMenuDelegate
+/** 分享事件 */
+- (void)shareMenu:(ShareMenu *)shareMenu didSelectMenuItemWithType:(ShareMenuItemType)type
+{
+    switch (type) {
+        case ShareMenuItemTypeWeChat:  // 微信
+        {
+            NSLog(@"微信");
+            [ShareManager weChatShareWithCurrentVC:self success:nil failure:nil];
+            break;
+        }
+        case ShareMenuItemTypeWechatTimeLine:  // 朋友圈
+        {
+            NSLog(@"朋友圈");
+            [ShareManager weChatTimeLineShareWithCurrentVC:self success:^(NSString *result) {
+                NSLog(@"result = %@", result);
+            } failure:^(NSString *error) {
+                NSLog(@"error = %@", error);
+            }];
+            break;
+        }
+        case ShareMenuItemTypeQQ:  // QQ
+            NSLog(@"QQ");
+            break;
+        case ShareMenuItemTypeQZone:  // QQ空间
+            NSLog(@"QQ空间");
+            break;
+        default:
+            break;
+    }
+}
+#pragma mark end ShareMenuDelegate
 
 #pragma mark - start UITableViewDelegate, UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

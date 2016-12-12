@@ -232,7 +232,7 @@
     
     if (themeColor == nil) return;
     
-    self.titleLab.backgroundColor = themeColor;
+//    self.titleLab.backgroundColor = themeColor;
     
     UIButton *cancelBtn = [self.bottomView viewWithTag:XQVIEW_TAG(XQAlertButtonStyleCancel)];
     if (cancelBtn) begin++;

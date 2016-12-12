@@ -157,7 +157,6 @@
         {
             XQAlertView *alert = [[XQAlertView alloc] initWithTitle:@"提示" message:@"確定要清楚緩存嗎？"];
             alert.themeColor   = MAIN_COLOR;
-            alert.titleColor   = [UIColor whiteColor];
             [alert addButtonWithTitle:@"再想一想" style:XQAlertButtonStyleCancel handle:nil];
             [alert addButtonWithTitle:@"確定" style:XQAlertButtonStyleDefault handle:^{
                 [SystemManager clearCache];
