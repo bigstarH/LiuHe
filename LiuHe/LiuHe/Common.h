@@ -10,6 +10,7 @@
 #define Common_h
 
 // NSUserDefaults 键值
+#define LOTTERY_SILENCE           @"LOTTERY_SILENCE"      // 摇奖静音
 #define USER_DIDLOGIN             @"USER_DIDLOGIN"        // 用户是否登录
 #define APP_QRCODE                @"APP_QRCODE"           // 二维码图片
 #define APP_UPDATE_CONTENT        @"APP_UPDATE_CONTENT"   // ios更新内容
@@ -28,5 +29,6 @@
 #define USER_MODIFYPSW_SUCCESS    @"USER_MODIFYPSW_SUCCESS"    // 用户修改密码成功
 #define POST_EDIT_SUCCESS         @"POST_EDIT_SUCCESS"         // 编辑帖子成功
 #define FORUM_REPLY_EDIT_SUCCESS  @"FORUM_REPLY_EDIT_SUCCESS"  // 编辑回复成功
+#define LOTTERY_KJ_FINISHED       @"LOTTERY_KJ_FINISHED"       // 开奖成功结束
 
 #endif /* Common_h */

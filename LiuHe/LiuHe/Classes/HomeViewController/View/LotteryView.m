@@ -10,16 +10,6 @@
 
 #import "LotteryView.h"
 
-@interface LotteryItem : UIView
-
-@property (nonatomic, weak) UIImageView *bgImageView;
-
-@property (nonatomic, weak) UILabel *numberLab;
-
-@property (nonatomic, weak) UILabel *animalLab;
-
-@end
-
 @interface LotteryView ()
 
 @property (nonatomic, weak) UIImageView *addImageView;
@@ -92,7 +82,7 @@
         NSString *number    = [self numberWithTag:i model:model];
         item.numberLab.text = number;
         item.animalLab.text = [self animalWithTag:i model:model];
-        [self selectBgImageWithNumber:number item:item];
+        [item selectBgImageWithNumber:number];
     }
 }
 
@@ -140,28 +130,13 @@
     }
 }
 
-- (void)selectBgImageWithNumber:(NSString *)number item:(LotteryItem *)item
-{
-    if ([number isEqualToString:@"01"] ||[number isEqualToString:@"02"] ||[number isEqualToString:@"07"] ||[number isEqualToString:@"08"] ||[number isEqualToString:@"12"] ||[number isEqualToString:@"13"] ||[number isEqualToString:@"18"] ||[number isEqualToString:@"19"] ||[number isEqualToString:@"23"] ||[number isEqualToString:@"24"] ||[number isEqualToString:@"29"] ||[number isEqualToString:@"30"] ||[number isEqualToString:@"34"] ||[number isEqualToString:@"35"] ||[number isEqualToString:@"40"] ||[number isEqualToString:@"45"] ||[number isEqualToString:@"46"] ) {
-        item.bgImageView.image = [UIImage imageNamed:@"redball"];
-    }
-    
-    if ([number isEqualToString:@"03"] ||[number isEqualToString:@"04"] ||[number isEqualToString:@"09"] ||[number isEqualToString:@"10"] ||[number isEqualToString:@"14"] ||[number isEqualToString:@"15"] ||[number isEqualToString:@"20"] ||[number isEqualToString:@"25"] ||[number isEqualToString:@"26"] ||[number isEqualToString:@"31"] ||[number isEqualToString:@"36"] ||[number isEqualToString:@"37"] ||[number isEqualToString:@"41"] ||[number isEqualToString:@"42"] ||[number isEqualToString:@"47"] ||[number isEqualToString:@"48"]) {
-        item.bgImageView.image = [UIImage imageNamed:@"blueball"];
-    }
-    
-    if ([number isEqualToString:@"05"] ||[number isEqualToString:@"06"] ||[number isEqualToString:@"11"] ||[number isEqualToString:@"16"] ||[number isEqualToString:@"17"] ||[number isEqualToString:@"21"] ||[number isEqualToString:@"22"] ||[number isEqualToString:@"27"] ||[number isEqualToString:@"28"] ||[number isEqualToString:@"32"] ||[number isEqualToString:@"33"] ||[number isEqualToString:@"38"] ||[number isEqualToString:@"39"] ||[number isEqualToString:@"43"] ||[number isEqualToString:@"44"] ||[number isEqualToString:@"49"]) {
-        item.bgImageView.image = [UIImage imageNamed:@"greenball"];
-    }
-}
-
 @end
 
 @implementation LotteryItem
 
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super init]) {
+    if (self = [super initWithFrame:frame]) {
         [self createView];
     }
     return self;
@@ -176,14 +151,12 @@
     
     UILabel *label = [[UILabel alloc] init];
     self.numberLab = label;
-    label.text     = @"25";
     label.font     = [UIFont systemFontOfSize:fontSize(13)];
     [label setTextAlignment:NSTextAlignmentCenter];
     [imageView addSubview:label];
     
     label          = [[UILabel alloc] init];
     self.animalLab = label;
-    label.text     = @"猴";
     label.font     = [UIFont systemFontOfSize:fontSize(14)];
     [label setTextAlignment:NSTextAlignmentCenter];
     [self addSubview:label];
@@ -206,4 +179,18 @@
     _animalLab.frame   = CGRectMake(0, aniLabY, width, aniLabH);
 }
 
+- (void)selectBgImageWithNumber:(NSString *)number
+{
+    if ([number isEqualToString:@"01"] ||[number isEqualToString:@"02"] ||[number isEqualToString:@"07"] ||[number isEqualToString:@"08"] ||[number isEqualToString:@"12"] ||[number isEqualToString:@"13"] ||[number isEqualToString:@"18"] ||[number isEqualToString:@"19"] ||[number isEqualToString:@"23"] ||[number isEqualToString:@"24"] ||[number isEqualToString:@"29"] ||[number isEqualToString:@"30"] ||[number isEqualToString:@"34"] ||[number isEqualToString:@"35"] ||[number isEqualToString:@"40"] ||[number isEqualToString:@"45"] ||[number isEqualToString:@"46"] ) {
+        self.bgImageView.image = [UIImage imageNamed:@"redball"];
+    }
+    
+    if ([number isEqualToString:@"03"] ||[number isEqualToString:@"04"] ||[number isEqualToString:@"09"] ||[number isEqualToString:@"10"] ||[number isEqualToString:@"14"] ||[number isEqualToString:@"15"] ||[number isEqualToString:@"20"] ||[number isEqualToString:@"25"] ||[number isEqualToString:@"26"] ||[number isEqualToString:@"31"] ||[number isEqualToString:@"36"] ||[number isEqualToString:@"37"] ||[number isEqualToString:@"41"] ||[number isEqualToString:@"42"] ||[number isEqualToString:@"47"] ||[number isEqualToString:@"48"]) {
+        self.bgImageView.image = [UIImage imageNamed:@"blueball"];
+    }
+    
+    if ([number isEqualToString:@"05"] ||[number isEqualToString:@"06"] ||[number isEqualToString:@"11"] ||[number isEqualToString:@"16"] ||[number isEqualToString:@"17"] ||[number isEqualToString:@"21"] ||[number isEqualToString:@"22"] ||[number isEqualToString:@"27"] ||[number isEqualToString:@"28"] ||[number isEqualToString:@"32"] ||[number isEqualToString:@"33"] ||[number isEqualToString:@"38"] ||[number isEqualToString:@"39"] ||[number isEqualToString:@"43"] ||[number isEqualToString:@"44"] ||[number isEqualToString:@"49"]) {
+        self.bgImageView.image = [UIImage imageNamed:@"greenball"];
+    }
+}
 @end

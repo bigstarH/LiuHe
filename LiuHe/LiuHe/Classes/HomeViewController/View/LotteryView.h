@@ -9,6 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "LotteryNumberModel.h"
 
+@interface LotteryItem : UIView
+
+@property (nonatomic, weak) UIImageView *bgImageView;
+
+@property (nonatomic, weak) UILabel *numberLab;
+
+@property (nonatomic, weak) UILabel *animalLab;
+
+- (void)selectBgImageWithNumber:(NSString *)number;
+
+@end
+
 @interface LotteryView : UIView
 
 @property (nonatomic, strong) LotteryNumberModel *model;

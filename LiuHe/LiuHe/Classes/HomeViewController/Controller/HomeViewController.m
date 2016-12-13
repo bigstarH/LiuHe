@@ -6,12 +6,14 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
+#import <AVFoundation/AVFoundation.h>
 #import "VideoLotteryViewController.h"
 #import "PicLibraryViewController.h"
 #import "MBProgressHUD+Extension.h"
 #import "TreasureViewController.h"
 #import "HistoryViewController.h"
 #import "XQFasciatePageControl.h"
+#import "VideoViewController.h"
 #import "LotteryNumberModel.h"
 #import "HomeViewController.h"
 #import "DataViewController.h"
@@ -36,6 +38,8 @@
 
 @property (nonatomic, strong) NSTimer *timer;
 
+@property (nonatomic, strong) AVAudioPlayer *player;
+
 @property (nonatomic, weak) XQCycleImageView *cycleImageView;
 
 @property (nonatomic, weak) XQFasciatePageControl *pageControl;
@@ -47,17 +51,31 @@
 @property (nonatomic, weak) UILabel *statusLab;
 
 @property (nonatomic) BOOL getNumber;
+/** 开奖状态 */
+@property (nonatomic) NSInteger type;
 
 @end
 
 @implementation HomeViewController
 
 #pragma mark - start ViewController生命周期
+- (void)dealloc
+{
+    [NotificationCenter removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.getNumber = NO;
+    self.type      = 0;
+    
+    // 开奖结束通知
+    [NotificationCenter addObserver:self
+                           selector:@selector(lotteryFinished:)
+                               name:LOTTERY_KJ_FINISHED
+                             object:nil];
     
     [self createCycleImageView];
     [self createBottomButton];
@@ -80,6 +98,9 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self.cycleImageView stopPlayImageView];
+    [self.player stop];
+    [self.timer invalidate];
+    self.timer = nil;
 }
 #pragma mark end ViewController生命周期
 
@@ -327,6 +348,17 @@
 }
 #pragma mark end 初始化控件
 
+#pragma mark - start 开奖结束通知
+- (void)lotteryFinished:(NSNotification *)notification
+{
+    self.countDown.hidden    = NO;
+    self.showVideoBtn.hidden = YES;
+    self.statusLab.hidden    = YES;
+    self.nextTimeLab.text    = @"本期開獎已結束";
+    [self getLotteryNumber];
+}
+#pragma mark end 开奖结束通知
+
 #pragma mark - start 私有方法
 - (void)initTimerWithTimeInterval:(NSTimeInterval)time
 {
@@ -341,25 +373,47 @@
 /** 跳转到开奖动画 */
 - (void)goToVideoController
 {
-    
+    VideoViewController *vc = [[VideoViewController alloc] init];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 /** 播放“准备开奖”音频 */
-- (void)playSoundsForPrepare
+- (void)playSoundsForPrepareWithType:(NSInteger)type
 {
+    if (self.type == type) return;
     
+    NSString *path = [[NSBundle mainBundle]pathForResource:@"55555.mp3" ofType:nil];
+    NSURL *url     = [NSURL fileURLWithPath:path];
+    self.player    = [[AVAudioPlayer alloc]initWithContentsOfURL:url error:nil];
+    [self.player setNumberOfLoops:0];
+    [self.player setVolume:1.0];
+    [self.player prepareToPlay];
+    [self.player play];
 }
 
 /** 播放“广告”音频 */
-- (void)playSoundsForAD
+- (void)playSoundsForADWithType:(NSInteger)type
 {
+    if (self.type == type) return;
     
+    NSString *path = [[NSBundle mainBundle]pathForResource:@"ad.mp3" ofType:nil];
+    NSURL *url     = [NSURL fileURLWithPath:path];
+    self.player    = [[AVAudioPlayer alloc]initWithContentsOfURL:url error:nil];
+    [self.player setNumberOfLoops:0];
+    [self.player setVolume:2.0];
+    [self.player prepareToPlay];
+    [self.player play];
 }
 
 /** 播放“主持人讲话”音频 */
-- (void)playSoundsForMC
+- (void)playSoundsForMCWithType:(NSInteger)type
 {
+    if (self.type == type) return;
     
+    SystemSoundID soundID = 0;
+    NSURL *soundURL = [[NSBundle mainBundle] URLForResource:@"44444.mp3" withExtension:nil];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &soundID);
+    AudioServicesPlaySystemSound(soundID);
 }
 #pragma mark end 私有方法
 
@@ -472,8 +526,8 @@
 - (void)getLotteryNumber
 {
     __weak typeof(self) ws = self;
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     [[NetworkManager shareManager] lotteryAnimateWithSuccess:^(NSDictionary *dict) {
-        NSLog(@"dict = %@", dict);
         LotteryNumberModel *model = [LotteryNumberModel lotteryNumberWithDict:dict];
         if ([model.zt intValue] == 1) {  // 开奖结束
             NSString *time      = [dict objectForKey:@"xyqsjc"];
@@ -494,20 +548,23 @@
             ws.statusLab.hidden    = NO;
             ws.statusLab.text      = @"報碼準備中,請稍候";
             ws.nextTimeLab.text    = [NSString stringWithFormat:@"第%@期：準備開獎", model.bq];
-            [ws playSoundsForPrepare];
+            [ws playSoundsForPrepareWithType:2];
+            ws.type                = 2;
             [ws initTimerWithTimeInterval:[model.sxsj doubleValue]];
         }else if ([model.zt intValue] == 3) {  // 正在开奖
             ws.countDown.hidden    = YES;
             ws.statusLab.hidden    = YES;
             ws.showVideoBtn.hidden = NO;
             ws.nextTimeLab.text    = [NSString stringWithFormat:@"第%@期：正在開獎", model.bq];
+            [ws goToVideoController];
         }else if ([model.zt intValue] == 4) {  // 广告中
             ws.countDown.hidden    = YES;
             ws.showVideoBtn.hidden = YES;
             ws.statusLab.hidden    = NO;
             ws.statusLab.text      = @"廣告中，請稍候";
             ws.nextTimeLab.text    = [NSString stringWithFormat:@"第%@期：準備開獎", model.bq];
-            [ws playSoundsForAD];
+            [ws playSoundsForADWithType:4];
+            ws.type                = 4;
             [ws initTimerWithTimeInterval:[model.sxsj doubleValue]];
         }else if ([model.zt intValue] == 5) {  // 主持人讲话中
             ws.countDown.hidden    = YES;
@@ -515,10 +572,12 @@
             ws.statusLab.hidden    = NO;
             ws.statusLab.text      = @"主持人講話中，請稍候";
             ws.nextTimeLab.text    = [NSString stringWithFormat:@"第%@期：準備開獎", model.bq];
-            [ws playSoundsForMC];
+            [ws playSoundsForMCWithType:5];
+            ws.type                = 5;
             [ws initTimerWithTimeInterval:[model.sxsj doubleValue]];
         }
     } failure:^(NSString *error) {
+        [MBProgressHUD showFailureInView:ws.view mesg:error];
     }];
 }
 #pragma mark end 网络请求
