@@ -47,7 +47,7 @@ static id networkInstance;
 
 - (void)lotteryAnimateWithSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
 {
-    [self.manager GET:@"http://120.76.44.201:8090/ceshi.json" parameters:nil progress:nil
+    [self.manager GET:LOTTERY_RESULT_URL parameters:nil progress:nil
               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
                   successBlock ? successBlock(dict) : nil;
