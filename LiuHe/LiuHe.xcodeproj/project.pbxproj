@@ -95,7 +95,6 @@
 		4804EEDB1DFE9A2300948CFD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4804EEDA1DFE9A2300948CFD /* Foundation.framework */; };
 		4804EEDD1DFE9A2F00948CFD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4804EEDC1DFE9A2F00948CFD /* UIKit.framework */; };
 		4804EEDF1DFE9A3D00948CFD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4804EEDE1DFE9A3D00948CFD /* libz.tbd */; };
-		4804EEE11DFE9A4F00948CFD /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4804EEE01DFE9A4F00948CFD /* UserNotifications.framework */; };
 		4804EEE31DFE9A5C00948CFD /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4804EEE21DFE9A5C00948CFD /* libresolv.tbd */; };
 		4804EEEA1DFEE3EC00948CFD /* 55555.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4804EEE91DFEE3EC00948CFD /* 55555.mp3 */; };
 		4804EEEC1DFEE41400948CFD /* ad.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4804EEEB1DFEE41400948CFD /* ad.mp3 */; };
@@ -147,6 +146,8 @@
 		489932C21DF188190041A016 /* PicLibraryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932C11DF188190041A016 /* PicLibraryModel.m */; };
 		489932C51DF18BA50041A016 /* PicLibraryTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932C41DF18BA50041A016 /* PicLibraryTableView.m */; };
 		489932C81DF1940A0041A016 /* PicLibraryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932C71DF1940A0041A016 /* PicLibraryCell.m */; };
+		48B9B6FF1E00E7B100F1F50A /* OtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B9B6FE1E00E7B100F1F50A /* OtherViewController.m */; };
+		48B9B7031E012B0000F1F50A /* LotteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B9B7021E012B0000F1F50A /* LotteryViewController.m */; };
 		48BE5AA51DEFC412004ACB90 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AA41DEFC412004ACB90 /* WebViewController.m */; };
 		48BE5AA91DEFCACB004ACB90 /* DataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AA81DEFCACB004ACB90 /* DataViewController.m */; };
 		48BE5AB91DF01550004ACB90 /* XQSpringMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AB61DF01550004ACB90 /* XQSpringMenu.m */; };
@@ -290,7 +291,6 @@
 		4804EEDA1DFE9A2300948CFD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4804EEDC1DFE9A2F00948CFD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4804EEDE1DFE9A3D00948CFD /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		4804EEE01DFE9A4F00948CFD /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		4804EEE21DFE9A5C00948CFD /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		4804EEE91DFEE3EC00948CFD /* 55555.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 55555.mp3; sourceTree = "<group>"; };
 		4804EEEB1DFEE41400948CFD /* ad.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ad.mp3; sourceTree = "<group>"; };
@@ -395,6 +395,10 @@
 		489932C41DF18BA50041A016 /* PicLibraryTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicLibraryTableView.m; sourceTree = "<group>"; };
 		489932C61DF1940A0041A016 /* PicLibraryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicLibraryCell.h; sourceTree = "<group>"; };
 		489932C71DF1940A0041A016 /* PicLibraryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicLibraryCell.m; sourceTree = "<group>"; };
+		48B9B6FD1E00E7B100F1F50A /* OtherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherViewController.h; sourceTree = "<group>"; };
+		48B9B6FE1E00E7B100F1F50A /* OtherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherViewController.m; sourceTree = "<group>"; };
+		48B9B7011E012B0000F1F50A /* LotteryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LotteryViewController.h; sourceTree = "<group>"; };
+		48B9B7021E012B0000F1F50A /* LotteryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LotteryViewController.m; sourceTree = "<group>"; };
 		48BE5AA31DEFC412004ACB90 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		48BE5AA41DEFC412004ACB90 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		48BE5AA71DEFCACB004ACB90 /* DataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataViewController.h; sourceTree = "<group>"; };
@@ -469,7 +473,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4804EEE31DFE9A5C00948CFD /* libresolv.tbd in Frameworks */,
-				4804EEE11DFE9A4F00948CFD /* UserNotifications.framework in Frameworks */,
 				4804EEDF1DFE9A3D00948CFD /* libz.tbd in Frameworks */,
 				4804EEDD1DFE9A2F00948CFD /* UIKit.framework in Frameworks */,
 				4804EEDB1DFE9A2300948CFD /* Foundation.framework in Frameworks */,
@@ -857,10 +860,13 @@
 				48BE5AA41DEFC412004ACB90 /* WebViewController.m */,
 				489932A51DF146DC0041A016 /* TreasureViewController.h */,
 				489932A61DF146DC0041A016 /* TreasureViewController.m */,
+				48B9B6FD1E00E7B100F1F50A /* OtherViewController.h */,
+				48B9B6FE1E00E7B100F1F50A /* OtherViewController.m */,
 				4804EE241DFE406700948CFD /* 视频开奖 */,
 				4897355B1DEEEB93006ADA94 /* 历史记录 */,
 				48BE5AA61DEFCABC004ACB90 /* 六合资料 */,
 				489932A81DF150EC0041A016 /* 六合图库 */,
+				48B9B7001E012AD400F1F50A /* 彩票专区 */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1052,6 +1058,15 @@
 			path = CellView;
 			sourceTree = "<group>";
 		};
+		48B9B7001E012AD400F1F50A /* 彩票专区 */ = {
+			isa = PBXGroup;
+			children = (
+				48B9B7011E012B0000F1F50A /* LotteryViewController.h */,
+				48B9B7021E012B0000F1F50A /* LotteryViewController.m */,
+			);
+			path = "彩票专区";
+			sourceTree = "<group>";
+		};
 		48BE5AA61DEFCABC004ACB90 /* 六合资料 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1194,7 +1209,6 @@
 			isa = PBXGroup;
 			children = (
 				4804EEE21DFE9A5C00948CFD /* libresolv.tbd */,
-				4804EEE01DFE9A4F00948CFD /* UserNotifications.framework */,
 				4804EEDE1DFE9A3D00948CFD /* libz.tbd */,
 				4804EEDC1DFE9A2F00948CFD /* UIKit.framework */,
 				4804EEDA1DFE9A2300948CFD /* Foundation.framework */,
@@ -1486,6 +1500,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				483AC5E61DE526CB009E0E64 /* BaseTabBarController.m in Sources */,
+				48B9B6FF1E00E7B100F1F50A /* OtherViewController.m in Sources */,
 				488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */,
 				489932C21DF188190041A016 /* PicLibraryModel.m in Sources */,
 				4897355A1DEEABAE006ADA94 /* LotteryNumberModel.m in Sources */,
@@ -1497,6 +1512,7 @@
 				483AC5E71DE526CB009E0E64 /* BaseViewController.m in Sources */,
 				48BE5AA91DEFCACB004ACB90 /* DataViewController.m in Sources */,
 				489932A41DF105220041A016 /* DataTableView.m in Sources */,
+				48B9B7031E012B0000F1F50A /* LotteryViewController.m in Sources */,
 				482655D11DF4272B00122766 /* ForumModel.m in Sources */,
 				483010541DEDA6B000B11BE9 /* LotteryView.m in Sources */,
 				48BE5AC31DF050DE004ACB90 /* DataDetailViewController.m in Sources */,

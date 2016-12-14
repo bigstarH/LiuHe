@@ -8,14 +8,11 @@
 
 #import "BaseViewController.h"
 
-typedef NS_ENUM(NSInteger, WebVCType) {
-    WebVCTypeTrendAnalyze = 0, /**< 走势分析 */
-    WebVCTypeDateLottery  = 1  /**< 开奖日期 */
-};
-
 /** 网页视图控制器 */
 @interface WebViewController : BaseViewController
-
-@property (nonatomic) WebVCType type;
+/** 标题 */
+@property (nonatomic, copy) NSString *mTitle;
+/** url */
+@property (nonatomic, copy) NSString *requestUrl;
 
 @end

@@ -10,10 +10,10 @@
 #import "VideoLotteryViewController.h"
 #import "PicLibraryViewController.h"
 #import "MBProgressHUD+Extension.h"
-#import "TreasureViewController.h"
 #import "HistoryViewController.h"
 #import "XQFasciatePageControl.h"
 #import "VideoViewController.h"
+#import "OtherViewController.h"
 #import "LotteryNumberModel.h"
 #import "HomeViewController.h"
 #import "DataViewController.h"
@@ -189,7 +189,7 @@
     [view addSubview:label];
     
     NSArray *array      = @[@"視頻開獎", @"歷史記錄", @"走勢分析", @"開獎日期",
-                            @"六合資料", @"六合圖庫", @"六合尋寶", @"六合大全"];
+                            @"六合資料", @"六合圖庫", @"其他功能"/**@"六合尋寶"*/];
     NSArray *bgColorArr = @[RGBCOLOR(237, 110, 112), RGBCOLOR(194, 153, 194),
                             RGBCOLOR(67, 180, 237) , RGBCOLOR(195, 163, 159), 
                             RGBCOLOR(60, 179, 113) , RGBCOLOR(237, 163, 130),
@@ -280,8 +280,9 @@
     CGSize labSize = item.titleSize;
     
     if (item.tag == 0 || item.tag == 5 || item.tag == 6) {
+        CGFloat itemW        = item.tag == 6 ? WIDTH(50) : WIDTH(55);
         item.label.frame     = CGRectMake(WIDTH(12), HEIGHT(20), labSize.width, labSize.height);
-        item.imageView.frame = CGRectMake(width - WIDTH(18) - WIDTH(55), (height - WIDTH(55)) * 0.5, WIDTH(55), WIDTH(55));
+        item.imageView.frame = CGRectMake(width - WIDTH(18) - itemW, (height - itemW) * 0.5, itemW, itemW);
     }else if (item.tag == 3 || item.tag == 4) {
         item.label.frame     = CGRectMake(width * 0.5, (height - labSize.height) * 0.5, labSize.width, labSize.height);
         item.imageView.frame = CGRectMake(WIDTH(20), (height - WIDTH(38)) * 0.5, WIDTH(38), WIDTH(38));
@@ -313,14 +314,16 @@
         case 2:  // 走势分析
         {
             WebViewController *vc = [[WebViewController alloc] initWithHidesBottomBar:YES];
-            vc.type = WebVCTypeTrendAnalyze;
+            vc.mTitle     = @"走勢分析";
+            vc.requestUrl = TREND_ANALYZE_URL;
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
         case 3:  // 开奖日期
         {
             WebViewController *vc = [[WebViewController alloc] initWithHidesBottomBar:YES];
-            vc.type = WebVCTypeDateLottery;
+            vc.mTitle     = @"開獎日期";
+            vc.requestUrl = DATE_LOTTERY_URL;
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
@@ -336,9 +339,9 @@
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
-        case 6:  // 六合寻宝
+        case 6:  // 其他功能
         {
-            TreasureViewController *vc = [[TreasureViewController alloc] initWithHidesBottomBar:YES];
+            OtherViewController *vc = [[OtherViewController alloc] initWithHidesBottomBar:YES];
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }

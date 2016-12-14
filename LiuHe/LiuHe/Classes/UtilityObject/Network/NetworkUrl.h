@@ -54,5 +54,7 @@
 #define LOTTERY_KJ_URL      @"http://ad.jizhou56.com:8090/kaijiang.php"     // 视频开奖网页
 #define TREND_ANALYZE_URL   @"http://wap.jizhou56.com:8090/e/extend/trend/" // 走势分析网页
 #define DATE_LOTTERY_URL    @"http://wap.jizhou56.com:8090/appdate.php"     // 开奖日期网页
+#define FOOTBAL_SCORE_URL   @"http://wap.jizhou56.com:8090/bifen.php"       // 足球比分网页
+#define BAIJIALE_URL        @"http://wap.jizhou56.com:8090/baijiale.html"   // 百家乐网页
 
 #endif /* NetworkUrl_h */

@@ -22,10 +22,11 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
+        _highlightedType       = MenuItemHighlightedTypeDefault;
         UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
         _backgroundView        = backgroundView;
         backgroundView.hidden  = YES;
-        [backgroundView setBackgroundColor:RGBACOLOR(0, 0, 0, 0.4)];
+        [backgroundView setBackgroundColor:RGBACOLOR(0, 0, 0, 0.3)];
         [self addSubview:backgroundView];
         
         [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selfDidClick:)]];
@@ -35,17 +36,39 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    _backgroundView.hidden = NO;
+    self.backgroundView.hidden = NO;
+}
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    CGPoint location = [[touches anyObject] locationInView:self];
+    if ([self boundsContainsPoint:location bounds:self.bounds scale:1.5]) {
+        self.backgroundView.hidden = NO;
+    }else {
+        self.backgroundView.hidden = YES;
+    }
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    _backgroundView.hidden = YES;
+    self.backgroundView.hidden = YES;
 }
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
     _backgroundView.frame = self.bounds;
+    
+    switch (_highlightedType) {
+        case MenuItemHighlightedTypeWhiteAndFront:
+        {
+            _backgroundView.backgroundColor = RGBACOLOR(255, 255, 255, 0.5);
+            [self bringSubviewToFront:_backgroundView];
+            break;
+        }
+        default:
+            break;
+    }
     
     if (!CGRectEqualToRect(_label.frame, CGRectZero)) return;
     
@@ -97,6 +120,16 @@
     
     NSInteger tag = [tap view].tag;
     self.block(tag);
+}
+
+- (BOOL)boundsContainsPoint:(CGPoint)point bounds:(CGRect)bounds scale:(CGFloat)scale
+{
+    CGFloat originX = bounds.origin.x;
+    CGFloat originY = bounds.origin.y;
+    CGFloat width   = bounds.size.width;
+    CGFloat height  = bounds.size.height;
+    CGRect rect     = CGRectMake(originX - width * (scale - 1) * 0.5 , originY - height * (scale - 1) * 0.5, width * scale, height * scale);
+    return CGRectContainsPoint(rect, point);
 }
 
 @end

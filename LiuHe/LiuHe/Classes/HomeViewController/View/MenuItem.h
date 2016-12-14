@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, MenuItemHighlightedType) {
+    MenuItemHighlightedTypeDefault       = 0,
+    MenuItemHighlightedTypeWhiteAndFront = 1
+};
+
 @interface MenuItem : UIView
 
 @property (nonatomic, weak, readonly) UIImageView *imageView;
@@ -15,6 +20,8 @@
 @property (nonatomic, weak, readonly) UILabel *label;
 
 @property (nonatomic, readonly) CGSize titleSize;
+
+@property (nonatomic) MenuItemHighlightedType highlightedType;
 
 - (void)setMenuTitle:(NSString *)title font:(UIFont *)font;
 

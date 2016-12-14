@@ -25,8 +25,6 @@
 
 @property (nonatomic, weak) XQFasciatePageControl *pageControl;
 
-@property (nonatomic, copy) NSString *requestUrl;
-
 @end
 
 @implementation WebViewController
@@ -47,9 +45,7 @@
 #pragma mark - start 设置导航栏
 - (void)setNavigationBarStyle
 {
-    self.title      = self.type == WebVCTypeTrendAnalyze ? @"走勢分析" : @"開獎日期";
-    self.requestUrl = self.type == WebVCTypeTrendAnalyze ? TREND_ANALYZE_URL : DATE_LOTTERY_URL;
-    
+    self.title = self.mTitle;
     XQBarButtonItem *leftItem = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]];
     [leftItem addTarget:self action:@selector(goBackWithNavigationBar:) forControlEvents:UIControlEventTouchUpInside];
     XQBarButtonItem *shareBtn = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_share"]];
@@ -114,6 +110,7 @@
         WKWebView *webView = [[WKWebView alloc] initWithFrame:frame];
         [webView setNavigationDelegate:self];
         [webView sizeToFit];
+        [webView.scrollView setShowsHorizontalScrollIndicator:NO];
         [self.view addSubview:webView];
         
         // 添加下拉刷新功能
@@ -129,6 +126,7 @@
         webView.delegate   = self;
         [webView setScalesPageToFit:YES];
         [webView sizeToFit];
+        [webView.scrollView setShowsHorizontalScrollIndicator:NO];
         [self.view addSubview:webView];
         
         // 添加下拉刷新功能
