@@ -15,6 +15,7 @@
 #import "UserModel.h"
 
 static NSString *UMengAppKey = @"5838115c734be42627000d73";
+static NSString *UMeng_redirectURL = @"http://www.6happ.com/6h/6hcbt";
 
 @interface AppDelegate ()
 
@@ -93,14 +94,16 @@ static NSString *UMengAppKey = @"5838115c734be42627000d73";
 #pragma mark - start 友盟分享
 - (void)initUMengUShareSDK
 {
-    //打开日志
+    // 打开日志
     [[UMSocialManager defaultManager] openLog:YES];
     
-    //设置友盟appkey
+    // 设置友盟appkey
     [[UMSocialManager defaultManager] setUmSocialAppkey:UMengAppKey];
     
-    //设置微信的appKey和appSecret
-    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:@"wx97de6ce81fe10292" appSecret:@"2df199edc429bf3afb857b75cfbf144b" redirectURL:@"http://mobile.umeng.com/social"];
+    // 设置微信的appKey和appSecret
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:@"wx97de6ce81fe10292" appSecret:@"2df199edc429bf3afb857b75cfbf144b" redirectURL:UMeng_redirectURL];
+    // 设置QQ的
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:@"1105813089" appSecret:nil redirectURL:UMeng_redirectURL];
 }
 #pragma mark end 友盟分享
 

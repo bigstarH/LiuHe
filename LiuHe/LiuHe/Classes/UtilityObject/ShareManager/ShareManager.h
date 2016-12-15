@@ -18,4 +18,12 @@
 + (void)weChatTimeLineShareWithCurrentVC:(UIViewController *)currentVC
                                  success:(void (^)(NSString *result))successBlock
                                  failure:(void (^)(NSString *error))failureBlock;
+/** QQ分享 */
++ (void)QQShareWithCurrentVC:(UIViewController *)currentVC
+                     success:(void (^)(NSString *result))successBlock
+                     failure:(void (^)(NSString *error))failureBlock;
+/** QQ空间分享 */
++ (void)QZoneWithCurrentVC:(UIViewController *)currentVC
+                   success:(void (^)(NSString *result))successBlock
+                   failure:(void (^)(NSString *error))failureBlock;
 @end

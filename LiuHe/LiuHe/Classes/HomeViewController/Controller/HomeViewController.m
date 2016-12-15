@@ -49,8 +49,6 @@
 @property (nonatomic, weak) UIButton *showVideoBtn;
 
 @property (nonatomic, weak) UILabel *statusLab;
-
-@property (nonatomic) BOOL getNumber;
 /** 开奖状态 */
 @property (nonatomic) NSInteger type;
 
@@ -68,8 +66,7 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.getNumber = NO;
-    self.type      = 0;
+    self.type = 0;
     
     // 开奖结束通知
     [NotificationCenter addObserver:self
@@ -87,7 +84,8 @@
     [self createCountDowner];
     
     // 获取下期开奖事件
-    [self getLotteryNextTime];
+//    [self getLotteryNextTime];
+    [self getLotteryNumber];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -244,9 +242,7 @@
     count.frame        = CGRectMake(originX, originY, width, height);
     [count setBackgroundColor:MAIN_COLOR];
     [count setComplitionHandle:^{
-        if (ws.getNumber == YES) {
-            [ws getLotteryNumber];
-        }
+        [ws getLotteryNumber];
     }];
     [self.timeView addSubview:count];
     
@@ -365,9 +361,10 @@
 #pragma mark - start 私有方法
 - (void)initTimerWithTimeInterval:(NSTimeInterval)time
 {
+    NSTimeInterval duration = time == 0 ? 10000 : time;
     [_timer invalidate];
     _timer = nil;
-    _timer = [NSTimer scheduledTimerWithTimeInterval:(time / 1000)
+    _timer = [NSTimer scheduledTimerWithTimeInterval:(duration / 1000)
                                               target:self
                                             selector:@selector(getLotteryNumber)
                                             userInfo:nil
@@ -426,24 +423,16 @@
 {
     switch (type) {
         case ShareMenuItemTypeWeChat:  // 微信
-        {
             [ShareManager weChatShareWithCurrentVC:self success:nil failure:nil];
             break;
-        }
         case ShareMenuItemTypeWechatTimeLine:  // 朋友圈
-        {
-            [ShareManager weChatTimeLineShareWithCurrentVC:self success:^(NSString *result) {
-                NSLog(@"result = %@", result);
-            } failure:^(NSString *error) {
-                NSLog(@"error = %@", error);
-            }];
+            [ShareManager weChatTimeLineShareWithCurrentVC:self success:nil failure:nil];
             break;
-        }
         case ShareMenuItemTypeQQ:  // QQ
-            NSLog(@"QQ");
+            [ShareManager QQShareWithCurrentVC:self success:nil failure:nil];
             break;
         case ShareMenuItemTypeQZone:  // QQ空间
-            NSLog(@"QQ空间");
+            [ShareManager QZoneWithCurrentVC:self success:nil failure:nil];
             break;
         default:
             break;
@@ -512,15 +501,12 @@
         NSDate *date        = [NSDate date];
         NSTimeInterval dis  = [time doubleValue] - [date timeIntervalSince1970];
         if (dis > 0)   {
-            ws.getNumber    = YES;
             [ws.countDown setCountDownTime:dis];
             [ws.countDown startCountDown];
         }else {
-            ws.getNumber    = NO;
             [self getLotteryNumber];
         }
     } failure:^(NSString *error) {
-        ws.getNumber = NO;
         [MBProgressHUD showFailureInView:ws.view mesg:error];
     }];
 }
@@ -534,9 +520,10 @@
         LotteryNumberModel *model = [LotteryNumberModel lotteryNumberWithDict:dict];
         if ([model.zt intValue] == 1) {  // 开奖结束
             NSString *time      = [dict objectForKey:@"xyqsjc"];
+            NSString *nextBq    = [dict objectForKey:@"xyq"];
             NSString *formatter = @"MM月dd日  HH时mm分 EE";
             NSString *str = [SystemManager dateStringWithTime:[time doubleValue] formatter:formatter];
-            ws.nextTimeLab.text = [NSString stringWithFormat:@"下期開獎時間：%@",str];
+            ws.nextTimeLab.text = [NSString stringWithFormat:@"第%@期開獎時間：%@", nextBq, str];
             
             NSDate *date        = [NSDate date];
             NSTimeInterval dis  = [time doubleValue] - [date timeIntervalSince1970];
@@ -569,7 +556,7 @@
             [ws playSoundsForADWithType:4];
             ws.type                = 4;
             [ws initTimerWithTimeInterval:[model.sxsj doubleValue]];
-        }else if ([model.zt intValue] == 5) {  // 主持人讲话中
+        }else {  // 主持人讲话中
             ws.countDown.hidden    = YES;
             ws.showVideoBtn.hidden = YES;
             ws.statusLab.hidden    = NO;

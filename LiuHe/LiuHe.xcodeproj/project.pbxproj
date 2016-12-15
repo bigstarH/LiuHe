@@ -154,6 +154,7 @@
 		48BE5ABA1DF01550004ACB90 /* XQSpringMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AB81DF01550004ACB90 /* XQSpringMenuItem.m */; };
 		48BE5ABD1DF01F7E004ACB90 /* DataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5ABC1DF01F7E004ACB90 /* DataModel.m */; };
 		48BE5AC31DF050DE004ACB90 /* DataDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AC21DF050DE004ACB90 /* DataDetailViewController.m */; };
+		48BFD03F1E028A7A00632A9D /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 48BFD03E1E028A7A00632A9D /* libc++.tbd */; };
 		48C05F0E1DF9355C005AEA1E /* MBProgressHUD+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C05F0D1DF9355C005AEA1E /* MBProgressHUD+Extension.m */; };
 		48D83C971DEBC02400E62100 /* XQToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C961DEBC02400E62100 /* XQToast.m */; };
 		48D83C9B1DEBD12000E62100 /* SystemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D83C9A1DEBD12000E62100 /* SystemManager.m */; };
@@ -411,6 +412,7 @@
 		48BE5ABC1DF01F7E004ACB90 /* DataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataModel.m; sourceTree = "<group>"; };
 		48BE5AC11DF050DE004ACB90 /* DataDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataDetailViewController.h; sourceTree = "<group>"; };
 		48BE5AC21DF050DE004ACB90 /* DataDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataDetailViewController.m; sourceTree = "<group>"; };
+		48BFD03E1E028A7A00632A9D /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		48C05F0C1DF9355C005AEA1E /* MBProgressHUD+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+Extension.h"; sourceTree = "<group>"; };
 		48C05F0D1DF9355C005AEA1E /* MBProgressHUD+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+Extension.m"; sourceTree = "<group>"; };
 		48D83C951DEBC02400E62100 /* XQToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQToast.h; sourceTree = "<group>"; };
@@ -472,6 +474,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48BFD03F1E028A7A00632A9D /* libc++.tbd in Frameworks */,
 				4804EEE31DFE9A5C00948CFD /* libresolv.tbd in Frameworks */,
 				4804EEDF1DFE9A3D00948CFD /* libz.tbd in Frameworks */,
 				4804EEDD1DFE9A2F00948CFD /* UIKit.framework in Frameworks */,
@@ -1208,6 +1211,7 @@
 		6C267AB83E089C8449D82B56 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				48BFD03E1E028A7A00632A9D /* libc++.tbd */,
 				4804EEE21DFE9A5C00948CFD /* libresolv.tbd */,
 				4804EEDE1DFE9A3D00948CFD /* libz.tbd */,
 				4804EEDC1DFE9A2F00948CFD /* UIKit.framework */,

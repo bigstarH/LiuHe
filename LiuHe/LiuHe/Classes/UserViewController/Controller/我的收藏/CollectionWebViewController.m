@@ -86,26 +86,16 @@
 {
     switch (type) {
         case ShareMenuItemTypeWeChat:  // 微信
-        {
-            NSLog(@"微信");
             [ShareManager weChatShareWithCurrentVC:self success:nil failure:nil];
             break;
-        }
         case ShareMenuItemTypeWechatTimeLine:  // 朋友圈
-        {
-            NSLog(@"朋友圈");
-            [ShareManager weChatTimeLineShareWithCurrentVC:self success:^(NSString *result) {
-                NSLog(@"result = %@", result);
-            } failure:^(NSString *error) {
-                NSLog(@"error = %@", error);
-            }];
+            [ShareManager weChatTimeLineShareWithCurrentVC:self success:nil failure:nil];
             break;
-        }
         case ShareMenuItemTypeQQ:  // QQ
-            NSLog(@"QQ");
+            [ShareManager QQShareWithCurrentVC:self success:nil failure:nil];
             break;
         case ShareMenuItemTypeQZone:  // QQ空间
-            NSLog(@"QQ空间");
+            [ShareManager QZoneWithCurrentVC:self success:nil failure:nil];
             break;
         default:
             break;
