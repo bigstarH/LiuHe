@@ -73,6 +73,10 @@ static id networkInstance;
     [self.manager POST:USER_RELATION_URL parameters:param progress:nil
                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                    NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   if ([responseDict isKindOfClass:[NSNull class]] || !responseDict) {
+                       failureBlock ? failureBlock(@"網絡錯誤") : nil;
+                       return ;
+                   }
                    NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
                    if (code == 1) {
                        [UserDefaults setBool:YES forKey:USER_DIDLOGIN];

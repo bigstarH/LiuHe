@@ -52,6 +52,8 @@
 /** 开奖状态 */
 @property (nonatomic) NSInteger type;
 
+@property (nonatomic) BOOL goToVideoVC;
+
 @end
 
 @implementation HomeViewController
@@ -66,7 +68,8 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.type = 0;
+    self.type        = 0;
+    self.goToVideoVC = YES;
     
     // 开奖结束通知
     [NotificationCenter addObserver:self
@@ -82,20 +85,19 @@
     
     // 创建倒计时
     [self createCountDowner];
-    
-    // 获取下期开奖事件
-//    [self getLotteryNextTime];
-    [self getLotteryNumber];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.cycleImageView startPlayImageView];
+    // 获取下期开奖事件
+    [self getLotteryNumber];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self.cycleImageView stopPlayImageView];
+    [self.countDown stopCountDown];
     [self.player stop];
     [self.timer invalidate];
     self.timer = nil;
@@ -489,28 +491,6 @@
 //        [MBProgressHUD showFailureInView:ws.view mesg:error];
 //    }];
 //}
-- (void)getLotteryNextTime
-{
-    __weak typeof(self) ws  = self;
-    [[NetworkManager shareManager] lotteryStartWithSuccess:^(NSDictionary *dict) {
-        NSString *time      = [dict objectForKey:@"xyqsjc"];
-        NSString *formatter = @"MM月dd日  HH时mm分 EE";
-        NSString *str = [SystemManager dateStringWithTime:[time doubleValue] formatter:formatter];
-        ws.nextTimeLab.text = [NSString stringWithFormat:@"下期開獎時間：%@",str];
-        
-        NSDate *date        = [NSDate date];
-        NSTimeInterval dis  = [time doubleValue] - [date timeIntervalSince1970];
-        if (dis > 0)   {
-            [ws.countDown setCountDownTime:dis];
-            [ws.countDown startCountDown];
-        }else {
-            [self getLotteryNumber];
-        }
-    } failure:^(NSString *error) {
-        [MBProgressHUD showFailureInView:ws.view mesg:error];
-    }];
-}
-
 /** 获取开奖号码 */
 - (void)getLotteryNumber
 {
@@ -546,7 +526,10 @@
             ws.statusLab.hidden    = YES;
             ws.showVideoBtn.hidden = NO;
             ws.nextTimeLab.text    = [NSString stringWithFormat:@"第%@期：正在開獎", model.bq];
-            [ws goToVideoController];
+            if (ws.goToVideoVC == YES) {
+                ws.goToVideoVC = NO;
+                [ws goToVideoController];
+            }
         }else if ([model.zt intValue] == 4) {  // 广告中
             ws.countDown.hidden    = YES;
             ws.showVideoBtn.hidden = YES;

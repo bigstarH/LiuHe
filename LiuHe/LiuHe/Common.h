@@ -10,7 +10,6 @@
 #define Common_h
 
 // NSUserDefaults 键值
-#define CURRENT_BQ                @"CURRENT_BQ"           // 当前期数
 #define LOTTERY_SILENCE           @"LOTTERY_SILENCE"      // 摇奖静音
 #define USER_DIDLOGIN             @"USER_DIDLOGIN"        // 用户是否登录
 #define APP_QRCODE                @"APP_QRCODE"           // 二维码图片
