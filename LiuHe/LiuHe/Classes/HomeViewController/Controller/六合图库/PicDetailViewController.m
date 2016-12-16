@@ -53,12 +53,15 @@
     self.title = _model.title;
     XQBarButtonItem *leftItem = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]];
     [leftItem addTarget:self action:@selector(goBackWithNavigationBar:) forControlEvents:UIControlEventTouchUpInside];
-    XQBarButtonItem *collect = [[XQBarButtonItem alloc] initWithTitle:@"收藏"];
-    [collect setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [collect setTitleColor:[UIColor lightTextColor] forState:UIControlStateHighlighted];
-    [collect addTarget:self action:@selector(collectEvent) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationBar.rightBarButtonItem = collect;
     self.navigationBar.leftBarButtonItem  = leftItem;
+    
+    if (self.isCollectedBtn) {
+        XQBarButtonItem *collect = [[XQBarButtonItem alloc] initWithTitle:@"收藏"];
+        [collect setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [collect setTitleColor:[UIColor lightTextColor] forState:UIControlStateHighlighted];
+        [collect addTarget:self action:@selector(collectEvent) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationBar.rightBarButtonItem = collect;
+    }
 }
 
 /** 按钮收藏事件 */
@@ -83,7 +86,7 @@
 {
     NSMutableArray *array = [NSMutableArray array];
     NSMutableArray *list  = [NSMutableArray array];
-    if (self.isYearLibrary) {
+    if (self.classID.intValue == 65) {
         [array addObject:_model.urlString];
         [list addObject:_model.urlString];
     }else {
@@ -107,7 +110,7 @@
 /** 创建CollectionView */
 - (void)createCollectionView
 {
-    CGFloat originY = self.isYearLibrary ? 65 : CGRectGetMaxY(self.columnView.frame);
+    CGFloat originY = self.classID.intValue == 65 ? 65 : CGRectGetMaxY(self.columnView.frame);
     
     CGFloat height  = SCREEN_HEIGHT - originY;
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];

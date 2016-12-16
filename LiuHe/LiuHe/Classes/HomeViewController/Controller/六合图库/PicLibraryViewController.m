@@ -235,7 +235,7 @@
     PicDetailViewController *vc = [[PicDetailViewController alloc] init];
     vc.model   = model;
     vc.classID = picLTableView.classID;
-    vc.isYearLibrary = picLTableView.tag == PLTableViewTypeYear;
+    vc.collectedBtn = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark end PicLibraryTableViewDelegate

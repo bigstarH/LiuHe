@@ -82,11 +82,15 @@
 /** 13 我的收藏 */
 - (void)userCollectionWithSuccess:(void (^)(NSArray *array))successBlock
                           failure:(void (^)(NSString *error))failureBlock;
-/** 14 取消收藏 */
+/** 14 我的收藏——详情 */
+- (void)userCollectionWithSid:(NSString *)sid
+                      success:(void (^)(NSDictionary *dict))successBlock
+                      failure:(void (^)(NSString *error))failureBlock;
+/** 15 取消收藏 */
 - (void)cancelCollectingWithSid:(NSString *)sid
                           success:(void (^)(NSString *str))successBlock
                           failure:(void (^)(NSString *error))failureBlock;
-/** 15 我的回复 */
+/** 16 我的回复 */
 - (void)userReplyWithEnews:(NSString *)enews
                    success:(void (^)(NSArray *array))successBlock
                    failure:(void (^)(NSString *error))failureBlock;

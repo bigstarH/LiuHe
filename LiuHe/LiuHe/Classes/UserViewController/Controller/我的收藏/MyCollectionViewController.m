@@ -6,9 +6,10 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import "CollectionWebViewController.h"
 #import "MyCollectionViewController.h"
 #import "MBProgressHUD+Extension.h"
+#import "PicDetailViewController.h"
+#import "PicLibraryModel.h"
 #import "CollectionModel.h"
 #import "NetworkManager.h"
 #import "ShareManager.h"
@@ -156,9 +157,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     CollectionModel *model = self.array[indexPath.row];
-    CollectionWebViewController *vc = [[CollectionWebViewController alloc] initWithLinkStr:model.linkStr];
-    vc.titleStr = @"我的收藏";
-    [self.navigationController pushViewController:vc animated:YES];
+    [self getMycollectionDetail:model];
 }
 #pragma mark end UITableViewDelegate, UITableViewDataSource
 
@@ -181,6 +180,33 @@
         [hud hideAnimated:YES];
         [MBProgressHUD showFailureInView:ws.view mesg:error];
     }];
+}
+
+/** 获取我的收藏详情 */
+- (void)getMycollectionDetail:(CollectionModel *)model
+{
+    NSString *classid  = model.classid;
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
+    __weak typeof(self) ws  = self;
+    NetworkManager *manager = [NetworkManager shareManager];
+    [manager userCollectionWithSid:model.tid
+                           success:^(NSDictionary *dict) {
+                               [hud hideAnimated:YES];
+                               PicLibraryModel *pModel = [PicLibraryModel picLibraryWithDict:dict];
+                               NSString *url    = pModel.url;
+                               if (classid.intValue != 65) {
+                                   url  = [NSString stringWithFormat:@"%@%@/%@.jpg", pModel.url, pModel.qishu, pModel.type];
+                               }
+                               pModel.urlString  = url;
+                               PicDetailViewController *vc = [[PicDetailViewController alloc] init];
+                               vc.classID = classid;
+                               vc.model   = pModel;
+                               vc.collectedBtn = NO;
+                               [ws.navigationController pushViewController:vc animated:YES];
+                           } failure:^(NSString *error) {
+                               [hud hideAnimated:YES];
+                               [MBProgressHUD showFailureInView:ws.view mesg:error];
+                           }];
 }
 #pragma mark end 网络请求——获取我的收藏
 @end

@@ -17,6 +17,6 @@
 
 @property (nonatomic, copy) NSString *classID;
 
-@property (nonatomic) BOOL isYearLibrary;
+@property (nonatomic, getter=isCollectedBtn) BOOL collectedBtn;
 
 @end

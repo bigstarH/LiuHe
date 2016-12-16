@@ -101,7 +101,6 @@
 		482655CD1DF4241500122766 /* ForumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 482655CC1DF4241500122766 /* ForumCell.m */; };
 		482655D11DF4272B00122766 /* ForumModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482655D01DF4272B00122766 /* ForumModel.m */; };
 		482655D41DF4751B00122766 /* ForumDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 482655D31DF4751B00122766 /* ForumDetailViewController.m */; };
-		483010401DED1B4800B11BE9 /* CollectionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830103F1DED1B4800B11BE9 /* CollectionWebViewController.m */; };
 		483010441DED27DC00B11BE9 /* MyReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 483010431DED27DC00B11BE9 /* MyReplyViewController.m */; };
 		483010471DED2C0000B11BE9 /* ReplyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 483010461DED2C0000B11BE9 /* ReplyModel.m */; };
 		4830104E1DED804D00B11BE9 /* AdvertModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4830104D1DED804D00B11BE9 /* AdvertModel.m */; };
@@ -146,6 +145,7 @@
 		489932C21DF188190041A016 /* PicLibraryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932C11DF188190041A016 /* PicLibraryModel.m */; };
 		489932C51DF18BA50041A016 /* PicLibraryTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932C41DF18BA50041A016 /* PicLibraryTableView.m */; };
 		489932C81DF1940A0041A016 /* PicLibraryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 489932C71DF1940A0041A016 /* PicLibraryCell.m */; };
+		489D7F221E03790F001B65A3 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 489D7F211E03790F001B65A3 /* UserNotifications.framework */; };
 		48B9B6FF1E00E7B100F1F50A /* OtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B9B6FE1E00E7B100F1F50A /* OtherViewController.m */; };
 		48B9B7031E012B0000F1F50A /* LotteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B9B7021E012B0000F1F50A /* LotteryViewController.m */; };
 		48BE5AA51DEFC412004ACB90 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BE5AA41DEFC412004ACB90 /* WebViewController.m */; };
@@ -301,8 +301,6 @@
 		482655D01DF4272B00122766 /* ForumModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumModel.m; sourceTree = "<group>"; };
 		482655D21DF4751B00122766 /* ForumDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumDetailViewController.h; sourceTree = "<group>"; };
 		482655D31DF4751B00122766 /* ForumDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumDetailViewController.m; sourceTree = "<group>"; };
-		4830103E1DED1B4800B11BE9 /* CollectionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionWebViewController.h; sourceTree = "<group>"; };
-		4830103F1DED1B4800B11BE9 /* CollectionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionWebViewController.m; sourceTree = "<group>"; };
 		483010421DED27DC00B11BE9 /* MyReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReplyViewController.h; sourceTree = "<group>"; };
 		483010431DED27DC00B11BE9 /* MyReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReplyViewController.m; sourceTree = "<group>"; };
 		483010451DED2C0000B11BE9 /* ReplyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyModel.h; sourceTree = "<group>"; };
@@ -396,6 +394,7 @@
 		489932C41DF18BA50041A016 /* PicLibraryTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicLibraryTableView.m; sourceTree = "<group>"; };
 		489932C61DF1940A0041A016 /* PicLibraryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicLibraryCell.h; sourceTree = "<group>"; };
 		489932C71DF1940A0041A016 /* PicLibraryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicLibraryCell.m; sourceTree = "<group>"; };
+		489D7F211E03790F001B65A3 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		48B9B6FD1E00E7B100F1F50A /* OtherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherViewController.h; sourceTree = "<group>"; };
 		48B9B6FE1E00E7B100F1F50A /* OtherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherViewController.m; sourceTree = "<group>"; };
 		48B9B7011E012B0000F1F50A /* LotteryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LotteryViewController.h; sourceTree = "<group>"; };
@@ -474,6 +473,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				489D7F221E03790F001B65A3 /* UserNotifications.framework in Frameworks */,
 				48BFD03F1E028A7A00632A9D /* libc++.tbd in Frameworks */,
 				4804EEE31DFE9A5C00948CFD /* libresolv.tbd in Frameworks */,
 				4804EEDF1DFE9A3D00948CFD /* libz.tbd in Frameworks */,
@@ -1124,8 +1124,6 @@
 			children = (
 				48D83CAE1DEC634D00E62100 /* MyCollectionViewController.h */,
 				48D83CAF1DEC634D00E62100 /* MyCollectionViewController.m */,
-				4830103E1DED1B4800B11BE9 /* CollectionWebViewController.h */,
-				4830103F1DED1B4800B11BE9 /* CollectionWebViewController.m */,
 			);
 			path = "我的收藏";
 			sourceTree = "<group>";
@@ -1211,6 +1209,7 @@
 		6C267AB83E089C8449D82B56 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				489D7F211E03790F001B65A3 /* UserNotifications.framework */,
 				48BFD03E1E028A7A00632A9D /* libc++.tbd */,
 				4804EEE21DFE9A5C00948CFD /* libresolv.tbd */,
 				4804EEDE1DFE9A3D00948CFD /* libz.tbd */,
@@ -1313,6 +1312,9 @@
 								enabled = 1;
 							};
 							com.apple.InterAppAudio = {
+								enabled = 0;
+							};
+							com.apple.Push = {
 								enabled = 0;
 							};
 						};
@@ -1569,7 +1571,6 @@
 				48BE5ABA1DF01550004ACB90 /* XQSpringMenuItem.m in Sources */,
 				482655CD1DF4241500122766 /* ForumCell.m in Sources */,
 				48D83C9B1DEBD12000E62100 /* SystemManager.m in Sources */,
-				483010401DED1B4800B11BE9 /* CollectionWebViewController.m in Sources */,
 				48E271D71DE708FC00CA3F4D /* XQActionSheet.m in Sources */,
 				483AC5E51DE526CB009E0E64 /* BaseNavigationController.m in Sources */,
 				48DFD2EA1DF4FD64006AF778 /* ForumReplyModel.m in Sources */,

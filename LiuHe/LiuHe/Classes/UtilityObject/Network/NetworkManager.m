@@ -316,6 +316,19 @@ static id networkInstance;
                }];
 }
 
+- (void)userCollectionWithSid:(NSString *)sid success:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews"   : @"photoshow",
+                            @"sid"     : sid};
+    [self.manager GET:USER_POST_URL parameters:param progress:nil
+              success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                  NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                  successBlock ? successBlock(responseDict) : nil;
+              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                  failureBlock ? failureBlock(@"網絡錯誤") : nil;
+              }];
+}
+
 - (void)cancelCollectingWithSid:(NSString *)sid success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     NSDictionary *param = @{@"enews"    : @"DelFava",

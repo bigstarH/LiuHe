@@ -13,4 +13,6 @@
 
 @property (nonatomic, strong) ForumModel *model;
 
+@property (nonatomic) BOOL needReplyBtn;
+
 @end

@@ -6,14 +6,15 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
-#import "CollectionWebViewController.h"
 #import "ForumCommentViewController.h"
+#import "ForumDetailViewController.h"
 #import "MBProgressHUD+Extension.h"
 #import "MyReplyViewController.h"
 #import "XQSegmentedControl.h"
 #import "NetworkManager.h"
 #import "ShareManager.h"
 #import "ReplyModel.h"
+#import "ForumModel.h"
 #import "ShareMenu.h"
 
 @interface MyReplyViewController () <UITableViewDelegate, UITableViewDataSource, ShareMenuDelegate>
@@ -168,6 +169,11 @@
     return self.type == 1 ? self.replyArray.count : self.unReplyArray.count;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return !self.type;
+}
+
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     __weak typeof(self) ws = self;
@@ -202,8 +208,11 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ReplyModel *model = self.type == 0 ? self.unReplyArray[indexPath.row] : self.replyArray[indexPath.row];
-    CollectionWebViewController *vc = [[CollectionWebViewController alloc] initWithLinkStr:model.linkStr];
-    vc.titleStr = @"我的回復";
+    ForumDetailViewController *vc = [[ForumDetailViewController alloc] init];
+    ForumModel *fModel = [[ForumModel alloc] init];
+    fModel.sid         = model.tid;
+    vc.model           = fModel;
+    vc.needReplyBtn    = NO;
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark end UITableViewDelegate, UITableViewDataSource
@@ -216,6 +225,7 @@
         enews = @"Myrep1";
     }
     MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
+    NSInteger type     = self.type;
     __weak typeof(self) ws = self;
     [[NetworkManager shareManager] userReplyWithEnews:enews
                                               success:^(NSArray *array) {
@@ -226,7 +236,7 @@
                                                       ReplyModel *model   = [ReplyModel replyModelWithDict:dict];
                                                       [data addObject:model];
                                                   }
-                                                  if (ws.type == 0) {
+                                                  if (type == 0) {
                                                       ws.unReplyArray = data;
                                                   }else {
                                                       ws.replyArray   = data;

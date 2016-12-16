@@ -215,7 +215,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ForumModel *model = self.dataList[indexPath.row];
     ForumDetailViewController *vc = [[ForumDetailViewController alloc] initWithHidesBottomBar:YES];
-    vc.model = model;
+    vc.model        = model;
+    vc.needReplyBtn = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark end UITableViewDelegate, UITableViewDataSource
@@ -343,7 +344,7 @@
                                             [ws setCycleImageData];
                                             [ws.cycleImageView startPlayImageView];
                                         } failure:^(NSString *error) {
-                                            [MBProgressHUD showFailureInView:ws.view mesg:error];
+                                            [ws getAdvertisementPic];
                                         }];
 }
 #pragma mark end 网络请求

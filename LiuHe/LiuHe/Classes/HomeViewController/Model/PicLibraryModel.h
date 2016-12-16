@@ -26,6 +26,8 @@
 /** 图片地址 */
 @property (nonatomic, copy) NSString *urlString;
 
+@property (nonatomic, strong) NSNumber *zt;
+
 + (instancetype)picLibraryWithDict:(NSDictionary *)dict;
 
 @end

@@ -16,6 +16,7 @@
 #import "XQCycleImageView.h"
 #import "ForumReplyModel.h"
 #import "NetworkManager.h"
+#import "SystemManager.h"
 #import "AdvertModel.h"
 #import "ForumModel.h"
 #import "XQToast.h"
@@ -60,6 +61,7 @@
 
 - (void)createReplyBtn
 {
+    if (!self.needReplyBtn) return;
     // 创建“回复”按钮
     XQBarButtonItem *replyBtn = [[XQBarButtonItem alloc] initWithTitle:@"回復"];
     [replyBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -145,15 +147,21 @@
     NSString *newstext   = dict[@"newstext"];
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithData:[newstext dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
     ForumModel *model    = [ForumModel forumModelWithDict:dict];
-    model.userNameWidth  = self.model.userNameWidth;
-    model.groupNameWidth = self.model.groupNameWidth;
-    model.dateString     = self.model.dateString;
+    
+    model.dateString = [SystemManager dateStringWithTime:[model.newstime doubleValue] formatter:@"yyyy-MM-dd"];
+    UIFont *font     = [UIFont systemFontOfSize:fontSize(13)];
+    CGSize maxSize   = CGSizeMake(WIDTH(130), HEIGHT(18));
+    CGSize realSize  = [model.username realSize:maxSize font:font];
+    model.userNameWidth = realSize.width + WIDTH(10);
+    
+    realSize = [model.groupname realSize:maxSize font:font];
+    model.groupNameWidth = realSize.width + WIDTH(10);
     model.newstext       = str.string;
     self.model           = model;
     
-    UIFont *font      = [UIFont boldSystemFontOfSize:fontSize(16)];
-    CGSize maxSize    = CGSizeMake(SCREEN_WIDTH - WIDTH(24), CGFLOAT_MAX);
-    CGSize realSize   = [model.title realSize:maxSize font:font];
+    font       = [UIFont boldSystemFontOfSize:fontSize(16)];
+    maxSize    = CGSizeMake(SCREEN_WIDTH - WIDTH(24), CGFLOAT_MAX);
+    realSize   = [model.title realSize:maxSize font:font];
     model.titleHeight = realSize.height + HEIGHT(10);
     
     font = [UIFont systemFontOfSize:fontSize(16)];

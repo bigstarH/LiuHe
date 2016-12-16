@@ -474,7 +474,7 @@
                                             [ws setCycleImageData];
                                             [ws.cycleImageView startPlayImageView];
                                         } failure:^(NSString *error) {
-                                            [MBProgressHUD showFailureInView:ws.view mesg:error];
+                                            [ws getAdvertisementPic];
                                         }];
 }
 

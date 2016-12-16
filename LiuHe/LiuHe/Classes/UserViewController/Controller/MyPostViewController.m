@@ -7,11 +7,13 @@
 //
 
 #import "PostReleaseViewController.h"
+#import "ForumDetailViewController.h"
 #import "MBProgressHUD+Extension.h"
 #import "MyPostViewController.h"
 #import "XQSegmentedControl.h"
 #import "NetworkManager.h"
 #import "ShareManager.h"
+#import "ForumModel.h"
 #import "PostModel.h"
 #import "ShareMenu.h"
 
@@ -48,7 +50,7 @@
     [self createView];
     
     // 网络请求
-    [self getMyPostWithType:self.type];
+    [self getMyPostWithType];
 }
 
 - (void)setNavigationBarStyle
@@ -81,7 +83,7 @@
 #pragma mark - start 编辑帖子成功时通知
 - (void)postEditSuccess:(NSNotification *)notification
 {
-    [self getMyPostWithType:self.type];
+    [self getMyPostWithType];
 }
 #pragma mark end 编辑帖子成功时通知
 
@@ -116,9 +118,9 @@
 {
     self.type = !sender.selectedSegmentIndex;
     if (self.type == 0 && !self.unPostArray) {
-        [self getMyPostWithType:self.type];
+        [self getMyPostWithType];
     }else if (self.type == 1 && !self.postArray) {
-        [self getMyPostWithType:self.type];
+        [self getMyPostWithType];
     }else {
         [self.tableView reloadData];
     }
@@ -171,6 +173,11 @@
     return self.type == 1 ? self.postArray.count : self.unPostArray.count;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return !self.type;
+}
+
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     __weak typeof(self) ws = self;
@@ -200,11 +207,26 @@
     }
     return cell;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (self.type == 0) return;
+    
+    PostModel *model   = self.postArray[indexPath.row];
+    ForumDetailViewController *vc = [[ForumDetailViewController alloc] init];
+    ForumModel *fModel = [[ForumModel alloc] init];
+    fModel.sid         = model.sid;
+    vc.model           = fModel;
+    vc.needReplyBtn    = NO;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 #pragma mark end UITableViewDelegate, UITableViewDataSource
 
 #pragma mark - start 网络请求
-- (void)getMyPostWithType:(NSInteger)type
+- (void)getMyPostWithType
 {
+    NSInteger type  = self.type;
     NSString *enews = @"Mybbs";
     if (type == 0) { // 未审核
         enews = @"Mybbs1";
@@ -220,7 +242,7 @@
                                                      PostModel *model   = [PostModel postModelWithDict:dict];
                                                      [data addObject:model];
                                                  }
-                                                 if (ws.type == 0) {
+                                                 if (type == 0) {
                                                      ws.unPostArray = data;
                                                  }else {
                                                      ws.postArray = data;
