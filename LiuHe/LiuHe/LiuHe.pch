@@ -21,6 +21,7 @@
 #define HEIGHT(h)     (h) * SCREEN_WIDTH / 320
 #define fontSize(s)   (s) * SCREEN_WIDTH / 320
 
+#define IOS_10_LATER  [[UIDevice currentDevice].systemVersion doubleValue] >= 10.0
 #define IOS_8_LATER   [[UIDevice currentDevice].systemVersion doubleValue] >= 8.0
 #define IPHONE_4S     (SCREEN_WIDTH == 320) && (SCREEN_HEIGHT == 480)
 

@@ -6,8 +6,15 @@
 //  Copyright © 2016年 huxingqin. All rights reserved.
 //
 
+// 引 JPush功能所需头 件
+#import "JPUSHService.h"
+// iOS10注册APNs所需头 件
+#ifdef NSFoundationVersionNumber_iOS_9_x_Max 
+#import <UserNotifications/UserNotifications.h> 
+#endif
 #import "MBProgressHUD+Extension.h"
 #import <UMSocialCore/UMSocialCore.h>
+#import "MessageViewController.h"
 #import "NetworkManager.h"
 #import "SystemManager.h"
 #import "AppDelegate.h"
@@ -17,7 +24,11 @@
 static NSString *UMengAppKey = @"5838115c734be42627000d73";
 static NSString *UMeng_redirectURL = @"http://www.6happ.com/6h/6hcbt";
 
-@interface AppDelegate ()
+static NSString *JPushAppKey = @"36d8319967066bded734b83f";
+static NSString *channel     = @"Publish channel";
+static BOOL isProduction     = FALSE;
+
+@interface AppDelegate () <JPUSHRegisterDelegate>
 
 @end
 
@@ -40,6 +51,8 @@ static NSString *UMeng_redirectURL = @"http://www.6happ.com/6h/6hcbt";
     // 获取app版本，二维码等信息
     [self appInfomation];
     
+    // 极光SDK
+    [self initJPushSDKWithOptions:launchOptions];
     // 友盟SDK
     [self initUMengUShareSDK];
     return YES;
@@ -91,6 +104,57 @@ static NSString *UMeng_redirectURL = @"http://www.6happ.com/6h/6hcbt";
     }
 }
 
+#pragma mark - start 推送跳转界面
+- (void)goToMssageViewController:(NSString *)message
+{
+    MessageViewController *vc = [[MessageViewController alloc] init];
+    vc.message = message;
+    [self.tabBarController presentViewController:vc animated:YES completion:nil];
+}
+#pragma mark end 推送跳转界面
+
+#pragma mark - start 极光推送
+- (void)initJPushSDKWithOptions:(NSDictionary *)launchOptions
+{
+    // notice: 3.0.0及以后版本注册可以这样写，也可以继续 旧的注册 式
+    if (IOS_10_LATER) {
+        JPUSHRegisterEntity *entity = [[JPUSHRegisterEntity alloc] init];
+        entity.types = JPAuthorizationOptionAlert | JPAuthorizationOptionBadge | JPAuthorizationOptionSound;
+        [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
+    }else if (IOS_8_LATER) {
+        // 可以添加 定义categories
+        [JPUSHService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+                                                          UIUserNotificationTypeSound |
+                                                          UIUserNotificationTypeAlert)
+                                              categories:nil];
+    }else {
+        [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                          UIRemoteNotificationTypeSound |
+                                                          UIRemoteNotificationTypeAlert)
+                                              categories:nil];
+    }
+    
+    // Required
+    // init Push
+    // notice: 2.1.5版本的SDK新增的注册 法，改成可上报IDFA，如果没有使 IDFA直接传nil
+    // 如需继续使 pushConfig.plist 件声明appKey等配置内容，请依旧使 [JPUSHService setupWithOption:launchOptions] 式初始化。
+    [JPUSHService setupWithOption:launchOptions appKey:JPushAppKey
+                          channel:channel
+                 apsForProduction:isProduction
+            advertisingIdentifier:nil];
+    
+    if (launchOptions) {
+        NSDictionary * remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+        //这个判断是在程序没有运行的情况下收到通知，点击通知跳转页面
+        if (remoteNotification) {
+            NSDictionary *dict = [remoteNotification valueForKey:@"aps"];
+            NSString *content  = [dict valueForKey:@"alert"];
+            [self goToMssageViewController:content];
+        }
+    }
+}
+#pragma mark end 极光推送
+
 #pragma mark - start 友盟分享
 - (void)initUMengUShareSDK
 {
@@ -135,6 +199,44 @@ static NSString *UMeng_redirectURL = @"http://www.6happ.com/6h/6hcbt";
     return result;
 }
 
+/** 注册APNs成功并上报DeviceToken */
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    /// Required - 注册 DeviceToken
+    [JPUSHService registerDeviceToken:deviceToken];
+}
+
+/** 注册APNs失败接  */
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    //Optional
+    NSLog(@"did Fail To Register For Remote Notifications With Error: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    // Required,For systems with less than or equal to iOS6
+    [JPUSHService handleRemoteNotification:userInfo];
+//    [application setApplicationIconBadgeNumber:0];
+//    [JPUSHService resetBadge];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    // Required, iOS 7 Support
+    [JPUSHService handleRemoteNotification:userInfo];
+    completionHandler(UIBackgroundFetchResultNewData);
+//    [application setApplicationIconBadgeNumber:0];
+//    [JPUSHService resetBadge];
+    
+    NSDictionary *dict = [userInfo valueForKey:@"aps"];
+    NSString *content  = [dict valueForKey:@"alert"];
+    if (application.applicationState == UIApplicationStateActive) {
+    }else {
+        [self goToMssageViewController:content];
+    }
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -144,11 +246,16 @@ static NSString *UMeng_redirectURL = @"http://www.6happ.com/6h/6hcbt";
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [application setApplicationIconBadgeNumber:0];
+    [JPUSHService resetBadge];
 }
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+    [application setApplicationIconBadgeNumber:0];
+    [application cancelAllLocalNotifications];
+    [JPUSHService resetBadge];
 }
 
 
@@ -161,5 +268,30 @@ static NSString *UMeng_redirectURL = @"http://www.6happ.com/6h/6hcbt";
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark start - JPUSHRegisterDelegate
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler
+{
+    // Required
+    NSDictionary * userInfo = notification.request.content.userInfo;
+    if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        [JPUSHService handleRemoteNotification:userInfo];
+    }
+    completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert); // 需要执 这个 法，选择 是否提醒 户，有Badge、Sound、Alert三种类型可以选择设置
+}
 
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    
+    NSDictionary *userInfo = response.notification.request.content.userInfo;
+    
+    if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        [JPUSHService handleRemoteNotification:userInfo];
+        NSDictionary *dict = [userInfo valueForKey:@"aps"];
+        NSString *content  = [dict valueForKey:@"alert"];
+        [self goToMssageViewController:content];
+        NSLog(@"iOS10 收到远程通知:%@", content);
+    }else { // 判断为本地通知
+    }
+    completionHandler();  // 系统要求执行这个方法
+}
+#pragma mark end JPUSHRegisterDelegate
 @end

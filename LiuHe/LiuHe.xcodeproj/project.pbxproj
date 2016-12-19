@@ -129,6 +129,7 @@
 		484258771DF254E800B1E8E0 /* PicDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 484258761DF254E800B1E8E0 /* PicDetailViewController.m */; };
 		48529CF61DF7BEE600F6EA5A /* PictureBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 48529CF51DF7BEE600F6EA5A /* PictureBrowser.m */; };
 		48529CF91DF7BFC500F6EA5A /* PicBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48529CF81DF7BFC500F6EA5A /* PicBrowserCell.m */; };
+		486BE8E01E07C0DB007DF67B /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 486BE8DF1E07C0DB007DF67B /* MessageViewController.m */; };
 		488F1A151DE6CB4B005C6882 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 488F1A141DE6CB4B005C6882 /* UserModel.m */; };
 		488FFF321DE863C50061E9EF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF2F1DE863C50061E9EF /* LoginViewController.m */; };
 		488FFF331DE863C50061E9EF /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FFF311DE863C50061E9EF /* RegisteViewController.m */; };
@@ -362,6 +363,9 @@
 		48529CF51DF7BEE600F6EA5A /* PictureBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureBrowser.m; sourceTree = "<group>"; };
 		48529CF71DF7BFC500F6EA5A /* PicBrowserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicBrowserCell.h; sourceTree = "<group>"; };
 		48529CF81DF7BFC500F6EA5A /* PicBrowserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicBrowserCell.m; sourceTree = "<group>"; };
+		486BE8DD1E0782D2007DF67B /* LiuHe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LiuHe.entitlements; sourceTree = "<group>"; };
+		486BE8DE1E07C0DB007DF67B /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
+		486BE8DF1E07C0DB007DF67B /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		488F1A131DE6CB4B005C6882 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
 		488F1A141DE6CB4B005C6882 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
 		488FFF2E1DE863C50061E9EF /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -717,6 +721,7 @@
 		483AC5881DE525AF009E0E64 /* LiuHe */ = {
 			isa = PBXGroup;
 			children = (
+				486BE8DD1E0782D2007DF67B /* LiuHe.entitlements */,
 				4804EEC71DFE987800948CFD /* 3rdFrameworks */,
 				483AC5D31DE526CA009E0E64 /* Classes */,
 				483AC5891DE525AF009E0E64 /* Supporting Files */,
@@ -865,6 +870,8 @@
 				489932A61DF146DC0041A016 /* TreasureViewController.m */,
 				48B9B6FD1E00E7B100F1F50A /* OtherViewController.h */,
 				48B9B6FE1E00E7B100F1F50A /* OtherViewController.m */,
+				486BE8DE1E07C0DB007DF67B /* MessageViewController.h */,
+				486BE8DF1E07C0DB007DF67B /* MessageViewController.m */,
 				4804EE241DFE406700948CFD /* 视频开奖 */,
 				4897355B1DEEEB93006ADA94 /* 历史记录 */,
 				48BE5AA61DEFCABC004ACB90 /* 六合资料 */,
@@ -1305,7 +1312,7 @@
 				TargetAttributes = {
 					483AC5851DE525AF009E0E64 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = V7KL9N5525;
+						DevelopmentTeam = MGZ4QU99YV;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -1315,7 +1322,7 @@
 								enabled = 0;
 							};
 							com.apple.Push = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -1529,6 +1536,7 @@
 				48DFD2F61DF53E9E006AF778 /* ForumCommentViewController.m in Sources */,
 				48DFD2F31DF51A6B006AF778 /* ForumCommentCell.m in Sources */,
 				48E0EC951DF6EA1300E4B296 /* PictureCell.m in Sources */,
+				486BE8E01E07C0DB007DF67B /* MessageViewController.m in Sources */,
 				48BE5ABD1DF01F7E004ACB90 /* DataModel.m in Sources */,
 				483AC5E81DE526CB009E0E64 /* XQBarButtonItem.m in Sources */,
 				48DBCB3C1DE9C7C100B989D6 /* FeedBackViewController.m in Sources */,
@@ -1716,7 +1724,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				DEVELOPMENT_TEAM = V7KL9N5525;
+				CODE_SIGN_ENTITLEMENTS = LiuHe/LiuHe.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = MGZ4QU99YV;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/LiuHe/LiuHe.pch";
 				INFOPLIST_FILE = LiuHe/Info.plist;
@@ -1726,7 +1736,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/LiuHe/3rdFrameworks/JPush",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.LiuHeCBT.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WangJianSheng.LiuHeCBT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1737,7 +1747,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				DEVELOPMENT_TEAM = V7KL9N5525;
+				CODE_SIGN_ENTITLEMENTS = LiuHe/LiuHe.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = MGZ4QU99YV;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/LiuHe/LiuHe.pch";
 				INFOPLIST_FILE = LiuHe/Info.plist;
@@ -1747,7 +1759,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/LiuHe/3rdFrameworks/JPush",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.LiuHeCBT.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WangJianSheng.LiuHeCBT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
