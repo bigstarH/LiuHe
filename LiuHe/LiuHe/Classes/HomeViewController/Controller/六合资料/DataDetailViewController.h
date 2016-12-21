@@ -12,6 +12,10 @@
 /** 资料详情 */
 @interface DataDetailViewController : BaseViewController
 
-@property (nonatomic, strong) DataModel *model;
+@property (nonatomic, copy) NSString *sid;
+
+@property (nonatomic, copy) NSString *classID;
+
+@property (nonatomic) BOOL needCollectedBtn;
 
 @end

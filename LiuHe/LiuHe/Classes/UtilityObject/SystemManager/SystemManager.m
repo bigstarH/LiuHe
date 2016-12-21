@@ -93,4 +93,14 @@ static NSDateFormatter *dateFormatter = nil;
 {
     return [UserDefaults objectForKey:APP_SHARE_LINK];
 }
+
++ (void)setUserLogin:(BOOL)isLogin
+{
+    [UserDefaults setBool:isLogin forKey:USER_DIDLOGIN];
+}
+
++ (BOOL)userLogin
+{
+    return [UserDefaults boolForKey:USER_DIDLOGIN];
+}
 @end

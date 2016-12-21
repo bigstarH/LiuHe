@@ -11,4 +11,6 @@
 /** 六合寻宝 */
 @interface TreasureViewController : BaseViewController
 
+@property (nonatomic, copy) NSString *mTitle;
+
 @end

@@ -245,7 +245,9 @@
 - (void)dataTableView:(DataTableView *)dataTableView didSelectCellWithModel:(DataModel *)model
 {
     DataDetailViewController *vc = [[DataDetailViewController alloc] init];
-    vc.model = model;
+    vc.classID = dataTableView.classID;
+    vc.sid     = model.sid;
+    vc.needCollectedBtn = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

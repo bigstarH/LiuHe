@@ -70,13 +70,13 @@
     [logout addTarget:self action:@selector(logoutEvent:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:logout];
     
-    logout.hidden = ![UserDefaults boolForKey:USER_DIDLOGIN];
+    logout.hidden = ![SystemManager userLogin];
 }
 
 /** 注销事件 */
 - (void)logoutEvent:(UIButton *)sender
 {
-    [UserDefaults setBool:NO forKey:USER_DIDLOGIN];
+    [SystemManager setUserLogin:NO];
     [NotificationCenter postNotificationName:USER_LOGOUT_SUCCESS object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }

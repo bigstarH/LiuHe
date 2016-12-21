@@ -61,28 +61,52 @@
 
 - (void)createReplyBtn
 {
-    if (!self.needReplyBtn) return;
-    // 创建“回复”按钮
-    XQBarButtonItem *replyBtn = [[XQBarButtonItem alloc] initWithTitle:@"回復"];
-    [replyBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [replyBtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateHighlighted];
-    [replyBtn addTarget:self action:@selector(replyEvent) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationBar.rightBarButtonItem = replyBtn;
+    NSMutableArray *array = [NSMutableArray array];
+    if (self.needReplyBtn) { // 创建“回复”按钮
+        XQBarButtonItem *replyBtn = [[XQBarButtonItem alloc] initWithTitle:@"回復"];
+        [replyBtn setTag:1];
+        [replyBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [replyBtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateHighlighted];
+        [replyBtn addTarget:self action:@selector(buttonEvent:) forControlEvents:UIControlEventTouchUpInside];
+        [array addObject:replyBtn];
+    }
+    
+    if (self.needCollectBtn) {
+        XQBarButtonItem *collectBtn = [[XQBarButtonItem alloc] initWithTitle:@"收藏"];
+        [collectBtn setTag:2];
+        [collectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [collectBtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateHighlighted];
+        [collectBtn addTarget:self action:@selector(buttonEvent:) forControlEvents:UIControlEventTouchUpInside];
+        [array addObject:collectBtn];
+    }
+    self.navigationBar.rightBarButtonItems = array;
 }
 
-- (void)replyEvent
+- (void)buttonEvent:(XQBarButtonItem *)sender
 {
-    BOOL didLogin = [UserDefaults boolForKey:USER_DIDLOGIN];
-    if (!didLogin) {
+    if (![SystemManager userLogin]) {
         [[XQToast makeText:@"您還沒有登錄，請先登錄"] show];
         [self.tabBarController setSelectedIndex:2];
         return;
     }
-    ForumCommentViewController *vc = [[ForumCommentViewController alloc] init];
-    vc.type   = FCVCTypeNew;
-    vc.mSid   = self.model.sid;
-    vc.mTitle = self.model.title;
-    [self.navigationController pushViewController:vc animated:YES];
+    if (sender.tag == 1) {  // 回复
+        ForumCommentViewController *vc = [[ForumCommentViewController alloc] init];
+        vc.type   = FCVCTypeNew;
+        vc.mSid   = self.model.sid;
+        vc.mTitle = self.model.title;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else { // 收藏
+        MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
+        [[NetworkManager shareManager] collectingWithClassID:@"1"
+                                                          ID:self.model.sid
+                                                     success:^(NSString *string) {
+                                                         [hud hideAnimated:YES];
+                                                         [[XQToast makeText:string] show];
+                                                     } failure:^(NSString *error) {
+                                                         [hud hideAnimated:YES];
+                                                         [MBProgressHUD showFailureInView:self.view mesg:error];
+                                                     }];
+    }
 }
 #pragma mark end 设置导航栏
 

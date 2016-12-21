@@ -80,16 +80,16 @@
 {
     switch (type) {
         case ShareMenuItemTypeWeChat:  // 微信
-            [ShareManager weChatShareWithCurrentVC:self success:nil failure:nil];
+            [ShareManager weChatShareWithText:self.message currentVC:self success:nil failure:nil];
             break;
         case ShareMenuItemTypeWechatTimeLine:  // 朋友圈
-            [ShareManager weChatTimeLineShareWithCurrentVC:self success:nil failure:nil];
+            [ShareManager weChatTimeLineShareWithText:self.message currentVC:self success:nil failure:nil];
             break;
         case ShareMenuItemTypeQQ:  // QQ
-            [ShareManager QQShareWithCurrentVC:self success:nil failure:nil];
-            break;
+            [ShareManager QQShareWithText:self.message currentVC:self success:nil failure:nil];
+            break; 
         case ShareMenuItemTypeQZone:  // QQ空间
-            [ShareManager QZoneWithCurrentVC:self success:nil failure:nil];
+            [ShareManager QZoneShareWithText:self.message currentVC:self success:nil failure:nil];
             break;
         default:
             break;

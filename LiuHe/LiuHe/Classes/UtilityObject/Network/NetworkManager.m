@@ -8,6 +8,7 @@
 
 #import <AFNetworking/AFNetworking.h>
 #import "NetworkManager.h"
+#import "SystemManager.h"
 #import "UserModel.h"
 
 static id networkInstance;
@@ -79,7 +80,7 @@ static id networkInstance;
                    }
                    NSInteger code = [[responseDict objectForKey:@"zt"] integerValue];
                    if (code == 1) {
-                       [UserDefaults setBool:YES forKey:USER_DIDLOGIN];
+                       [SystemManager setUserLogin:YES];
                        UserModel *model = [UserModel userModelWithDict:responseDict];
                        model.password   = password;
                        [model saveUserInfoWhenLogin];

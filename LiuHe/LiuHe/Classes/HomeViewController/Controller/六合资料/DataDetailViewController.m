@@ -10,11 +10,12 @@
 #import "MBProgressHUD+Extension.h"
 #import "NSString+Extension.h"
 #import "NetworkManager.h"
-#import "ShareManager.h"
+#import "SystemManager.h"
+#import "UserModel.h"
 #import "DataModel.h"
-#import "ShareMenu.h"
+#import "XQToast.h"
 
-@interface DataDetailViewController () <ShareMenuDelegate>
+@interface DataDetailViewController ()
 
 @property (nonatomic, weak) UIScrollView *scrollView;
 
@@ -29,8 +30,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    // 初始化控件
-    [self createView];
     // 获取详情
     [self getDataDetail];
 }
@@ -41,37 +40,46 @@
     self.title = @"详情";
     XQBarButtonItem *leftItem = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]];
     [leftItem addTarget:self action:@selector(goBackWithNavigationBar:) forControlEvents:UIControlEventTouchUpInside];
-    XQBarButtonItem *shareBtn = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_share"]];
-    [shareBtn addTarget:self action:@selector(shareEvent) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationBar.rightBarButtonItem = shareBtn;
     self.navigationBar.leftBarButtonItem  = leftItem;
+    if (self.needCollectedBtn) {
+        XQBarButtonItem *rightItem = [[XQBarButtonItem alloc] initWithTitle:@"收藏"];
+        [rightItem setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [rightItem setTitleColor:[UIColor lightTextColor] forState:UIControlStateHighlighted];
+        [rightItem addTarget:self action:@selector(collectEvent) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationBar.rightBarButtonItem = rightItem;
+    }
 }
 
-/** 按钮分享事件 */
-- (void)shareEvent
+/** 按钮“收藏”事件 */
+- (void)collectEvent
 {
-    ShareMenu *menu = [ShareMenu shareMenu];
-    menu.delegate   = self;
-    [menu show];
+    if ([UserModel getCurrentUser] == nil) {
+        [[XQToast makeText:@"請先登錄"] show];
+        [self.tabBarController setSelectedIndex:2];
+        return;
+    }
+    [self collectingData];
 }
 #pragma mark end 设置导航栏
 
 #pragma mark - start 初始化控件
-- (void)createView
+- (void)createViewWithDict:(NSDictionary *)dict
 {
     CGFloat scrollH = SCREEN_HEIGHT - 64;
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, scrollH)];
     self.scrollView = scrollView;
     [self.view addSubview:scrollView];
     
+    NSString *title = dict[@"title"];
+    title           = [title stringByReplacingOccurrencesOfString:@"六合管家" withString:@"六合藏宝"];
     UIFont *font    = [UIFont boldSystemFontOfSize:fontSize(17)];
     CGSize maxSize  = CGSizeMake(SCREEN_WIDTH - WIDTH(20), CGFLOAT_MAX);
-    CGSize realSize = [_model.title realSize:maxSize font:font];
+    CGSize realSize = [title realSize:maxSize font:font];
     
     CGFloat labelH  = realSize.height + HEIGHT(16);
     UILabel *label  = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH(10), 0, maxSize.width, labelH)];
     label.font      = font;
-    label.text      = _model.title;
+    label.text      = title;
     [label setTextAlignment:NSTextAlignmentCenter];
     [label setNumberOfLines:0];
     [scrollView addSubview:label];
@@ -88,75 +96,69 @@
     labelX          = CGRectGetMaxX(imageView.frame) + WIDTH(5);
     label           = [[UILabel alloc] initWithFrame:CGRectMake(labelX, labelY, WIDTH(140), labelH)];
     label.font      = [UIFont systemFontOfSize:fontSize(14)];
-    label.text      = _model.dateStr;
+    label.text      = [SystemManager dateStringWithTime:[dict[@"newstime"] doubleValue]
+                                              formatter:@"yyyy-MM-dd HH:mm:ss"];
     [label setTextAlignment:NSTextAlignmentCenter];
     [scrollView addSubview:label];
     
-    self.originY    = CGRectGetMaxY(label.frame) + HEIGHT(8);
+    NSString *newstext = dict[@"newstext"];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithData:[newstext dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+    font     = [UIFont systemFontOfSize:fontSize(15)];
+    maxSize  = CGSizeMake(SCREEN_WIDTH - WIDTH(30), CGFLOAT_MAX);
+    realSize = [str.string realSize:maxSize font:font];
+    
+    CGFloat labelW = SCREEN_WIDTH - WIDTH(20);
+    labelY         = CGRectGetMaxY(label.frame) + HEIGHT(8);
+    labelH         = realSize.height + HEIGHT(16);
+    CGRect frame   = CGRectMake(WIDTH(10), labelY, labelW, labelH);
+    UIView *view   = [[UIView alloc] initWithFrame:frame];
+    [view.layer setMasksToBounds:YES];
+    [view.layer setBorderWidth:1.0];
+    [view.layer setCornerRadius:WIDTH(5)];
+    [scrollView addSubview:view];
+    
+    frame      = CGRectMake(WIDTH(5), 0, maxSize.width, labelH);
+    label      = [[UILabel alloc] initWithFrame:frame];
+    label.font = font;
+    label.text = str.string;
+    [label setNumberOfLines:0];
+    [view addSubview:label];
+    
+    CGFloat height  = CGRectGetMaxY(view.frame) + HEIGHT(10);
+    [scrollView setContentSize:CGSizeMake(0, height)];
 }
 #pragma mark end 初始化控件
 
-#pragma mark - start ShareMenuDelegate
-/** 分享事件 */
-- (void)shareMenu:(ShareMenu *)shareMenu didSelectMenuItemWithType:(ShareMenuItemType)type
-{
-    switch (type) {
-        case ShareMenuItemTypeWeChat:  // 微信
-            [ShareManager weChatShareWithCurrentVC:self success:nil failure:nil];
-            break;
-        case ShareMenuItemTypeWechatTimeLine:  // 朋友圈
-            [ShareManager weChatTimeLineShareWithCurrentVC:self success:nil failure:nil];
-            break;
-        case ShareMenuItemTypeQQ:  // QQ
-            [ShareManager QQShareWithCurrentVC:self success:nil failure:nil];
-            break;
-        case ShareMenuItemTypeQZone:  // QQ空间
-            [ShareManager QZoneWithCurrentVC:self success:nil failure:nil];
-            break;
-        default:
-            break;
-    }
-}
-#pragma mark end ShareMenuDelegate
-
 #pragma mark - start 网络请求
+/** 获取详情 */
 - (void)getDataDetail
 {
     __weak typeof(self) ws  = self;
     MBProgressHUD *hud      = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
     NetworkManager *manager = [NetworkManager shareManager];
-    [manager dataDetailWithSid:_model.sid
+    [manager dataDetailWithSid:_sid
                        success:^(NSDictionary *dict) {
                            [hud hideAnimated:YES];
-                           NSString *newstext = dict[@"newstext"];
-                           NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithData:[newstext dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
-                           UIFont *font    = [UIFont systemFontOfSize:fontSize(15)];
-                           CGSize maxSize  = CGSizeMake(SCREEN_WIDTH - WIDTH(30), CGFLOAT_MAX);
-                           CGSize realSize = [str.string realSize:maxSize font:font];
-                           
-                           CGFloat labelW  = SCREEN_WIDTH - WIDTH(20);
-                           CGFloat labelH  = realSize.height + HEIGHT(16);
-                           CGRect frame    = CGRectMake(WIDTH(10), ws.originY, labelW, labelH);
-                           UIView *view    = [[UIView alloc] initWithFrame:frame];
-                           [view.layer setMasksToBounds:YES];
-                           [view.layer setBorderWidth:1.0];
-                           [view.layer setCornerRadius:WIDTH(5)];
-                           [ws.scrollView addSubview:view];
-                           
-                           frame           = CGRectMake(WIDTH(5), 0, maxSize.width, labelH);
-                           UILabel *label  = [[UILabel alloc] initWithFrame:frame];
-                           label.font      = font;
-                           label.text      = str.string;
-                           [label setNumberOfLines:0];
-                           [view addSubview:label];
-                           
-                           CGFloat height  = CGRectGetMaxY(view.frame) + HEIGHT(10);
-                           [ws.scrollView setContentSize:CGSizeMake(0, height)];
-                           
+                           [ws createViewWithDict:dict];
                        } failure:^(NSString *error) {
                            [hud hideAnimated:YES];
                            [MBProgressHUD showFailureInView:ws.view mesg:error];
                        }];
+}
+
+/** 收藏资料 */
+- (void)collectingData
+{
+    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
+    [[NetworkManager shareManager] collectingWithClassID:_classID
+                                                      ID:_sid
+                                                 success:^(NSString *string) {
+                                                     [hud hideAnimated:YES];
+                                                     [[XQToast makeText:string] show];
+                                                 } failure:^(NSString *error) {
+                                                     [hud hideAnimated:YES];
+                                                     [MBProgressHUD showFailureInView:self.view mesg:error];
+                                                 }];
 }
 #pragma mark end 网络请求
 @end

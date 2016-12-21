@@ -94,64 +94,64 @@
 - (void)userReplyWithEnews:(NSString *)enews
                    success:(void (^)(NSArray *array))successBlock
                    failure:(void (^)(NSString *error))failureBlock;
-/** 16 我的回复——详情 */
+/** 17 我的回复——详情 */
 - (void)userReplyDetailWithEnews:(NSString *)enews
                              sid:(NSString *)sid
                          success:(void (^)(NSDictionary *dict))successBlock
                          failure:(void (^)(NSString *error))failureBlock;
 
-/** 17 六合开奖号码 */
+/** 18 六合开奖号码 */
 - (void)lotteryStartWithSuccess:(void (^)(NSDictionary *dict))successBlock
                         failure:(void (^)(NSString *error))failureBlock;
-/** 18 下期开奖事件 */
+/** 19 下期开奖事件 */
 - (void)lotteryNextTimeWithSuccess:(void (^)(NSString *time))successBlock
                            failure:(void (^)(NSString *error))failureBlock;
-/** 19 历史记录列表 */
+/** 20 历史记录列表 */
 - (void)lotteryHistoryWithSuccess:(void (^)(NSArray *array))successBlock
                           failure:(void (^)(NSString *error))failureBlock;
-/** 20 静态获取资料50条数据 */
+/** 21 静态获取资料50条数据 */
 - (void)dataWithUrl:(NSString *)url
             success:(void (^)(NSArray *array))successBlock
             failure:(void (^)(NSString *error))failureBlock;
-/** 21 六合资料 */
+/** 22 六合资料 */
 - (void)dataWithClassID:(NSString *)classID
                    star:(NSString *)star
                 success:(void (^)(NSArray *array))successBlock
                 failure:(void (^)(NSString *error))failureBlock;
-/** 22 六合资料——详情内容 */
+/** 23 六合资料——详情内容 */
 - (void)dataDetailWithSid:(NSString *)sid
                   success:(void (^)(NSDictionary *dict))successBlock
                   failure:(void (^)(NSString *error))failureBlock;
 
-/** 23 六合图库列表 */
+/** 24 六合图库列表 */
 - (void)picLibraryWithClassID:(NSString *)classID
                          star:(NSString *)star
                       success:(void (^)(NSArray *array))successBlock
                       failure:(void (^)(NSString *error))failureBlock;
-/** 24 静态获取图库50条数据 */
+/** 25 静态获取图库50条数据 */
 - (void)picLibraryWithUrl:(NSString *)url
                   success:(void (^)(NSArray *array))successBlock
                   failure:(void (^)(NSString *error))failureBlock;
-/** 25 收藏 */
+/** 26 收藏 */
 - (void)collectingWithClassID:(NSString *)classID
                            ID:(NSString *)ID
                       success:(void (^)(NSString *string))successBlock
                       failure:(void (^)(NSString *error))failureBlock;
-/** 26 六合寻宝 */
+/** 27 六合寻宝 */
 - (void)treasureWithSuccess:(void (^)(NSArray *array))successBlock
                     failure:(void (^)(NSString *error))failureBlock;
-/** 27 静态获取论坛帖子50条 */
+/** 28 静态获取论坛帖子50条 */
 - (void)forumPostWithSuccess:(void (^)(NSArray *array))successBlock
                      failure:(void (^)(NSString *error))failureBlock;
-/** 28 论坛帖子 */
+/** 29 论坛帖子 */
 - (void)forumPostWithStar:(NSString *)star
                   success:(void (^)(NSArray *array))successBlock
                   failure:(void (^)(NSString *error))failureBlock;
-/** 29 论坛帖子详情内容 */
+/** 30 论坛帖子详情内容 */
 - (void)forumPostDetailWithSid:(NSString *)sid
                        success:(void (^)(NSDictionary *dict))successBlock
                        failure:(void (^)(NSString *error))failureBlock;
-/** 30 评论帖子 */
+/** 31 评论帖子 */
 - (void)forumPostReplyWithEnews:(NSString *)enews
                             sid:(NSString *)sid
                         classID:(NSString *)classID
@@ -160,7 +160,7 @@
                             text:(NSString *)text
                          success:(void (^)(NSString *str))successBlock
                          failure:(void (^)(NSString *error))failureBlock;
-/** 31 关于应用 */
+/** 32 关于应用 */
 - (void)appInfoWithSuccess:(void (^)(NSDictionary *dict))successBlock
                    failure:(void (^)(NSString *error))failureBlock;
 #pragma mark end 网络请求

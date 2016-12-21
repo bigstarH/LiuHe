@@ -76,6 +76,50 @@
                   failure:failureBlock];
 }
 
++ (void)weChatShareWithText:(NSString *)mesText currentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    UMSocialMessageObject *mesObject = [UMSocialMessageObject messageObject];
+    mesObject.text = mesText;
+    [self shareToPlatform:UMSocialPlatformType_WechatSession
+                   mesObj:mesObject
+                currentVC:currentVC
+                  success:successBlock
+                  failure:failureBlock];
+}
+
++ (void)weChatTimeLineShareWithText:(NSString *)mesText currentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    UMSocialMessageObject *mesObject = [UMSocialMessageObject messageObject];
+    mesObject.text = mesText;
+    [self shareToPlatform:UMSocialPlatformType_WechatTimeLine
+                   mesObj:mesObject
+                currentVC:currentVC
+                  success:successBlock
+                  failure:failureBlock];
+}
+
++ (void)QQShareWithText:(NSString *)mesText currentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    UMSocialMessageObject *mesObject = [UMSocialMessageObject messageObject];
+    mesObject.text = mesText;
+    [self shareToPlatform:UMSocialPlatformType_QQ
+                   mesObj:mesObject
+                currentVC:currentVC
+                  success:successBlock
+                  failure:failureBlock];
+}
+
++ (void)QZoneShareWithText:(NSString *)mesText currentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    UMSocialMessageObject *mesObject = [UMSocialMessageObject messageObject];
+    mesObject.text = mesText;
+    [self shareToPlatform:UMSocialPlatformType_Qzone
+                   mesObj:mesObject
+                currentVC:currentVC
+                  success:successBlock
+                  failure:failureBlock];
+}
+
 + (void)shareToPlatform:(UMSocialPlatformType)type mesObj:(UMSocialMessageObject *)mesObj currentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     __weak UIViewController *vc = currentVC;

@@ -12,7 +12,6 @@
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max 
 #import <UserNotifications/UserNotifications.h> 
 #endif
-#import "MBProgressHUD+Extension.h"
 #import <UMSocialCore/UMSocialCore.h>
 #import "MessageViewController.h"
 #import "NetworkManager.h"
@@ -52,7 +51,7 @@ static BOOL isProduction     = FALSE;
     [self appInfomation];
     
     // 极光SDK
-    [self initJPushSDKWithOptions:launchOptions];
+    [self initJPushSDKWithApplication:application options:launchOptions];
     // 友盟SDK
     [self initUMengUShareSDK];
     return YES;
@@ -81,7 +80,6 @@ static BOOL isProduction     = FALSE;
         [SystemManager setAppInfoWithDict:dict];
         [self checkVersion];
     } failure:^(NSString *error) {
-        [MBProgressHUD showFailureInView:KeyWindow mesg:error];
     }];
 }
 
@@ -114,7 +112,7 @@ static BOOL isProduction     = FALSE;
 #pragma mark end 推送跳转界面
 
 #pragma mark - start 极光推送
-- (void)initJPushSDKWithOptions:(NSDictionary *)launchOptions
+- (void)initJPushSDKWithApplication:(UIApplication *)application options:(NSDictionary *)launchOptions
 {
     // notice: 3.0.0及以后版本注册可以这样写，也可以继续 旧的注册 式
     if (IOS_10_LATER) {
@@ -152,6 +150,9 @@ static BOOL isProduction     = FALSE;
             [self goToMssageViewController:content];
         }
     }
+    [application cancelAllLocalNotifications];
+    [application setApplicationIconBadgeNumber:0];
+    [JPUSHService resetBadge];
 }
 #pragma mark end 极光推送
 
@@ -217,24 +218,19 @@ static BOOL isProduction     = FALSE;
 {
     // Required,For systems with less than or equal to iOS6
     [JPUSHService handleRemoteNotification:userInfo];
-//    [application setApplicationIconBadgeNumber:0];
-//    [JPUSHService resetBadge];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     // Required, iOS 7 Support
     [JPUSHService handleRemoteNotification:userInfo];
-    completionHandler(UIBackgroundFetchResultNewData);
-//    [application setApplicationIconBadgeNumber:0];
-//    [JPUSHService resetBadge];
-    
     NSDictionary *dict = [userInfo valueForKey:@"aps"];
     NSString *content  = [dict valueForKey:@"alert"];
     if (application.applicationState == UIApplicationStateActive) {
     }else {
         [self goToMssageViewController:content];
     }
+    completionHandler(UIBackgroundFetchResultNewData);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -276,7 +272,8 @@ static BOOL isProduction     = FALSE;
     if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         [JPUSHService handleRemoteNotification:userInfo];
     }
-    completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert); // 需要执 这个 法，选择 是否提醒 户，有Badge、Sound、Alert三种类型可以选择设置
+    //注释掉后就可以不在前台显示推送通知
+//    completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert); // 需要执 这个 法，选择 是否提醒 户，有Badge、Sound、Alert三种类型可以选择设置
 }
 
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
@@ -288,7 +285,6 @@ static BOOL isProduction     = FALSE;
         NSDictionary *dict = [userInfo valueForKey:@"aps"];
         NSString *content  = [dict valueForKey:@"alert"];
         [self goToMssageViewController:content];
-        NSLog(@"iOS10 收到远程通知:%@", content);
     }else { // 判断为本地通知
     }
     completionHandler();  // 系统要求执行这个方法

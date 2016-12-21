@@ -28,7 +28,6 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"六合尋寶";
     
     // 获取网络数据
     [self getNetData];
@@ -37,6 +36,7 @@
 #pragma mark - start 设置导航栏
 - (void)setNavigationBarStyle
 {
+    self.title = _mTitle;
     XQBarButtonItem *leftItem = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]];
     [leftItem addTarget:self action:@selector(goBackWithNavigationBar:) forControlEvents:UIControlEventTouchUpInside];
     XQBarButtonItem *shareBtn = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_share"]];

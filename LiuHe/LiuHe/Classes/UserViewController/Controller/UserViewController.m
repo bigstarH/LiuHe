@@ -17,6 +17,7 @@
 #import "LoginViewController.h"
 #import "UserViewController.h"
 #import "NetworkManager.h"
+#import "SystemManager.h"
 #import "MineHeadView.h"
 #import "XQToast.h"
 
@@ -129,7 +130,7 @@
 /** 用户修改密码成功时通知回调 */
 - (void)userDidModifyPswSuccess:(NSNotification *)notification
 {
-    [UserDefaults setBool:NO forKey:USER_DIDLOGIN];
+    [SystemManager setUserLogin:NO];
     [NotificationCenter postNotificationName:USER_LOGOUT_SUCCESS object:nil];
 }
 #pragma mark end 通知事件
@@ -137,8 +138,7 @@
 #pragma mark - start 按钮事件监听
 - (void)barButtonItemEvent:(XQBarButtonItem *)sender
 {
-    BOOL didLogin = [UserDefaults boolForKey:USER_DIDLOGIN];
-    if (!didLogin) {
+    if (![SystemManager userLogin]) {
         [[XQToast makeText:@"請先登錄"] show];
         return;
     }
@@ -188,7 +188,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BOOL didLogin = [UserDefaults boolForKey:USER_DIDLOGIN];
+    BOOL didLogin = [SystemManager userLogin];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
         case 0:  // 我的资料

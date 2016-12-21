@@ -7,6 +7,8 @@
 //
 
 #import "MyCollectionViewController.h"
+#import "ForumDetailViewController.h"
+#import "DataDetailViewController.h"
 #import "MBProgressHUD+Extension.h"
 #import "PicDetailViewController.h"
 #import "PicLibraryModel.h"
@@ -14,6 +16,7 @@
 #import "NetworkManager.h"
 #import "ShareManager.h"
 #import "XQAlertView.h"
+#import "ForumModel.h"
 #import "ShareMenu.h"
 #import "XQToast.h"
 
@@ -23,9 +26,16 @@
 
 @property (nonatomic, strong) NSArray *array;
 
+@property (nonatomic, strong) NSArray *titleArray;
+
 @end
 
 @implementation MyCollectionViewController
+
+- (void)dealloc
+{
+    NSLog(@"MyCollectionViewController dealloc");
+}
 
 - (void)viewDidLoad
 {
@@ -82,22 +92,50 @@
     alert.themeColor   = RGBCOLOR(238, 154, 0);
     [alert addButtonWithTitle:@"再想一想" style:XQAlertButtonStyleCancel handle:nil];
     [alert addButtonWithTitle:@"確定" style:XQAlertButtonStyleDefault handle:^{
-        CollectionModel *model = [ws.array objectAtIndex:indexPath.row];
-        MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
-        [[NetworkManager shareManager] cancelCollectingWithSid:model.sid
-                                                       success:^(NSString *str) {
-                                                           [hud hideAnimated:YES];
-                                                           [[XQToast makeText:str] show];
-                                                           NSMutableArray *array = [ws.array mutableCopy];
-                                                           [array removeObject:model];
-                                                           ws.array = array;
-                                                           [ws.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                                                       } failure:^(NSString *error) {
-                                                           [hud hideAnimated:YES];
-                                                           [MBProgressHUD showFailureInView:ws.view mesg:error];
-                                                       }];
+        CollectionModel *model  = ws.array[indexPath.section][indexPath.row];
+        MBProgressHUD *hud      = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
+        NetworkManager *manager = [NetworkManager shareManager];
+        [manager cancelCollectingWithSid:model.sid
+                                 success:^(NSString *str) {
+                                     [hud hideAnimated:YES];
+                                     [[XQToast makeText:str] show];
+                                     NSMutableArray *array = [ws.array mutableCopy];
+                                     NSMutableArray *list = array[indexPath.section];
+                                     if (list.count == 1) {
+                                         [array removeObjectAtIndex:indexPath.section];
+                                         NSMutableArray *titles = [ws.titleArray mutableCopy];
+                                         [titles removeObjectAtIndex:indexPath.section];
+                                         ws.titleArray = titles;
+                                         ws.array      = array;
+                                         [ws.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
+                                     }else {
+                                         [list removeObject:model];
+                                         array[indexPath.section] = list;
+                                         ws.array = array;
+                                         [ws.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                                     }
+                                 } failure:^(NSString *error) {
+                                     [hud hideAnimated:YES];
+                                     [MBProgressHUD showFailureInView:ws.view mesg:error];
+                                 }];
     }];
     [alert show];
+}
+
+/** 图库详情 */
+- (void)goToPicDetailVCWithDict:(NSDictionary *)dict classid:(NSString *)classid
+{
+    PicLibraryModel *pModel = [PicLibraryModel picLibraryWithDict:dict];
+    NSString *url    = pModel.url;
+    if (classid.intValue != 65) {
+        url  = [NSString stringWithFormat:@"%@%@/%@.jpg", pModel.url, pModel.qishu, pModel.type];
+    }
+    pModel.urlString  = url;
+    PicDetailViewController *vc = [[PicDetailViewController alloc] init];
+    vc.classID = classid;
+    vc.model   = pModel;
+    vc.collectedBtn = NO;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - start ShareMenuDelegate
@@ -124,9 +162,25 @@
 #pragma mark end ShareMenuDelegate
 
 #pragma mark - start UITableViewDelegate, UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return self.titleArray.count;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.array.count;
+    NSArray *array = self.array[section];
+    return array.count;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return self.titleArray[section];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 36;
 }
 
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -148,7 +202,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
-    CollectionModel *model = self.array[indexPath.row];
+    CollectionModel *model = self.array[indexPath.section][indexPath.row];
     cell.textLabel.text    = model.title;
     return cell;
 }
@@ -156,7 +210,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    CollectionModel *model = self.array[indexPath.row];
+    CollectionModel *model = self.array[indexPath.section][indexPath.row];
     [self getMycollectionDetail:model];
 }
 #pragma mark end UITableViewDelegate, UITableViewDataSource
@@ -168,13 +222,40 @@
     __weak typeof(self) ws = self;
     [[NetworkManager shareManager] userCollectionWithSuccess:^(NSArray *array) {
         [hud hideAnimated:YES];
-        NSMutableArray *data = [NSMutableArray array];
+        NSMutableArray *totalList = [NSMutableArray array];
+        NSMutableArray *titleList = [NSMutableArray array];
+        NSMutableArray *postList  = [NSMutableArray array]; // 帖子
+        NSMutableArray *dataList  = [NSMutableArray array]; // 资料
+        NSMutableArray *picList   = [NSMutableArray array]; // 图片
         for (int i = 0; i < array.count; i++) {
             NSDictionary *dict     = array[i];
             CollectionModel *model = [CollectionModel collectionModelWithDict:dict];
-            [data addObject:model];
+            if (model.classid.intValue == 1) {
+                [postList addObject:model];
+            }else if (model.classid.intValue == 66 || model.classid.intValue == 89 ||
+                      model.classid.intValue == 92 || model.classid.intValue == 65) {
+                [picList addObject:model];
+            }else {
+                NSString *title = model.title;
+                title = [title stringByReplacingOccurrencesOfString:@"六合管家" withString:@"六合藏宝"];
+                model.title     = title;
+                [dataList addObject:model];
+            }
         }
-        ws.array = data;
+        if (postList.count > 0) {
+            [totalList addObject:postList];
+            [titleList addObject:@"我的帖子"];
+        }
+        if (dataList.count > 0) {
+            [totalList addObject:dataList];
+            [titleList addObject:@"我的資料"];
+        }
+        if (picList.count > 0) {
+            [totalList addObject:picList];
+            [titleList addObject:@"我的圖庫"];
+        }
+        ws.titleArray = titleList;
+        ws.array      = totalList;
         [ws.tableView reloadData];
     } failure:^(NSString *error) {
         [hud hideAnimated:YES];
@@ -186,27 +267,36 @@
 - (void)getMycollectionDetail:(CollectionModel *)model
 {
     NSString *classid  = model.classid;
-    MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
-    __weak typeof(self) ws  = self;
-    NetworkManager *manager = [NetworkManager shareManager];
-    [manager userCollectionWithSid:model.tid
-                           success:^(NSDictionary *dict) {
-                               [hud hideAnimated:YES];
-                               PicLibraryModel *pModel = [PicLibraryModel picLibraryWithDict:dict];
-                               NSString *url    = pModel.url;
-                               if (classid.intValue != 65) {
-                                   url  = [NSString stringWithFormat:@"%@%@/%@.jpg", pModel.url, pModel.qishu, pModel.type];
-                               }
-                               pModel.urlString  = url;
-                               PicDetailViewController *vc = [[PicDetailViewController alloc] init];
-                               vc.classID = classid;
-                               vc.model   = pModel;
-                               vc.collectedBtn = NO;
-                               [ws.navigationController pushViewController:vc animated:YES];
-                           } failure:^(NSString *error) {
-                               [hud hideAnimated:YES];
-                               [MBProgressHUD showFailureInView:ws.view mesg:error];
-                           }];
+    NSString *sid      = model.tid;
+    
+    if (classid.intValue == 1) {
+        ForumDetailViewController *vc = [[ForumDetailViewController alloc] init];
+        ForumModel *fModel = [[ForumModel alloc] init];
+        fModel.sid         = sid;
+        vc.model           = fModel;
+        vc.needReplyBtn    = NO;
+        vc.needCollectBtn  = NO;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if (classid.intValue == 66 || classid.intValue == 89 ||
+              classid.intValue == 92 || classid.intValue == 65) {
+        MBProgressHUD *hud = [MBProgressHUD hudView:self.view text:nil removeOnHide:YES];
+        __weak typeof(self) ws  = self;
+        NetworkManager *manager = [NetworkManager shareManager];
+        [manager userCollectionWithSid:model.tid
+                               success:^(NSDictionary *dict) {
+                                   [hud hideAnimated:YES];
+                                   [ws goToPicDetailVCWithDict:dict classid:classid];
+                               } failure:^(NSString *error) {
+                                   [hud hideAnimated:YES];
+                                   [MBProgressHUD showFailureInView:ws.view mesg:error];
+                               }];
+    }else {
+        DataDetailViewController *vc = [[DataDetailViewController alloc] init];
+        vc.sid = sid;
+        vc.classID = classid;
+        vc.needCollectedBtn = NO;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 #pragma mark end 网络请求——获取我的收藏
 @end

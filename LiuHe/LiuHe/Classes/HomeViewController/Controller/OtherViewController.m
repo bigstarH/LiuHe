@@ -107,11 +107,30 @@
             break;
         }
         case 1:  // 时时彩
+        {
+            TreasureViewController *vc = [[TreasureViewController alloc] init];
+            vc.mTitle = @"時時彩";
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
         case 3:  // 娛樂城
+        {
+            TreasureViewController *vc = [[TreasureViewController alloc] init];
+            vc.mTitle = @"娛樂城";
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
         case 5:  // 皇冠網
+        {
+            TreasureViewController *vc = [[TreasureViewController alloc] init];
+            vc.mTitle = @"皇冠網";
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
         case 6:  // 六合尋寶
         {
             TreasureViewController *vc = [[TreasureViewController alloc] init];
+            vc.mTitle = @"六合尋寶";
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }

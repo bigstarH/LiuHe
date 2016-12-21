@@ -37,6 +37,11 @@
 /** 获取缓存大小 */
 + (NSString *)getCacheSize;
 
++ (void)setUserLogin:(BOOL)isLogin;
+
+/** 用户是否登录 */
++ (BOOL)userLogin;
+
 /** 清除缓存 */
 + (void)clearCache;
 

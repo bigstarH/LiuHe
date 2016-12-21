@@ -15,4 +15,6 @@
 
 @property (nonatomic) BOOL needReplyBtn;
 
+@property (nonatomic) BOOL needCollectBtn;
+
 @end

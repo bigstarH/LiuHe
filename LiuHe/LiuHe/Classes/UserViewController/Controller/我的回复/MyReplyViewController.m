@@ -213,6 +213,7 @@
     fModel.sid         = model.tid;
     vc.model           = fModel;
     vc.needReplyBtn    = NO;
+    vc.needCollectBtn  = NO;
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark end UITableViewDelegate, UITableViewDataSource

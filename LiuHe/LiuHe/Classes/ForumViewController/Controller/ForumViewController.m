@@ -95,8 +95,7 @@
 
 - (void)releasePost
 {
-    BOOL didLogin = [UserDefaults boolForKey:USER_DIDLOGIN];
-    if (!didLogin) {
+    if (![SystemManager userLogin]) {
         [[XQToast makeText:@"請先登錄"] show];
         return;
     }
@@ -215,8 +214,9 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ForumModel *model = self.dataList[indexPath.row];
     ForumDetailViewController *vc = [[ForumDetailViewController alloc] initWithHidesBottomBar:YES];
-    vc.model        = model;
-    vc.needReplyBtn = YES;
+    vc.model          = model;
+    vc.needReplyBtn   = YES;
+    vc.needCollectBtn = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark end UITableViewDelegate, UITableViewDataSource
