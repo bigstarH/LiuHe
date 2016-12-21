@@ -163,6 +163,9 @@
 /** 32 关于应用 */
 - (void)appInfoWithSuccess:(void (^)(NSDictionary *dict))successBlock
                    failure:(void (^)(NSString *error))failureBlock;
+/** 33 分享积分 */
+- (void)sharedWithSuccess:(void (^)(NSDictionary *dict))successBlock
+                  failure:(void (^)(NSString *error))failureBlock;
 #pragma mark end 网络请求
 
 @end

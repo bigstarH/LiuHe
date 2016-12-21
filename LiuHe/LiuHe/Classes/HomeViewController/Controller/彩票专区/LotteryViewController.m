@@ -16,7 +16,7 @@
 #import "AdvertModel.h"
 #import "ShareMenu.h"
 
-NSString const *WEB_URL = @"http://wap.jizhou56.com:8090/";
+NSString const *WEB_URL = @"https://www.jizhou56.com:8099/";//@"http://wap.jizhou56.com:8090/";
 static NSString *lotteryCellID = @"lotteryCell";
 
 @interface LotteryViewController () <ShareMenuDelegate, XQCycleImageViewDelegate>

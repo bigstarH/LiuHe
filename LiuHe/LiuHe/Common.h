@@ -30,5 +30,6 @@
 #define POST_EDIT_SUCCESS         @"POST_EDIT_SUCCESS"         // 编辑帖子成功
 #define FORUM_REPLY_EDIT_SUCCESS  @"FORUM_REPLY_EDIT_SUCCESS"  // 编辑回复成功
 #define LOTTERY_KJ_FINISHED       @"LOTTERY_KJ_FINISHED"       // 开奖成功结束
+#define SHARE_MESSAGE_SUCCESS     @"SHARE_MESSAGE_SUCCESS"     // 分享成功
 
 #endif /* Common_h */

@@ -24,11 +24,6 @@
 
 @implementation AboutUsViewController
 
-- (void)dealloc
-{
-    NSLog(@"AboutUsViewController dealloc");
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

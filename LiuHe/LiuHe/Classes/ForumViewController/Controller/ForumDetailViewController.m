@@ -170,7 +170,15 @@
 {
     NSString *newstext   = dict[@"newstext"];
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithData:[newstext dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType} documentAttributes:nil error:nil];
-    ForumModel *model    = [ForumModel forumModelWithDict:dict];
+    ForumModel *model = [ForumModel forumModelWithDict:dict];
+    
+    NSString *title  = model.title;
+    title = [title stringByReplacingOccurrencesOfString:@"六合管家" withString:@"六合藏宝"];
+    model.title      = title;
+    
+    NSString *name   = model.username;
+    name = [name stringByReplacingOccurrencesOfString:@"六合管家" withString:@"六合藏宝"];
+    model.username   = name;
     
     model.dateString = [SystemManager dateStringWithTime:[model.newstime doubleValue] formatter:@"yyyy-MM-dd"];
     UIFont *font     = [UIFont systemFontOfSize:fontSize(13)];
@@ -180,13 +188,13 @@
     
     realSize = [model.groupname realSize:maxSize font:font];
     model.groupNameWidth = realSize.width + WIDTH(10);
-    model.newstext       = str.string;
+    model.newstext       = [str.string stringByReplacingOccurrencesOfString:@"六合管家" withString:@"六合藏宝"];
     self.model           = model;
     
-    font       = [UIFont boldSystemFontOfSize:fontSize(16)];
+    font       = [UIFont boldSystemFontOfSize:fontSize(19)];
     maxSize    = CGSizeMake(SCREEN_WIDTH - WIDTH(24), CGFLOAT_MAX);
     realSize   = [model.title realSize:maxSize font:font];
-    model.titleHeight = realSize.height + HEIGHT(10);
+    model.titleHeight = realSize.height + HEIGHT(13);
     
     font = [UIFont systemFontOfSize:fontSize(16)];
     realSize = [model.newstext realSize:maxSize font:font];

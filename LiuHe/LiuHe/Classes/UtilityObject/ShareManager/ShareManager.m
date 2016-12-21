@@ -25,8 +25,12 @@
     [self shareToPlatform:UMSocialPlatformType_WechatSession
                    mesObj:mesObject
                 currentVC:currentVC
-                  success:successBlock
-                  failure:failureBlock];
+                  success:^(NSString *str) {
+                      [NotificationCenter postNotificationName:SHARE_MESSAGE_SUCCESS object:nil];
+                      successBlock ? successBlock(str) : nil;
+                  } failure:^(NSString *str) {
+                      failureBlock ? failureBlock(str) : nil;
+                  }];
 }
 
 + (void)weChatTimeLineShareWithCurrentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
@@ -40,8 +44,12 @@
     [self shareToPlatform:UMSocialPlatformType_WechatTimeLine
                    mesObj:mesObject
                 currentVC:currentVC
-                  success:successBlock
-                  failure:failureBlock];
+                  success:^(NSString *str) {
+                      [NotificationCenter postNotificationName:SHARE_MESSAGE_SUCCESS object:nil];
+                      successBlock ? successBlock(str) : nil;
+                  } failure:^(NSString *str) {
+                      failureBlock ? failureBlock(str) : nil;
+                  }];
 }
 
 + (void)QQShareWithCurrentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
@@ -56,8 +64,12 @@
     [self shareToPlatform:UMSocialPlatformType_QQ
                    mesObj:mesObject
                 currentVC:currentVC
-                  success:successBlock
-                  failure:failureBlock];
+                  success:^(NSString *str) {
+                      [NotificationCenter postNotificationName:SHARE_MESSAGE_SUCCESS object:nil];
+                      successBlock ? successBlock(str) : nil;
+                  } failure:^(NSString *str) {
+                      failureBlock ? failureBlock(str) : nil;
+                  }];
 }
 
 + (void)QZoneWithCurrentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
@@ -72,8 +84,12 @@
     [self shareToPlatform:UMSocialPlatformType_Qzone
                    mesObj:mesObject
                 currentVC:currentVC
-                  success:successBlock
-                  failure:failureBlock];
+                  success:^(NSString *str) {
+                      [NotificationCenter postNotificationName:SHARE_MESSAGE_SUCCESS object:nil];
+                      successBlock ? successBlock(str) : nil;
+                  } failure:^(NSString *str) {
+                      failureBlock ? failureBlock(str) : nil;
+                  }];
 }
 
 + (void)weChatShareWithText:(NSString *)mesText currentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
@@ -101,7 +117,12 @@
 + (void)QQShareWithText:(NSString *)mesText currentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     UMSocialMessageObject *mesObject = [UMSocialMessageObject messageObject];
-    mesObject.text = mesText;
+    UMShareImageObject *imageObject  = [UMShareImageObject shareObjectWithTitle:@"六合藏宝图"
+                                                                          descr:mesText
+                                                                      thumImage:nil];
+    imageObject.shareImage = [SystemManager qrcodeURL];
+    mesObject.shareObject  = imageObject;
+    
     [self shareToPlatform:UMSocialPlatformType_QQ
                    mesObj:mesObject
                 currentVC:currentVC
@@ -112,7 +133,11 @@
 + (void)QZoneShareWithText:(NSString *)mesText currentVC:(UIViewController *)currentVC success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock
 {
     UMSocialMessageObject *mesObject = [UMSocialMessageObject messageObject];
-    mesObject.text = mesText;
+    UMShareWebpageObject *webObject  = [UMShareWebpageObject shareObjectWithTitle:@"六合藏宝图"
+                                                                            descr:mesText
+                                                                        thumImage:[SystemManager qrcodeURL]];
+    webObject.webpageUrl  = [SystemManager shareLink];
+    mesObject.shareObject = webObject;
     [self shareToPlatform:UMSocialPlatformType_Qzone
                    mesObj:mesObject
                 currentVC:currentVC

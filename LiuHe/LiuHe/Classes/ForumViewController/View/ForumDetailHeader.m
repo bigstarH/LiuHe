@@ -84,8 +84,9 @@
     [self addSubview:label];
     
     label         = [[UILabel alloc] init];
-    label.font    = [UIFont boldSystemFontOfSize:fontSize(16)];
+    label.font    = [UIFont boldSystemFontOfSize:fontSize(19)];
     self.titleLab = label;
+    [label setTextAlignment:NSTextAlignmentCenter];
     [label setNumberOfLines:0];
     [self addSubview:label];
     

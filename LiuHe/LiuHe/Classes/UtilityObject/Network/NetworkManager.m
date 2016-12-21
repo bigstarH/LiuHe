@@ -600,4 +600,19 @@ static id networkInstance;
                    failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];
 }
+
+- (void)sharedWithSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    NSDictionary *param = @{@"enews"    : @"sharefen",
+                            @"userid"   : [UserModel getCurrentUser].uid,
+                            @"username" : [UserModel getCurrentUser].userName,
+                            @"rnd"      : [UserModel getCurrentUser].rnd};
+    [self.manager POST:USER_RELATION_URL parameters:param progress:nil
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSLog(@"dict = %@", dict);
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
+               }];
+}
 @end

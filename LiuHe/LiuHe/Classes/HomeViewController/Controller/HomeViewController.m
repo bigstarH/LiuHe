@@ -64,6 +64,20 @@
     [NotificationCenter removeObserver:self];
 }
 
+- (void)addNotification
+{
+    // 开奖结束通知
+    [NotificationCenter addObserver:self
+                           selector:@selector(lotteryFinished:)
+                               name:LOTTERY_KJ_FINISHED
+                             object:nil];
+    // 分享信息成功
+    [NotificationCenter addObserver:self
+                           selector:@selector(sharedSuccess)
+                               name:SHARE_MESSAGE_SUCCESS
+                             object:nil];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -71,11 +85,7 @@
     self.type        = 0;
     self.goToVideoVC = YES;
     
-    // 开奖结束通知
-    [NotificationCenter addObserver:self
-                           selector:@selector(lotteryFinished:)
-                               name:LOTTERY_KJ_FINISHED
-                             object:nil];
+    [self addNotification];
     
     [self createCycleImageView];
     [self createBottomButton];
@@ -349,7 +359,17 @@
 }
 #pragma mark end 初始化控件
 
-#pragma mark - start 开奖结束通知
+#pragma mark - start 通知事件
+/** 分享信息成功 */
+- (void)sharedSuccess
+{
+    if ([SystemManager userLogin]) {
+        [[NetworkManager shareManager] sharedWithSuccess:^(NSDictionary *dict) {
+            
+        } failure:nil];
+    }
+}
+/** 开奖结束通知 */
 - (void)lotteryFinished:(NSNotification *)notification
 {
     self.countDown.hidden    = NO;
@@ -358,7 +378,7 @@
     self.nextTimeLab.text    = @"本期開獎已結束";
     [self getLotteryNumber];
 }
-#pragma mark end 开奖结束通知
+#pragma mark end 通知事件
 
 #pragma mark - start 私有方法
 - (void)initTimerWithTimeInterval:(NSTimeInterval)time

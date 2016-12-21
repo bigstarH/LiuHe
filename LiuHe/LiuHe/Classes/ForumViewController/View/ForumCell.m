@@ -59,13 +59,15 @@
     UILabel *label = [[UILabel alloc] init];
     label.font     = [UIFont systemFontOfSize:fontSize(13)];
     self.nameLab   = label;
+    [label setTextColor:[UIColor lightGrayColor]];
     [self.contentView addSubview:label];
     
     label         = [[UILabel alloc] init];
     label.font    = [UIFont systemFontOfSize:fontSize(13)];
     self.groupLab = label;
     [label setTextAlignment:NSTextAlignmentCenter];
-    label.layer.borderColor = [UIColor blackColor].CGColor;
+    [label setTextColor:[UIColor lightGrayColor]];
+    label.layer.borderColor = [UIColor lightGrayColor].CGColor;
     label.layer.borderWidth = 1.0;
     [self.contentView addSubview:label];
     

@@ -32,11 +32,6 @@
 
 @implementation MyCollectionViewController
 
-- (void)dealloc
-{
-    NSLog(@"MyCollectionViewController dealloc");
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -181,6 +176,16 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 36;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+// 注意：加上这个方法，否则在iOS 8.x下无法左滑"取消收藏"
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
 }
 
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath

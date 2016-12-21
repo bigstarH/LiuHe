@@ -174,6 +174,14 @@
 /** 处理ForumModel */
 - (void)dealWithModel:(ForumModel *)model
 {
+    NSString *title = model.title;
+    title = [title stringByReplacingOccurrencesOfString:@"六合管家" withString:@"六合藏宝"];
+    model.title     = title;
+    
+    NSString *name  = model.username;
+    name = [name stringByReplacingOccurrencesOfString:@"六合管家" withString:@"六合藏宝"];
+    model.username  = name;
+    
     model.dateString  = [SystemManager dateStringWithTime:[model.newstime doubleValue] formatter:@"yyyy-MM-dd"];
     
     UIFont *font    = [UIFont systemFontOfSize:fontSize(13)];
@@ -312,9 +320,6 @@
                                for (int i = 0; i < array.count; i++) {
                                    NSDictionary *dict = array[i];
                                    ForumModel *data = [ForumModel forumModelWithDict:dict];
-                                   if (data.rnum.intValue > 0) {
-                                       NSLog(@"titile = %@", data.title);
-                                   }
                                    [ws dealWithModel:data];
                                    [dataList addObject:data];
                                }
