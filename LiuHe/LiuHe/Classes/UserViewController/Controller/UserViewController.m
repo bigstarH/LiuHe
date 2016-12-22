@@ -50,6 +50,8 @@
     [NotificationCenter addObserver:self selector:@selector(userDidModifySuccess:) name:USER_MODIFY_SUCCESS object:nil];
     // 修改用户密码成功时通知
     [NotificationCenter addObserver:self selector:@selector(userDidModifyPswSuccess:) name:USER_MODIFYPSW_SUCCESS object:nil];
+    // 分享信息成功
+    [NotificationCenter addObserver:self selector:@selector(sharedSuccess) name:SHARE_MESSAGE_SUCCESS object:nil];
     
     [self createView];
 }
@@ -132,6 +134,18 @@
 {
     [SystemManager setUserLogin:NO];
     [NotificationCenter postNotificationName:USER_LOGOUT_SUCCESS object:nil];
+}
+
+/** 分享信息成功 */
+- (void)sharedSuccess
+{
+    if ([SystemManager userLogin]) {
+        __weak typeof(self) ws   = self;
+        [[NetworkManager shareManager] sharedWithSuccess:^(NSDictionary *dict) {
+            MineHeadView *header = (MineHeadView *)[ws.tableView tableHeaderView];
+            [header setIntegral:[dict[@"fen"] intValue]];
+        } failure:nil];
+    }
 }
 #pragma mark end 通知事件
 

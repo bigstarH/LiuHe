@@ -610,7 +610,17 @@ static id networkInstance;
     [self.manager POST:USER_RELATION_URL parameters:param progress:nil
                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-                   NSLog(@"dict = %@", dict);
+                   if ([dict isKindOfClass:[NSNull class]] || !dict) {
+                       failureBlock ? failureBlock(@"網絡錯誤") : nil;
+                       return ;
+                   }
+                   NSInteger code = [[dict objectForKey:@"zt"] integerValue];
+                   NSString *ts   = [dict objectForKey:@"ts"];
+                   if (code == 1) {
+                       successBlock ? successBlock(dict) : nil;
+                   }else {
+                       failureBlock ? failureBlock(ts) : nil;
+                   }
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                    failureBlock ? failureBlock(@"網絡錯誤") : nil;
                }];

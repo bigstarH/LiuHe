@@ -27,6 +27,7 @@
 #import "CountDowner.h"
 #import "ShareMenu.h"
 #import "MenuItem.h"
+#import "XQToast.h"
 
 @interface HomeViewController () <XQCycleImageViewDelegate, ShareMenuDelegate>
 
@@ -365,7 +366,8 @@
 {
     if ([SystemManager userLogin]) {
         [[NetworkManager shareManager] sharedWithSuccess:^(NSDictionary *dict) {
-            
+            NSString *ts = dict[@"ts"];
+            [[XQToast makeText:ts] show];
         } failure:nil];
     }
 }
