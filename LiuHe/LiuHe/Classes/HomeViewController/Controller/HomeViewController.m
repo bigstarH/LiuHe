@@ -100,6 +100,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     [self.cycleImageView startPlayImageView];
     // 获取下期开奖事件
     [self getLotteryNumber];
@@ -107,6 +108,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
     [self.cycleImageView stopPlayImageView];
     [self.countDown stopCountDown];
     [self.player stop];

@@ -25,7 +25,7 @@ static NSString *UMeng_redirectURL = @"http://www.6happ.com/6h/6hcbt";
 
 static NSString *JPushAppKey = @"36d8319967066bded734b83f";
 static NSString *channel     = @"Publish channel";
-static BOOL isProduction     = FALSE;
+static BOOL isProduction     = YES;
 
 @interface AppDelegate () <JPUSHRegisterDelegate>
 

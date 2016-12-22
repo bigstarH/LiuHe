@@ -263,7 +263,7 @@
     if (self.items && self.items.count > 0) {
         
         _row           = UNSIGNED_NUMBER(self.items.count) / self.column + 1;
-        CGFloat spaceH = WIDTH(ITEM_SPACE_HORIZONTAL);
+        CGFloat spaceH = ITEM_SPACE_HORIZONTAL;
         CGFloat spaceV = HEIGHT(ITEM_SPACE_VERTICAL);
         CGFloat itemW  = self.menuItemSize.width;
         CGFloat itemH  = self.menuItemSize.height;
