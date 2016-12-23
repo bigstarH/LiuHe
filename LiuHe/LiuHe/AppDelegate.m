@@ -89,8 +89,8 @@ static BOOL isProduction     = YES;
     NSString *newVersion = [SystemManager newVersion];
     NSString *content = [SystemManager updateContent];
     NSString *url     = [SystemManager downloadURL];
-    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    if (![version isEqualToString:newVersion]) {
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    if ([version doubleValue] < [newVersion doubleValue]) {
         XQAlertView *alert = [[XQAlertView alloc] initWithTitle:@"新版本" message:content];
         [alert setThemeColor:MAIN_COLOR];
         [alert addButtonWithTitle:@"下次再说" style:XQAlertButtonStyleCancel handle:nil];

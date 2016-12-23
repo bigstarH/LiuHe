@@ -46,7 +46,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>1.2</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>wechat</string>
@@ -115,13 +115,9 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>cameraDesciption</string>
-	<key>NSContactsUsageDescription</key>
-	<string>contactsDesciption</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>microphoneDesciption</string>
+	<string>我们需要使用相机功能</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
+	<string>我们需要使用相册功能</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
