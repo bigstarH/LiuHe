@@ -14,6 +14,7 @@
 #endif
 #import <UMSocialCore/UMSocialCore.h>
 #import "MessageViewController.h"
+#import "DatabaseManager.h"
 #import "NetworkManager.h"
 #import "SystemManager.h"
 #import "AppDelegate.h"
@@ -49,6 +50,9 @@ static BOOL isProduction     = YES;
     [self userLogin];
     // 获取app版本，二维码等信息
     [self appInfomation];
+    
+    // 创建已读数据库
+    [DatabaseManager databaseOfReadData];
     
     // 极光SDK
     [self initJPushSDKWithApplication:application options:launchOptions];

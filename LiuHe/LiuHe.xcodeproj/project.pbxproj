@@ -98,6 +98,7 @@
 		4804EEE31DFE9A5C00948CFD /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4804EEE21DFE9A5C00948CFD /* libresolv.tbd */; };
 		4804EEEA1DFEE3EC00948CFD /* 55555.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4804EEE91DFEE3EC00948CFD /* 55555.mp3 */; };
 		4804EEEC1DFEE41400948CFD /* ad.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4804EEEB1DFEE41400948CFD /* ad.mp3 */; };
+		481D6F981E1B8C9E001AB771 /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 481D6F971E1B8C9E001AB771 /* DatabaseManager.m */; };
 		482655CD1DF4241500122766 /* ForumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 482655CC1DF4241500122766 /* ForumCell.m */; };
 		482655D11DF4272B00122766 /* ForumModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 482655D01DF4272B00122766 /* ForumModel.m */; };
 		482655D41DF4751B00122766 /* ForumDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 482655D31DF4751B00122766 /* ForumDetailViewController.m */; };
@@ -296,6 +297,8 @@
 		4804EEE21DFE9A5C00948CFD /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		4804EEE91DFEE3EC00948CFD /* 55555.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = 55555.mp3; sourceTree = "<group>"; };
 		4804EEEB1DFEE41400948CFD /* ad.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ad.mp3; sourceTree = "<group>"; };
+		481D6F961E1B8C9E001AB771 /* DatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
+		481D6F971E1B8C9E001AB771 /* DatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseManager.m; sourceTree = "<group>"; };
 		482655CB1DF4241500122766 /* ForumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumCell.h; sourceTree = "<group>"; };
 		482655CC1DF4241500122766 /* ForumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumCell.m; sourceTree = "<group>"; };
 		482655CF1DF4272B00122766 /* ForumModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumModel.h; sourceTree = "<group>"; };
@@ -648,6 +651,15 @@
 			path = JPush;
 			sourceTree = "<group>";
 		};
+		481D6F951E1B8C72001AB771 /* DatabaseManager */ = {
+			isa = PBXGroup;
+			children = (
+				481D6F961E1B8C9E001AB771 /* DatabaseManager.h */,
+				481D6F971E1B8C9E001AB771 /* DatabaseManager.m */,
+			);
+			path = DatabaseManager;
+			sourceTree = "<group>";
+		};
 		482655CA1DF423F900122766 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -954,6 +966,7 @@
 		483AC60D1DE54051009E0E64 /* UtilityObject */ = {
 			isa = PBXGroup;
 			children = (
+				481D6F951E1B8C72001AB771 /* DatabaseManager */,
 				48DFD2F71DF56FBE006AF778 /* ShareManager */,
 				48D83C981DEBD0FC00E62100 /* SystemManager */,
 				483AC6141DE541C9009E0E64 /* Category */,
@@ -1576,6 +1589,7 @@
 				489932BC1DF156250041A016 /* HistoryCell.m in Sources */,
 				483010571DEDB85600B11BE9 /* CountDowner.m in Sources */,
 				48D83CA51DEC0EA200E62100 /* XQSegmentedControl.m in Sources */,
+				481D6F981E1B8C9E001AB771 /* DatabaseManager.m in Sources */,
 				48BE5ABA1DF01550004ACB90 /* XQSpringMenuItem.m in Sources */,
 				482655CD1DF4241500122766 /* ForumCell.m in Sources */,
 				48D83C9B1DEBD12000E62100 /* SystemManager.m in Sources */,

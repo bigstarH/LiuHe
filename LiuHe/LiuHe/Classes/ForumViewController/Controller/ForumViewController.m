@@ -44,6 +44,14 @@
 
 @implementation ForumViewController
 
+- (instancetype)init
+{
+    if (self = [super init]) {
+        self.hasTarBar = YES;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -143,7 +151,7 @@
 - (void)createTableView
 {
     CGFloat tableY = CGRectGetMaxY(self.cycleImageView.frame);
-    CGFloat tableH = SCREEN_HEIGHT - tableY - 49;
+    CGFloat tableH = SCREEN_HEIGHT - tableY - 49 * self.hasTarBar;
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tableY, SCREEN_WIDTH, tableH)];
     self.tableView         = tableView;
     tableView.delegate     = self;

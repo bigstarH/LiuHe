@@ -8,4 +8,5 @@ pod 'MBProgressHUD', '~>1.0.0'
 pod 'UMengUShare/Social/WeChat'
 pod 'UMengUShare/Social/QQ'
 pod 'UMengUShare/UI'
+pod 'FMDB'
 end

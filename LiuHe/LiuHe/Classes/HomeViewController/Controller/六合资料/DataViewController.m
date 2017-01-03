@@ -8,8 +8,10 @@
 
 #import "DataDetailViewController.h"
 #import "MBProgressHUD+Extension.h"
+#import "ForumViewController.h"
 #import "DataViewController.h"
 #import "NSString+Extension.h"
+#import "UIImage+Extension.h"
 #import "NetworkManager.h"
 #import "DataTableView.h"
 #import "SystemManager.h"
@@ -107,9 +109,10 @@
     XQSpringMenuItem *jp    = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"精品殺項"] title:@"精品殺項"];
     XQSpringMenuItem *card  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"香港掛牌"] title:@"香港掛牌"];
     XQSpringMenuItem *year  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"全年資料"] title:@"全年資料"];
+    XQSpringMenuItem *forum = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageWithColor:RGBCOLOR(34, 167, 224)] title:@"論壇"];
     XQSpringMenuItem *attr  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"六合屬性"] title:@"六合屬性"];
     
-    NSArray *array      = @[favor, text, sup, fx, jp, card, year, attr];
+    NSArray *array      = @[favor, text, sup, fx, jp, card, year, attr, forum];
     XQSpringMenu *menu  = [XQSpringMenu springMenuWithItems:array];
     menu.delegate       = self;
     menu.animationTime  = 0.56;
@@ -125,7 +128,7 @@
 {
     if (!_titleList) {
         _titleList = @[@"心水資料", @"文字資料", @"高手資料", @"公式資料",
-                        @"精品殺項", @"香港掛牌", @"全年资料", @"六合屬性"];
+                       @"精品殺項", @"香港掛牌", @"全年资料", @"六合屬性"];
     }
     return _titleList;
 }
@@ -227,6 +230,13 @@
 #pragma mark - start XQSpringMenuDelegate
 - (void)springMenu:(XQSpringMenu *)menu didClickItemAtIdx:(NSInteger)index menuTitle:(NSString *)menuTitle
 {
+    if (index == 8) {
+        ForumViewController *vc = [[ForumViewController alloc] init];
+        vc.hasTarBar = NO;
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    }
+    
     self.type  = index;
     self.title = self.titleList[index];
     DataTableView *tableView = [self getCurrentTableViewWithTag:index];

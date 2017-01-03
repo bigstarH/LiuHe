@@ -10,4 +10,6 @@
 
 @interface ForumViewController : BaseViewController
 
+@property (nonatomic) BOOL hasTarBar;
+
 @end

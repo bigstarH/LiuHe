@@ -149,7 +149,7 @@
     self.groupLab.text = model.groupname;
     self.titleLab.text = model.title;
     self.timeLab.text  = model.dateString;
-    self.readLab.text  = [NSString stringWithFormat:@"已有%@人阅读", model.onclick];
+//    self.readLab.text  = [NSString stringWithFormat:@"已有%@人阅读", model.onclick];
     self.replyLab.text = [NSString stringWithFormat:@"%@", model.rnum];
 }
 

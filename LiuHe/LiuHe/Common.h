@@ -10,6 +10,7 @@
 #define Common_h
 
 // NSUserDefaults 键值
+#define CURRENT_BQ                @"CURRENT_BQ"           // 当前期数
 #define LOTTERY_SILENCE           @"LOTTERY_SILENCE"      // 摇奖静音
 #define USER_DIDLOGIN             @"USER_DIDLOGIN"        // 用户是否登录
 #define APP_QRCODE                @"APP_QRCODE"           // 二维码图片
@@ -31,5 +32,12 @@
 #define FORUM_REPLY_EDIT_SUCCESS  @"FORUM_REPLY_EDIT_SUCCESS"  // 编辑回复成功
 #define LOTTERY_KJ_FINISHED       @"LOTTERY_KJ_FINISHED"       // 开奖成功结束
 #define SHARE_MESSAGE_SUCCESS     @"SHARE_MESSAGE_SUCCESS"     // 分享成功
+
+// 数据库
+#define DATABASE_NAME             @"database.db"     // 数据库名
+#define TABLE_NAME_READ_MARK      @"read_mark_table" // 表名称
+#define DATATYPE_ZILIAO  1
+#define DATATYPE_TUKU    2
+#define DATATYPE_FORUM   3
 
 #endif /* Common_h */

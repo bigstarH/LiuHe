@@ -20,6 +20,7 @@
 #import "WebViewController.h"
 #import "UIImage+Extension.h"
 #import "XQCycleImageView.h"
+#import "DatabaseManager.h"
 #import "NetworkManager.h"
 #import "SystemManager.h"
 #import "ShareManager.h"
@@ -522,6 +523,11 @@
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     [[NetworkManager shareManager] lotteryAnimateWithSuccess:^(NSDictionary *dict) {
         LotteryNumberModel *model = [LotteryNumberModel lotteryNumberWithDict:dict];
+        NSString *currentBq = [UserDefaults objectForKey:CURRENT_BQ];
+        if (![currentBq isEqualToString:model.bq]) {
+            [UserDefaults setObject:model.bq forKey:CURRENT_BQ];
+            [DatabaseManager eraseTable:TABLE_NAME_READ_MARK];
+        }
         if ([model.zt intValue] == 1) {  // 开奖结束
             NSString *time      = [dict objectForKey:@"xyqsjc"];
             NSString *nextBq    = [dict objectForKey:@"xyq"];
