@@ -18,6 +18,8 @@
 @property (nonatomic, copy) NSString *title;
 
 @property (nonatomic, copy) NSString *dateStr;
+/** 是否已读 */
+@property (nonatomic) NSInteger isRead;
 
 @property (nonatomic) CGFloat height;
 

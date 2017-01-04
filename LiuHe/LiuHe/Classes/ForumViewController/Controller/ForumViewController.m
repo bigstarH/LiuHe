@@ -14,6 +14,7 @@
 #import "ForumViewController.h"
 #import "NSString+Extension.h"
 #import "XQCycleImageView.h"
+#import "DatabaseManager.h"
 #import "NetworkManager.h"
 #import "SystemManager.h"
 #import "ShareManager.h"
@@ -36,6 +37,8 @@
 @property (nonatomic, weak) UITableView *tableView;
 /** 论坛帖子数据数组 */
 @property (nonatomic, strong) NSArray *dataList;
+/** 已读数组 */
+@property (strong, nonatomic) NSMutableArray *readList;
 /** 分页 */
 @property (nonatomic) NSInteger star;
 
@@ -52,10 +55,20 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [NotificationCenter removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    // 添加通知
+    [self addNotificaton];
+    
+    self.readList = [DatabaseManager readDataWithType:DATATYPE_FORUM];
     
     // 创建广告轮播
     [self createCycleImageView];
@@ -80,6 +93,16 @@
     }
 }
 
+- (void)addNotificaton
+{
+    // 登录成功时通知
+    [NotificationCenter addObserver:self selector:@selector(userDidLoginSuccess:) name:USER_LOGIN_SUCCESS object:nil];
+    // 注销成功时通知
+    [NotificationCenter addObserver:self selector:@selector(userDidLogoutSuccess:) name:USER_LOGOUT_SUCCESS object:nil];
+    // 已读通知
+    [NotificationCenter addObserver:self selector:@selector(readData:) name:FORUM_READ_SUCCESS object:nil];
+}
+
 #pragma mark - start 设置导航栏
 - (void)setNavigationBarStyle
 {
@@ -92,6 +115,12 @@
     [postBtn setTag:2];
     [postBtn addTarget:self action:@selector(releasePost) forControlEvents:UIControlEventTouchUpInside];
     self.navigationBar.rightBarButtonItems = @[shareBtn, postBtn];
+    
+    if (_needBackBtn) {
+        XQBarButtonItem *leftBtn = [[XQBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back"]];
+        [leftBtn addTarget:self action:@selector(goBackWithNavigationBar:) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationBar.leftBarButtonItem = leftBtn;
+    }
 }
 
 - (void)shareEvent
@@ -171,6 +200,51 @@
 }
 #pragma mark end 初始化控件
 
+#pragma mark - start 通知事件
+/** 登录成功 */
+- (void)userDidLoginSuccess:(NSNotification *)notification
+{
+    self.readList = [DatabaseManager readDataWithType:DATATYPE_FORUM];
+    for (int i = 0; i < self.dataList.count; i++) {
+        ForumModel *model = self.dataList[i];
+        if ([self.readList containsObject:model.sid]) {
+            model.isRead = 1;
+        }
+    }
+    [self.tableView reloadData];
+}
+
+/** 注销成功 */
+- (void)userDidLogoutSuccess:(NSNotification *)notification
+{
+    self.readList = [DatabaseManager readDataWithType:DATATYPE_FORUM];
+    for (int i = 0; i < self.dataList.count; i++) {
+        ForumModel *model = self.dataList[i];
+        if ([self.readList containsObject:model.sid]) {
+            model.isRead = 1;
+        }else {
+            model.isRead = 0;
+        }
+    }
+    [self.tableView reloadData];
+}
+
+- (void)readData:(NSNotification *)notification
+{
+    NSString *sid = notification.userInfo[@"sid"];
+    NSMutableArray *list = [self.dataList mutableCopy];
+    for (int i = 0; i < list.count; i++) {
+        ForumModel *model = [list objectAtIndex:i];
+        if ([sid isEqualToString:model.sid]) {
+            model.isRead = 1;
+            break;
+        }
+    }
+    [self.readList addObject:sid];
+    [self.tableView reloadData];
+}
+#pragma mark end 通知事件
+
 #pragma mark - start 私有方法
 /** 列表结束刷新加载 */
 - (void)endRefreshing
@@ -229,6 +303,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ForumModel *model = self.dataList[indexPath.row];
+    if (model.isRead != 1) {
+        [DatabaseManager addReadDataWithSid:model.sid type:DATATYPE_FORUM];
+    }
     ForumDetailViewController *vc = [[ForumDetailViewController alloc] initWithHidesBottomBar:YES];
     vc.model          = model;
     vc.needReplyBtn   = YES;
@@ -295,6 +372,9 @@
             NSDictionary *dict = array[i];
             ForumModel *data   = [ForumModel forumModelWithDict:dict];
             [ws dealWithModel:data];
+            if ([ws.readList containsObject:data.sid]) {
+                data.isRead = 1;
+            }
             [dataList addObject:data];
         }
         ws.star     = starBegin;
@@ -329,6 +409,9 @@
                                    NSDictionary *dict = array[i];
                                    ForumModel *data = [ForumModel forumModelWithDict:dict];
                                    [ws dealWithModel:data];
+                                   if ([ws.readList containsObject:data.sid]) {
+                                       data.isRead = 1;
+                                   }
                                    [dataList addObject:data];
                                }
                                ws.star     = ws.star + 20;

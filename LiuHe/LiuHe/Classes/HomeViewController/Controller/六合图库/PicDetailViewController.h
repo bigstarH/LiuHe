@@ -11,11 +11,13 @@
 @class PicLibraryModel;
 
 /** 图库详情 */
-@interface PicDetailViewController : BaseViewController
+@interface PicDetailViewController : BaseViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource>
 
-@property (nonatomic, strong) PicLibraryModel *model;
+@property (strong, nonatomic) PicLibraryModel *model;
 
-@property (nonatomic, copy) NSString *classID;
+@property (copy, nonatomic) NSString *classID;
+
+@property (copy, nonatomic) NSString *curYear;
 
 @property (nonatomic, getter=isCollectedBtn) BOOL collectedBtn;
 

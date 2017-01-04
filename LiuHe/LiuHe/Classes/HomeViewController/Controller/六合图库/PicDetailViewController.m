@@ -12,24 +12,34 @@
 #import "PicLibraryModel.h"
 #import "PictureBrowser.h"
 #import "NetworkManager.h"
+#import "XQPickerView.h"
 #import "PictureCell.h"
 #import "ColumnView.h"
 #import "XQToast.h"
 
-@interface PicDetailViewController () <ColumnViewDelegate, PictureCellDelegate, PictureBrowserDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource>
+@interface PicDetailViewController () <ColumnViewDelegate, PictureCellDelegate, PictureBrowserDelegate, XQPickerViewDelegate, XQPickerViewDataSource>
 
-@property (nonatomic, strong) NSArray *dataList;
+@property (strong, nonatomic) NSArray *dataList;
 
-@property (nonatomic, weak) UICollectionView *collectionView;
+@property (strong, nonatomic) NSMutableArray *yearList;
 
-@property (nonatomic, weak) ColumnView *columnView;
+@property (strong, nonatomic) NSMutableDictionary *yearDict;
 
-@property (nonatomic, weak) PictureBrowser *browser;
+@property (weak, nonatomic) UICollectionView *collectionView;
 
-@property (nonatomic, weak) UIImageView *bigImageView;
+@property (weak, nonatomic) ColumnView *columnView;
+
+@property (weak, nonatomic) PictureBrowser *browser;
+
+@property (weak, nonatomic) UIImageView *bigImageView;
+
+@property (weak, nonatomic) XQPickerView *picker;
 
 @property (nonatomic) NSInteger currentIndex;
-
+/** picker选中的下标 */
+@property (nonatomic) NSInteger pickerIndex;
+/** 最近一次picker选择的下标 */
+@property (nonatomic) NSInteger lastPickerIndex;
 @end
 
 @implementation PicDetailViewController
@@ -39,6 +49,13 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.currentIndex         = 0;
+    self.pickerIndex          = 0;
+    self.lastPickerIndex      = 0;
+    
+    if (self.classID.intValue != 65) {
+        // 获取往年期数
+        [self getYearData];
+    }
     
     // 创建栏目栏
     [self createColumnView];
@@ -55,13 +72,38 @@
     [leftItem addTarget:self action:@selector(goBackWithNavigationBar:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationBar.leftBarButtonItem  = leftItem;
     
+    NSMutableArray *array = [NSMutableArray array];
+    
+    if (self.classID.intValue != 65) {
+        XQBarButtonItem *dateBtn = [[XQBarButtonItem alloc] initWithTitle:@"年份"];
+        [dateBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [dateBtn setTitleColor:[UIColor lightTextColor] forState:UIControlStateHighlighted];
+        [dateBtn addTarget:self action:@selector(showDatePick) forControlEvents:UIControlEventTouchUpInside];
+        [array addObject:dateBtn];
+    }
+    
     if (self.isCollectedBtn) {
         XQBarButtonItem *collect = [[XQBarButtonItem alloc] initWithTitle:@"收藏"];
         [collect setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [collect setTitleColor:[UIColor lightTextColor] forState:UIControlStateHighlighted];
         [collect addTarget:self action:@selector(collectEvent) forControlEvents:UIControlEventTouchUpInside];
-        self.navigationBar.rightBarButtonItem = collect;
+        [array addObject:collect];
     }
+    self.navigationBar.rightBarButtonItems = array;
+}
+
+/** 历史年份 */
+- (void)showDatePick
+{
+    XQPickerView *picker = self.picker;
+    if (!picker) {
+        picker = [XQPickerView pickerView];
+        picker.delegate   = self;
+        picker.dataSource = self;
+        self.picker       = picker;
+        [self.picker selectRow:_pickerIndex inComponent:0 animated:NO];
+    }
+    [picker showWithAnimated:YES];
 }
 
 /** 按钮收藏事件 */
@@ -87,12 +129,12 @@
     NSMutableArray *array = [NSMutableArray array];
     NSMutableArray *list  = [NSMutableArray array];
     if (self.classID.intValue == 65) {
-        [array addObject:_model.urlString];
-        [list addObject:_model.urlString];
+        [array addObject:_model.url];
+        [list addObject:_model.url];
     }else {
         for (int i = _model.qishu.intValue; i > 0 ; i--) {
             NSString *str = [NSString stringWithFormat:@"第%d期", i];
-            NSString *url = [NSString stringWithFormat:@"%@%03d/%@.jpg", _model.url, i, _model.type];
+            NSString *url = [NSString stringWithFormat:@"%@%@/%03d/%@.jpg", _model.url, _curYear, i, _model.type];
             [array addObject:str];
             [list addObject:url];
         }
@@ -139,6 +181,14 @@
     }
     return _browser;
 }
+
+- (NSMutableDictionary *)yearDict
+{
+    if (!_yearDict) {
+        _yearDict = [NSMutableDictionary dictionary];
+    }
+    return _yearDict;
+}
 #pragma mark end 懒加载
 
 #pragma mark - start ColumnViewDelegate
@@ -149,6 +199,56 @@
     [_collectionView setContentOffset:CGPointMake(offsetX, 0) animated:NO];
 }
 #pragma mark end ColumnViewDelegate
+
+#pragma mark - start XQPickerViewDelegate, XQPickerViewDataSource
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return self.yearList.count;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSString *title = self.yearList[row];
+    return title;
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    self.pickerIndex = row;
+}
+
+- (void)sureButtonDidClickWithPicker:(UIPickerView *)picker
+{
+    NSString *key   = self.yearList[self.pickerIndex];
+    NSString *qishu = self.yearDict[key];
+    if (qishu.intValue == 0) {
+        [[XQToast makeText:@"当前年份没有数据哦！"] show];
+        return;
+    }
+    
+    if (self.lastPickerIndex == self.pickerIndex) return;
+    self.lastPickerIndex = self.pickerIndex;
+    
+    NSMutableArray *array = [NSMutableArray array];
+    NSMutableArray *list  = [NSMutableArray array];
+    for (int i = qishu.intValue; i > 0 ; i--) {
+        NSString *str = [NSString stringWithFormat:@"第%d期", i];
+        NSString *url = [NSString stringWithFormat:@"%@%@/%03d/%@.jpg", _model.url, key, i, _model.type];
+        [array addObject:str];
+        [list addObject:url];
+    }
+    self.columnView.items = array;
+    [self.columnView reloadData];
+    
+    self.dataList = list;
+    [self.collectionView reloadData];
+}
+#pragma mark end XQPickerViewDelegate, XQPickerViewDataSource
 
 #pragma mark - start PictureBrowserDelegate
 /** 点击了浏览器的第index张图片 */
@@ -217,4 +317,24 @@
     [self.columnView scrollToCurrentIndex:self.currentIndex animated:YES];
 }
 #pragma mark end UIScrollViewDelegate
+
+#pragma mark - start 往年期数
+- (void)getYearData
+{
+    self.yearList = [NSMutableArray arrayWithObject:_curYear];
+    __weak typeof(self) ws = self;
+    [[NetworkManager shareManager] picLibYearQishuWithSuccess:^(NSDictionary *dict) {
+        NSArray *keys = [dict allKeys];
+        NSArray *sort = [keys sortedArrayUsingComparator:^NSComparisonResult(NSString * _Nonnull obj1, NSString *  _Nonnull obj2) {
+            if (IOS_9_LATER) {
+                return NSOrderedAscending;
+            }
+            return NSOrderedDescending;
+        }];
+        [ws.yearList addObjectsFromArray:sort];
+        [ws.yearDict setDictionary:dict];
+        [ws.yearDict setObject:_model.qishu forKey:_curYear];
+    } failure:nil];
+}
+#pragma mark end 往年期数
 @end

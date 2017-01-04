@@ -39,6 +39,9 @@
 
 + (void)setUserLogin:(BOOL)isLogin;
 
+/** 获取当前时间 */
++ (NSString *)currentDateWithFormatter:(NSString *)formatter;
+
 /** 用户是否登录 */
 + (BOOL)userLogin;
 

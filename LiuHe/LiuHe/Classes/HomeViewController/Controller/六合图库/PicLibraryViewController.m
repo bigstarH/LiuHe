@@ -10,6 +10,7 @@
 #import "MBProgressHUD+Extension.h"
 #import "PicDetailViewController.h"
 #import "PicLibraryTableView.h"
+#import "DatabaseManager.h"
 #import "PicLibraryModel.h"
 #import "NetworkManager.h"
 #import "SystemManager.h"
@@ -22,6 +23,10 @@
 @property (nonatomic, weak) ColumnView *columnView;
 
 @property (nonatomic, weak) UIScrollView *scrollView;
+/** 已读数组 */
+@property (strong, nonatomic) NSMutableArray *readList;
+/** 今年年份 */
+@property (copy, nonatomic) NSString *thisYear;
 /** 下标 */
 @property (nonatomic) NSInteger index;
 
@@ -29,11 +34,23 @@
 
 @implementation PicLibraryViewController
 
+- (void)dealloc
+{
+    [NotificationCenter removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.index = 0;
+    
+    // 已读通知
+    [NotificationCenter addObserver:self selector:@selector(readData:) name:TUKU_READ_SUCCESS object:nil];
+    
+    self.index    = 0;
+    self.thisYear = [SystemManager currentDateWithFormatter:@"yyyy"];
+    self.readList = [DatabaseManager readDataWithType:DATATYPE_TUKU];
+    
     // 初始化控件
     [self createView];
     // 创建TableView
@@ -102,6 +119,24 @@
 }
 #pragma mark end 初始化控件
 
+#pragma mark - start 已读通知
+- (void)readData:(NSNotification *)notification
+{
+    NSString *sid = notification.userInfo[@"sid"];
+    PicLibraryTableView *tableView = [self getCurrentTableViewWithIndex:self.index];
+    NSMutableArray *list = [tableView.dataList mutableCopy];
+    for (int i = 0; i < list.count; i++) {
+        PicLibraryModel *model = [list objectAtIndex:i];
+        if ([sid isEqualToString:model.sid]) {
+            model.isRead = 1;
+            break;
+        }
+    }
+    [self.readList addObject:sid];
+    [tableView.tableView reloadData];
+}
+#pragma mark end 已读通知
+
 #pragma mark - start 私有方法
 /** 获取当前的TableView */
 - (PicLibraryTableView *)getCurrentTableViewWithIndex:(NSInteger)index
@@ -152,7 +187,7 @@
                                                formatter:@"yyyy-MM-dd HH:mm:ss"];
     NSString *url    = model.url;
     if (tag != PLTableViewTypeYear) {
-        url  = [NSString stringWithFormat:@"%@%@/%@.jpg", model.url, model.qishu, model.type];
+        url  = [NSString stringWithFormat:@"%@%@/%@/%@.jpg", model.url, _thisYear, model.qishu, model.type];
     }
     model.urlString  = url;
 }
@@ -217,6 +252,9 @@
                                        NSDictionary *dict = array[i];
                                        PicLibraryModel *data = [PicLibraryModel picLibraryWithDict:dict];
                                        [ws dealWithModel:data tag:picLTableView.tag];
+                                       if ([ws.readList containsObject:data.sid]) {
+                                           data.isRead = 1;
+                                       }
                                        [dataList addObject:data];
                                    }
                                    picLTableView.star     = picLTableView.star + 20;
@@ -232,10 +270,14 @@
 /** 点击了某一行 */
 - (void)picLTableView:(PicLibraryTableView *)picLTableView didSelectCellWithModel:(PicLibraryModel *)model
 {
+    if (model.isRead != 1) {
+        [DatabaseManager addReadDataWithSid:model.sid type:DATATYPE_TUKU];
+    }
     PicDetailViewController *vc = [[PicDetailViewController alloc] init];
     vc.model   = model;
     vc.classID = picLTableView.classID;
     vc.collectedBtn = YES;
+    vc.curYear      = _thisYear;
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark end PicLibraryTableViewDelegate
@@ -277,6 +319,9 @@
                                NSDictionary *dict = array[i];
                                PicLibraryModel *data = [PicLibraryModel picLibraryWithDict:dict];
                                [ws dealWithModel:data tag:tableView.tag];
+                               if ([ws.readList containsObject:data.sid]) {
+                                   data.isRead = 1;
+                               }
                                [dataList addObject:data];
                            }
                            tableView.dataList = dataList;

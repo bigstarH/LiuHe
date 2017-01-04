@@ -183,6 +183,7 @@
 		48E271D31DE708A200CA3F4D /* MyDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271D21DE708A200CA3F4D /* MyDataViewController.m */; };
 		48E271D71DE708FC00CA3F4D /* XQActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271D61DE708FC00CA3F4D /* XQActionSheet.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		48E271DB1DE7253200CA3F4D /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E271DA1DE7253200CA3F4D /* SettingViewController.m */; };
+		48E728921E1CDEC100132CDE /* XQPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E728911E1CDEC100132CDE /* XQPickerView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -471,6 +472,8 @@
 		48E271D61DE708FC00CA3F4D /* XQActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQActionSheet.m; sourceTree = "<group>"; };
 		48E271D91DE7253200CA3F4D /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		48E271DA1DE7253200CA3F4D /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		48E728901E1CDEC100132CDE /* XQPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XQPickerView.h; sourceTree = "<group>"; };
+		48E728911E1CDEC100132CDE /* XQPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XQPickerView.m; sourceTree = "<group>"; };
 		6889F03AADAB6FAF8C717B85 /* libPods-LiuHe.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LiuHe.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B2EB7F459E36B4FE011C7F /* Pods-LiuHe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiuHe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiuHe/Pods-LiuHe.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -828,6 +831,7 @@
 				48E271D41DE708FC00CA3F4D /* XQActionSheet */,
 				48E0EC961DF6F64A00E4B296 /* XQCircleProgressView */,
 				48E0EC8B1DF65E1900E4B296 /* XQCycleImageView */,
+				48E7288C1E1CDD9900132CDE /* XQPickerView */,
 				48D83CA21DEC0EA200E62100 /* XQSegmentedControl */,
 				48BE5AB41DF01550004ACB90 /* XQSpringMenu */,
 				483AC61E1DE5B18B009E0E64 /* XQTextField */,
@@ -1226,6 +1230,15 @@
 			path = "设置";
 			sourceTree = "<group>";
 		};
+		48E7288C1E1CDD9900132CDE /* XQPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				48E728901E1CDEC100132CDE /* XQPickerView.h */,
+				48E728911E1CDEC100132CDE /* XQPickerView.m */,
+			);
+			path = XQPickerView;
+			sourceTree = "<group>";
+		};
 		6C267AB83E089C8449D82B56 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1595,6 +1608,7 @@
 				48D83C9B1DEBD12000E62100 /* SystemManager.m in Sources */,
 				48E271D71DE708FC00CA3F4D /* XQActionSheet.m in Sources */,
 				483AC5E51DE526CB009E0E64 /* BaseNavigationController.m in Sources */,
+				48E728921E1CDEC100132CDE /* XQPickerView.m in Sources */,
 				48DFD2EA1DF4FD64006AF778 /* ForumReplyModel.m in Sources */,
 				483AC5FF1DE52749009E0E64 /* MineHeadView.m in Sources */,
 				483AC5E91DE526CB009E0E64 /* XQNavigationBar.m in Sources */,

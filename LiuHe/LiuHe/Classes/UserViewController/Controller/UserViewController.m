@@ -111,11 +111,6 @@
 {
     MineHeadView *header = (MineHeadView *)[self.tableView tableHeaderView];
     [header resetHeaderData];
-    UserModel *model = [UserModel getCurrentUser];
-    if (model) {
-        [[NetworkManager shareManager] userLogoutWithSuccess:nil failure:nil];
-    }
-    [UserModel removeCurrentUser];
 }
 
 /** 用户修改信息成功时通知回调 */

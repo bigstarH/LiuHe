@@ -96,6 +96,11 @@
     [self.thumbView sd_setImageWithURL:[NSURL URLWithString:model.urlString] placeholderImage:nil];
     self.titleLab.text = [NSString stringWithFormat:@"%@ %@",model.type ? model.type : @"", model.title];
     self.timeLab.text  = model.dateString;
+    if (model.isRead == 1) {
+        self.titleLab.textColor = READ_COLOR;
+    }else {
+        self.titleLab.textColor = [UIColor blackColor];
+    }
 }
 
 @end

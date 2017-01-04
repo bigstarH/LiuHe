@@ -151,6 +151,12 @@
     self.timeLab.text  = model.dateString;
 //    self.readLab.text  = [NSString stringWithFormat:@"已有%@人阅读", model.onclick];
     self.replyLab.text = [NSString stringWithFormat:@"%@", model.rnum];
+    
+    if (model.isRead == 1) {
+        self.titleLab.textColor = READ_COLOR;
+    }else {
+        self.titleLab.textColor = [UIColor blackColor];
+    }
 }
 
 @end

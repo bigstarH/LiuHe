@@ -12,4 +12,6 @@
 
 @property (nonatomic) BOOL hasTarBar;
 
+@property (nonatomic) BOOL needBackBtn;
+
 @end

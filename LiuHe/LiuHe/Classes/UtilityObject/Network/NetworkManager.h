@@ -132,26 +132,29 @@
 - (void)picLibraryWithUrl:(NSString *)url
                   success:(void (^)(NSArray *array))successBlock
                   failure:(void (^)(NSString *error))failureBlock;
-/** 26 收藏 */
+/** 26 历史年份总期数 */
+- (void)picLibYearQishuWithSuccess:(void (^)(NSDictionary *dict))successBlock
+                           failure:(void (^)(NSString *error))failureBlock;
+/** 27 收藏 */
 - (void)collectingWithClassID:(NSString *)classID
                            ID:(NSString *)ID
                       success:(void (^)(NSString *string))successBlock
                       failure:(void (^)(NSString *error))failureBlock;
-/** 27 六合寻宝 */
+/** 28 六合寻宝 */
 - (void)treasureWithSuccess:(void (^)(NSArray *array))successBlock
                     failure:(void (^)(NSString *error))failureBlock;
-/** 28 静态获取论坛帖子50条 */
+/** 29 静态获取论坛帖子50条 */
 - (void)forumPostWithSuccess:(void (^)(NSArray *array))successBlock
                      failure:(void (^)(NSString *error))failureBlock;
-/** 29 论坛帖子 */
+/** 30 论坛帖子 */
 - (void)forumPostWithStar:(NSString *)star
                   success:(void (^)(NSArray *array))successBlock
                   failure:(void (^)(NSString *error))failureBlock;
-/** 30 论坛帖子详情内容 */
+/** 31 论坛帖子详情内容 */
 - (void)forumPostDetailWithSid:(NSString *)sid
                        success:(void (^)(NSDictionary *dict))successBlock
                        failure:(void (^)(NSString *error))failureBlock;
-/** 31 评论帖子 */
+/** 32 评论帖子 */
 - (void)forumPostReplyWithEnews:(NSString *)enews
                             sid:(NSString *)sid
                         classID:(NSString *)classID
@@ -160,10 +163,10 @@
                             text:(NSString *)text
                          success:(void (^)(NSString *str))successBlock
                          failure:(void (^)(NSString *error))failureBlock;
-/** 32 关于应用 */
+/** 33 关于应用 */
 - (void)appInfoWithSuccess:(void (^)(NSDictionary *dict))successBlock
                    failure:(void (^)(NSString *error))failureBlock;
-/** 33 分享积分 */
+/** 34 分享积分 */
 - (void)sharedWithSuccess:(void (^)(NSDictionary *dict))successBlock
                   failure:(void (^)(NSString *error))failureBlock;
 #pragma mark end 网络请求

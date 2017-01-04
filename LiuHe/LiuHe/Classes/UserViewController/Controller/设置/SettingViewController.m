@@ -11,8 +11,10 @@
 #import "FeedBackViewController.h"
 #import "AboutUsViewController.h"
 #import "DisclaimerViewController.h"
+#import "NetworkManager.h"
 #import "SystemManager.h"
 #import "XQAlertView.h"
+#import "UserModel.h"
 
 @interface SettingViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -77,6 +79,11 @@
 - (void)logoutEvent:(UIButton *)sender
 {
     [SystemManager setUserLogin:NO];
+    UserModel *model = [UserModel getCurrentUser];
+    if (model) {
+        [[NetworkManager shareManager] userLogoutWithSuccess:nil failure:nil];
+    }
+    [UserModel removeCurrentUser];
     [NotificationCenter postNotificationName:USER_LOGOUT_SUCCESS object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }

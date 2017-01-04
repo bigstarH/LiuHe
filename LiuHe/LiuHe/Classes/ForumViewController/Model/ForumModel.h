@@ -46,6 +46,8 @@
 
 @property (nonatomic) CGFloat contentHeight;
 
+@property (nonatomic) NSInteger isRead;
+
 + (instancetype)forumModelWithDict:(NSDictionary *)dict;
 
 @end

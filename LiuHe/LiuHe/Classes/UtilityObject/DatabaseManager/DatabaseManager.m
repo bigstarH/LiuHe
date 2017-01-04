@@ -24,36 +24,43 @@ static FMDatabaseQueue *_queue;
     }
     // 创建表
     [_queue inDatabase:^(FMDatabase *db) {
-        NSString *table = [NSString stringWithFormat:@"create table if not exists %@ (sid text primary key, uid text, datatype integer);", TABLE_NAME_READ_MARK];
-        if ([db executeStatements:table]) {
-            NSLog(@"创表成功");
-        }else {
-            NSLog(@"创表失败");
-        }
+        NSString *table = [NSString stringWithFormat:@"create table if not exists %@ (id integer primary key autoincrement, sid text, uid text, datatype integer);", TABLE_NAME_READ_MARK];
+        [db executeStatements:table];
     }];
 }
 
 + (void)addReadDataWithSid:(NSString *)sid type:(NSInteger)type
 {
     NSString *uid = [UserModel getCurrentUser].uid;
-    NSString *str = [NSString stringWithFormat:@"insert into %@ (sid, uid, datatype) values (?, ?, ?)", TABLE_NAME_READ_MARK];
+    NSString *str = [NSString stringWithFormat:@"insert into %@ (sid, uid, datatype) values (?, ?, ?);", TABLE_NAME_READ_MARK];
     [_queue inDatabase:^(FMDatabase *db) {
         BOOL success = [db executeUpdate:str, sid, uid ? uid : [NSNull null], @(type)];
         if (success) {
-            NSLog(@"插入成功");
-        }else {
-            NSLog(@"插入失败");
+            NSDictionary *dict = @{@"sid" : sid};
+            if (type == 1) {
+                [NotificationCenter postNotificationName:ZILIAO_READ_SUCCESS object:nil userInfo:dict];
+            }else if (type == 2) {
+                [NotificationCenter postNotificationName:TUKU_READ_SUCCESS object:nil userInfo:dict];
+            }else {
+                [NotificationCenter postNotificationName:FORUM_READ_SUCCESS object:nil userInfo:dict];
+            }
         }
     }];
 }
 
-+ (NSArray *)readDataWithType:(NSInteger)type
++ (NSMutableArray *)readDataWithType:(NSInteger)type
 {
     NSString *uid    = [UserModel getCurrentUser].uid;
-    NSString *str    = [NSString stringWithFormat:@"select sid from %@ where datatype = ? and (uid = ? or uid = ?)", TABLE_NAME_READ_MARK];
     __block NSMutableArray *array = [NSMutableArray array];
     [_queue inDatabase:^(FMDatabase *db) {
-        FMResultSet *rs = [db executeQuery:str, @(type), uid ? uid : [NSNull null], [NSNull null]];
+        FMResultSet *rs = nil;
+        if (uid) {
+            NSString *str = [NSString stringWithFormat:@"select sid from %@ where datatype = ? and (uid is null or uid = ?);", TABLE_NAME_READ_MARK];
+            rs = [db executeQuery:str, @(type), uid];
+        }else {
+            NSString *str = [NSString stringWithFormat:@"select sid from %@ where datatype = ? and uid is null;", TABLE_NAME_READ_MARK];
+            rs = [db executeQuery:str, @(type)];
+        }
         while (rs.next) {
             NSString *sid = [rs stringForColumn:@"sid"];
             [array addObject:sid];

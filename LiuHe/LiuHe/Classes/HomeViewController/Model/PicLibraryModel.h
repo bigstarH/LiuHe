@@ -28,6 +28,8 @@
 
 @property (nonatomic, strong) NSNumber *zt;
 
+@property (nonatomic) NSInteger isRead;
+
 + (instancetype)picLibraryWithDict:(NSDictionary *)dict;
 
 @end

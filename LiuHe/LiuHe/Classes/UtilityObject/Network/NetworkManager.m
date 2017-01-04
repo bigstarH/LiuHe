@@ -321,7 +321,7 @@ static id networkInstance;
 {
     NSDictionary *param = @{@"enews"   : @"photoshow",
                             @"sid"     : sid};
-    [self.manager GET:USER_POST_URL parameters:param progress:nil
+    [self.manager GET:PHOTO_LIST_URL parameters:param progress:nil
               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                   NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
                   successBlock ? successBlock(responseDict) : nil;
@@ -468,9 +468,10 @@ static id networkInstance;
     NSDictionary *param = @{@"enews"   : @"photolist",
                             @"classid" : classID,
                             @"star"    : star};
-    [self.manager POST:USER_POST_URL parameters:param progress:nil
+    [self.manager POST:PHOTO_LIST_URL parameters:param progress:nil
                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                    NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                   NSLog(@"array = %@", array);
                    successBlock ? successBlock(array) : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                    failureBlock ? failureBlock(@"網絡錯誤") : nil;
@@ -486,6 +487,16 @@ static id networkInstance;
               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                   failureBlock ? failureBlock(@"網絡錯誤") : nil;
               }];
+}
+
+- (void)picLibYearQishuWithSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSString *))failureBlock
+{
+    [self.manager GET:PHOTO_HISTORY_URL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        successBlock ? successBlock(dict) : nil;
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        failureBlock ? failureBlock(@"網絡錯誤") : nil;
+    }];
 }
 
 - (void)collectingWithClassID:(NSString *)classID ID:(NSString *)ID success:(void (^)(NSString *))successBlock failure:(void (^)(NSString *))failureBlock

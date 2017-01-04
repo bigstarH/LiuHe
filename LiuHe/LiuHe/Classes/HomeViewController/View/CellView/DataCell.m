@@ -80,5 +80,10 @@
 {
     self.titleLab.text = model.title;
     self.timeLab.text  = model.dateStr;
+    if (model.isRead == 1) {
+        [self.titleLab setTextColor:READ_COLOR];
+    }else {
+        [self.titleLab setTextColor:[UIColor blackColor]];
+    }
 }
 @end

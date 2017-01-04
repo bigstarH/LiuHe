@@ -14,6 +14,7 @@
 #import "PicLibraryModel.h"
 #import "CollectionModel.h"
 #import "NetworkManager.h"
+#import "SystemManager.h"
 #import "ShareManager.h"
 #import "XQAlertView.h"
 #import "ForumModel.h"
@@ -22,11 +23,13 @@
 
 @interface MyCollectionViewController () <ShareMenuDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, weak) UITableView *tableView;
+@property (weak, nonatomic) UITableView *tableView;
 
-@property (nonatomic, strong) NSArray *array;
+@property (strong, nonatomic) NSArray *array;
 
-@property (nonatomic, strong) NSArray *titleArray;
+@property (strong, nonatomic) NSArray *titleArray;
+
+@property (copy, nonatomic) NSString *thisYear;
 
 @end
 
@@ -36,6 +39,7 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = RGBCOLOR(245, 242, 241);
+    self.thisYear = [SystemManager currentDateWithFormatter:@"yyyy"];
     [self createView];
     [self getMyCollectionData];
 }
@@ -121,15 +125,11 @@
 - (void)goToPicDetailVCWithDict:(NSDictionary *)dict classid:(NSString *)classid
 {
     PicLibraryModel *pModel = [PicLibraryModel picLibraryWithDict:dict];
-    NSString *url    = pModel.url;
-    if (classid.intValue != 65) {
-        url  = [NSString stringWithFormat:@"%@%@/%@.jpg", pModel.url, pModel.qishu, pModel.type];
-    }
-    pModel.urlString  = url;
     PicDetailViewController *vc = [[PicDetailViewController alloc] init];
     vc.classID = classid;
     vc.model   = pModel;
     vc.collectedBtn = NO;
+    vc.curYear      = _thisYear;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

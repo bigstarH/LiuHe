@@ -12,6 +12,7 @@
 #import "DataViewController.h"
 #import "NSString+Extension.h"
 #import "UIImage+Extension.h"
+#import "DatabaseManager.h"
 #import "NetworkManager.h"
 #import "DataTableView.h"
 #import "SystemManager.h"
@@ -23,6 +24,8 @@
 @interface DataViewController () <DataTableViewDelegate, XQSpringMenuDelegate, ShareMenuDelegate>
 
 @property (nonatomic, weak) UIButton *moreBtn;
+/** 已读资料数组 */
+@property (strong, nonatomic) NSMutableArray *readList;
 /** 标题数组 */
 @property (nonatomic, strong) NSArray *titleList;
 /** 当前的类型 */
@@ -32,12 +35,23 @@
 
 @implementation DataViewController
 
+- (void)dealloc
+{
+    [NotificationCenter removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.type = 0;
+    
+    // 已读通知
+    [NotificationCenter addObserver:self selector:@selector(readData:) name:ZILIAO_READ_SUCCESS object:nil];
+    
+    // 取出已读数据
+    self.readList = [DatabaseManager readDataWithType:DATATYPE_ZILIAO];
     
     // 初始化控件
     [self createButtonMenu];
@@ -122,6 +136,24 @@
     [menu showWithAnimate:YES];
 }
 #pragma mark end 初始化控件
+
+#pragma mark - start 已读通知
+- (void)readData:(NSNotification *)notification
+{
+    NSString *sid = notification.userInfo[@"sid"];
+    DataTableView *tableView = [self getCurrentTableViewWithTag:self.type];
+    NSMutableArray *list = [tableView.dataList mutableCopy];
+    for (int i = 0; i < list.count; i++) {
+        DataModel *model = [list objectAtIndex:i];
+        if ([sid isEqualToString:model.sid]) {
+            model.isRead = 1;
+            break;
+        }
+    }
+    [self.readList addObject:sid];
+    [tableView.tableView reloadData];
+}
+#pragma mark end 已读通知
 
 #pragma mark - start 懒加载
 - (NSArray *)titleList
@@ -232,7 +264,8 @@
 {
     if (index == 8) {
         ForumViewController *vc = [[ForumViewController alloc] init];
-        vc.hasTarBar = NO;
+        vc.hasTarBar   = NO;
+        vc.needBackBtn = YES;
         [self.navigationController pushViewController:vc animated:YES];
         return;
     }
@@ -254,6 +287,9 @@
 /** 点击了某一行 */
 - (void)dataTableView:(DataTableView *)dataTableView didSelectCellWithModel:(DataModel *)model
 {
+    if (model.isRead != 1) {
+        [DatabaseManager addReadDataWithSid:model.sid type:DATATYPE_ZILIAO];
+    }
     DataDetailViewController *vc = [[DataDetailViewController alloc] init];
     vc.classID = dataTableView.classID;
     vc.sid     = model.sid;
@@ -283,6 +319,9 @@
                                  NSDictionary *dict = array[i];
                                  DataModel *data = [DataModel dataWithDict:dict];
                                  [ws caculateHeightWithModel:data];
+                                 if ([ws.readList containsObject:data.sid]) {
+                                     data.isRead = 1;
+                                 }
                                  [dataList addObject:data];
                              }
                              dataTableView.star     = dataTableView.star + 20;
@@ -319,6 +358,9 @@
                          NSDictionary *dict = array[i];
                          DataModel *data = [DataModel dataWithDict:dict];
                          [ws caculateHeightWithModel:data];
+                         if ([ws.readList containsObject:data.sid]) {
+                             data.isRead = 1;
+                         }
                          [dataList addObject:data];
                      }
                      tableView.dataList = dataList;

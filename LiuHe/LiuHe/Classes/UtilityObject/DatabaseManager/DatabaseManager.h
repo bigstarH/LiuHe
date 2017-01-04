@@ -25,7 +25,7 @@
  *  读取已读数据
  *  @parameter : type  文章类型
  */
-+ (NSArray *)readDataWithType:(NSInteger)type;
++ (NSMutableArray *)readDataWithType:(NSInteger)type;
 /**
  *  清除表数据
  *  @parameter : tableName  表名

@@ -27,6 +27,18 @@ static NSDateFormatter *dateFormatter = nil;
 //    [[SDImageCache sharedImageCache] clearMemory];
 }
 
++ (NSString *)currentDateWithFormatter:(NSString *)formatter
+{
+    NSDate *date = [NSDate date];
+    if (dateFormatter == nil) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"zh_CN"]];
+    }
+    [dateFormatter setDateFormat:formatter];
+    NSString *strDate = [dateFormatter stringFromDate:date];
+    return strDate;
+}
+
 + (NSString *)dateStringWithTime:(NSTimeInterval)time formatter:(NSString *)formatter
 {
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:time];

@@ -20,13 +20,14 @@
 #define GET_TREASURE_URL    @"http://ad.jizhou56.com:8090/appad/lhcbt_xb/index.json" // 六合寻宝
 #define LOTTERY_HISTORY_URL @"https://www.jizhou56.com:8099/json/2016.json" // 历史记录
 #define LOTTERY_RESULT_URL  @"http://app.jizhou56.com:8090/kjbm.json" // 开奖结果
-
+#define PHOTO_LIST_URL      @"https://www.jizhou56.com:8099/e/extend/json/photo.php" // 图库动态列表
+#define PHOTO_HISTORY_URL   @"https://www.jizhou56.com:8099/json/list/yearqushu.json" // 历史年份总期数
 
 // 静态列表50条
 // 图库
-#define PHOTO_COLOURS_URL   @"https://www.jizhou56.com:8099/json/list/photocaise.json"  // 彩色图库
-#define PHOTO_MYSTERY_URL   @"https://www.jizhou56.com:8099/json/list/photoxianji.json" // 玄机图库
-#define PHOTO_BAW_URL       @"https://www.jizhou56.com:8099/json/list/photoheibai.json" // 黑白图库
+#define PHOTO_COLOURS_URL   @"https://www.jizhou56.com:8099/json/list/photocaise2.json"  // 彩色图库
+#define PHOTO_MYSTERY_URL   @"https://www.jizhou56.com:8099/json/list/photoxianji2.json" // 玄机图库
+#define PHOTO_BAW_URL       @"https://www.jizhou56.com:8099/json/list/photoheibai2.json" // 黑白图库
 #define PHOTO_YEAR_URL      @"https://www.jizhou56.com:8099/json/list/photoqianlian.json" // 全年图库
 // 资料
 #define DATA_FAVORITE_URL   @"https://www.jizhou56.com:8099/json/list/xinshui.json" // 心水资料

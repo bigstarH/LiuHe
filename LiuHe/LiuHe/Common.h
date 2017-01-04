@@ -32,6 +32,9 @@
 #define FORUM_REPLY_EDIT_SUCCESS  @"FORUM_REPLY_EDIT_SUCCESS"  // 编辑回复成功
 #define LOTTERY_KJ_FINISHED       @"LOTTERY_KJ_FINISHED"       // 开奖成功结束
 #define SHARE_MESSAGE_SUCCESS     @"SHARE_MESSAGE_SUCCESS"     // 分享成功
+#define ZILIAO_READ_SUCCESS       @"ZILIAO_READ_SUCCESS"       // 资料已读
+#define TUKU_READ_SUCCESS         @"TUKU_READ_SUCCESS"         // 图库已读
+#define FORUM_READ_SUCCESS        @"FORUM_READ_SUCCESS"        // 论坛已读
 
 // 数据库
 #define DATABASE_NAME             @"database.db"     // 数据库名

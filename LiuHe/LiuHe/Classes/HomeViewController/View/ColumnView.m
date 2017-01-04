@@ -92,6 +92,14 @@ static NSString *cellID = @"cellID";
     [_collectionView reloadData];
 }
 
+- (void)reloadData
+{
+    if (_currentIndex >= self.items.count) {
+        _currentIndex = self.items.count - 1;
+    }
+    [self.collectionView reloadData];
+}
+
 #pragma mark - start UICollectionViewDataSource, UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
