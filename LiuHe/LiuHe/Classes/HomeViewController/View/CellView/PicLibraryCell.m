@@ -15,9 +15,9 @@
 /** 标题 */
 @property (nonatomic, weak) UILabel *titleLab;
 /** 时间图标 */
-@property (nonatomic, weak) UIImageView *timeView;
+//@property (nonatomic, weak) UIImageView *timeView;
 /** 时间 */
-@property (nonatomic, weak) UILabel *timeLab;
+//@property (nonatomic, weak) UILabel *timeLab;
 
 @end
 
@@ -52,16 +52,16 @@
     label.font     = [UIFont systemFontOfSize:fontSize(16)];
     [self.contentView addSubview:label];
     
-    label           = [[UILabel alloc] init];
-    self.timeLab    = label;
-    label.font      = [UIFont systemFontOfSize:fontSize(13)];
-    label.textColor = [UIColor lightGrayColor];
-    [self.contentView addSubview:label];
-    
-    imageView     = [[UIImageView alloc] init];
-    [imageView setImage:[UIImage imageNamed:@"news_item_date"]];
-    self.timeView = imageView;
-    [self.contentView addSubview:imageView];
+//    label           = [[UILabel alloc] init];
+//    self.timeLab    = label;
+//    label.font      = [UIFont systemFontOfSize:fontSize(13)];
+//    label.textColor = [UIColor lightGrayColor];
+//    [self.contentView addSubview:label];
+//    
+//    imageView     = [[UIImageView alloc] init];
+//    [imageView setImage:[UIImage imageNamed:@"news_item_date"]];
+//    self.timeView = imageView;
+//    [self.contentView addSubview:imageView];
 }
 
 - (void)layoutSubviews
@@ -77,25 +77,25 @@
     
     CGFloat titleX = CGRectGetMaxX(self.thumbView.frame) + WIDTH(15);
     CGFloat titleW = self.bounds.size.width - titleX - thumbX;
-    CGFloat titleH = HEIGHT(35);
+    CGFloat titleH = self.bounds.size.height;//HEIGHT(35);
     self.titleLab.frame  = CGRectMake(titleX, 0, titleW, titleH);
     
-    CGFloat timeLH = HEIGHT(25);
-    CGFloat timeLY = self.bounds.size.height - timeLH;
-    CGFloat timeVW = WIDTH(15);
-    CGFloat timeVY = timeLY + (timeLH - timeVW) * 0.5;
-    self.timeView.frame  = CGRectMake(titleX, timeVY, timeVW, timeVW);
-    
-    CGFloat timeLX = CGRectGetMaxX(self.timeView.frame) + WIDTH(5);
-    CGFloat timeLW = WIDTH(150);
-    self.timeLab.frame   = CGRectMake(timeLX, timeLY, timeLW, timeLH);
+//    CGFloat timeLH = HEIGHT(25);
+//    CGFloat timeLY = self.bounds.size.height - timeLH;
+//    CGFloat timeVW = WIDTH(15);
+//    CGFloat timeVY = timeLY + (timeLH - timeVW) * 0.5;
+//    self.timeView.frame  = CGRectMake(titleX, timeVY, timeVW, timeVW);
+//    
+//    CGFloat timeLX = CGRectGetMaxX(self.timeView.frame) + WIDTH(5);
+//    CGFloat timeLW = WIDTH(150);
+//    self.timeLab.frame   = CGRectMake(timeLX, timeLY, timeLW, timeLH);
 }
 
 - (void)setCellData:(PicLibraryModel *)model
 {
     [self.thumbView sd_setImageWithURL:[NSURL URLWithString:model.urlString] placeholderImage:nil];
     self.titleLab.text = [NSString stringWithFormat:@"%@ %@",model.type ? model.type : @"", model.title];
-    self.timeLab.text  = model.dateString;
+//    self.timeLab.text  = model.dateString;
     if (model.isRead == 1) {
         self.titleLab.textColor = READ_COLOR;
     }else {

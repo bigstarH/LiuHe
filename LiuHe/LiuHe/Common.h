@@ -11,6 +11,7 @@
 
 // NSUserDefaults 键值
 #define CURRENT_BQ                @"CURRENT_BQ"           // 当前期数
+#define CURRENT_TUKU_BQ           @"CURRENT_TUKU_BQ"      // 图库当前期数
 #define LOTTERY_SILENCE           @"LOTTERY_SILENCE"      // 摇奖静音
 #define USER_DIDLOGIN             @"USER_DIDLOGIN"        // 用户是否登录
 #define APP_QRCODE                @"APP_QRCODE"           // 二维码图片
@@ -39,8 +40,15 @@
 // 数据库
 #define DATABASE_NAME             @"database.db"     // 数据库名
 #define TABLE_NAME_READ_MARK      @"read_mark_table" // 表名称
-#define DATATYPE_ZILIAO  1
-#define DATATYPE_TUKU    2
-#define DATATYPE_FORUM   3
+#define TABLE_NAME_TUKU           @"tuku_table"      // 图库表
+#define DATATYPE_FAVOE      0  // 心水资料
+#define DATATYPE_TEXT       1  // 文字资料
+#define DATATYPE_SUPER      2  // 高手资料
+#define DATATYPE_FX         3  // 公式资料
+#define DATATYPE_BOUTIQUE   4  // 精品杀项
+#define DATATYPE_CARD       5  // 香港挂牌
+#define DATATYPE_YEAR       6  // 全年资料
+#define DATATYPE_ATTR       7  // 六合属性
+#define DATATYPE_FORUM      8  // 论坛
 
 #endif /* Common_h */

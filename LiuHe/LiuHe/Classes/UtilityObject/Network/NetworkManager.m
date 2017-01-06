@@ -471,7 +471,6 @@ static id networkInstance;
     [self.manager POST:PHOTO_LIST_URL parameters:param progress:nil
                success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                    NSArray *array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-                   NSLog(@"array = %@", array);
                    successBlock ? successBlock(array) : nil;
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                    failureBlock ? failureBlock(@"網絡錯誤") : nil;

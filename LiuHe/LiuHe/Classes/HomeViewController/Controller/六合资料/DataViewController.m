@@ -11,7 +11,6 @@
 #import "ForumViewController.h"
 #import "DataViewController.h"
 #import "NSString+Extension.h"
-#import "UIImage+Extension.h"
 #import "DatabaseManager.h"
 #import "NetworkManager.h"
 #import "DataTableView.h"
@@ -23,11 +22,11 @@
 
 @interface DataViewController () <DataTableViewDelegate, XQSpringMenuDelegate, ShareMenuDelegate>
 
-@property (nonatomic, weak) UIButton *moreBtn;
+@property (weak, nonatomic) UIButton *moreBtn;
 /** 已读资料数组 */
 @property (strong, nonatomic) NSMutableArray *readList;
 /** 标题数组 */
-@property (nonatomic, strong) NSArray *titleList;
+@property (strong, nonatomic) NSArray *titleList;
 /** 当前的类型 */
 @property (nonatomic) NSInteger type;
 
@@ -49,9 +48,6 @@
     
     // 已读通知
     [NotificationCenter addObserver:self selector:@selector(readData:) name:ZILIAO_READ_SUCCESS object:nil];
-    
-    // 取出已读数据
-    self.readList = [DatabaseManager readDataWithType:DATATYPE_ZILIAO];
     
     // 初始化控件
     [self createButtonMenu];
@@ -123,7 +119,7 @@
     XQSpringMenuItem *jp    = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"精品殺項"] title:@"精品殺項"];
     XQSpringMenuItem *card  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"香港掛牌"] title:@"香港掛牌"];
     XQSpringMenuItem *year  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"全年資料"] title:@"全年資料"];
-    XQSpringMenuItem *forum = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageWithColor:RGBCOLOR(34, 167, 224)] title:@"論壇"];
+    XQSpringMenuItem *forum = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"論壇"] title:@"論壇"];
     XQSpringMenuItem *attr  = [[XQSpringMenuItem alloc] initWithImage:[UIImage imageNamed:@"六合屬性"] title:@"六合屬性"];
     
     NSArray *array      = @[favor, text, sup, fx, jp, card, year, attr, forum];
@@ -142,15 +138,15 @@
 {
     NSString *sid = notification.userInfo[@"sid"];
     DataTableView *tableView = [self getCurrentTableViewWithTag:self.type];
-    NSMutableArray *list = [tableView.dataList mutableCopy];
-    for (int i = 0; i < list.count; i++) {
-        DataModel *model = [list objectAtIndex:i];
+    for (int i = 0; i < tableView.dataList.count; i++) {
+        DataModel *model = [tableView.dataList objectAtIndex:i];
         if ([sid isEqualToString:model.sid]) {
             model.isRead = 1;
             break;
         }
     }
-    [self.readList addObject:sid];
+    NSMutableArray *list = [self.readList objectAtIndex:self.type];
+    [list addObject:sid];
     [tableView.tableView reloadData];
 }
 #pragma mark end 已读通知
@@ -163,6 +159,18 @@
                        @"精品殺項", @"香港掛牌", @"全年资料", @"六合屬性"];
     }
     return _titleList;
+}
+
+- (NSMutableArray *)readList
+{
+    if (!_readList) {
+        _readList = [NSMutableArray array];
+        for (int i = DATATYPE_FAVOE; i <= DATATYPE_ATTR; i++) {
+            NSMutableArray *array = [DatabaseManager readDataWithType:i];
+            [_readList addObject:array];
+        }
+    }
+    return _readList;
 }
 #pragma mark end 懒加载
 
@@ -288,7 +296,7 @@
 - (void)dataTableView:(DataTableView *)dataTableView didSelectCellWithModel:(DataModel *)model
 {
     if (model.isRead != 1) {
-        [DatabaseManager addReadDataWithSid:model.sid type:DATATYPE_ZILIAO];
+        [DatabaseManager addReadDataWithSid:model.sid type:self.type];
     }
     DataDetailViewController *vc = [[DataDetailViewController alloc] init];
     vc.classID = dataTableView.classID;
@@ -303,6 +311,7 @@
     if (more == NO) {
         [self getNetDataWithHUD:NO];
     }else {
+        NSMutableArray *arr     = [self.readList objectAtIndex:self.type];
         __weak typeof(self) ws  = self;
         NetworkManager *manager = [NetworkManager shareManager];
         [manager dataWithClassID:dataTableView.classID
@@ -319,7 +328,7 @@
                                  NSDictionary *dict = array[i];
                                  DataModel *data = [DataModel dataWithDict:dict];
                                  [ws caculateHeightWithModel:data];
-                                 if ([ws.readList containsObject:data.sid]) {
+                                 if ([arr containsObject:data.sid]) {
                                      data.isRead = 1;
                                  }
                                  [dataList addObject:data];
@@ -339,6 +348,7 @@
 - (void)getNetDataWithHUD:(BOOL)needHUD
 {
     DataTableView *tableView = [self getCurrentTableViewWithTag:self.type];
+    NSMutableArray *arr      = [self.readList objectAtIndex:self.type];
     __weak typeof(self) ws   = self;
     NetworkManager *manager  = [NetworkManager shareManager];
     MBProgressHUD *hud       = nil;
@@ -358,7 +368,7 @@
                          NSDictionary *dict = array[i];
                          DataModel *data = [DataModel dataWithDict:dict];
                          [ws caculateHeightWithModel:data];
-                         if ([ws.readList containsObject:data.sid]) {
+                         if ([arr containsObject:data.sid]) {
                              data.isRead = 1;
                          }
                          [dataList addObject:data];

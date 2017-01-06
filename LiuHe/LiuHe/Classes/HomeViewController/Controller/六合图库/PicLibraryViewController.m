@@ -20,13 +20,15 @@
 
 @interface PicLibraryViewController () <ColumnViewDelegate, ShareMenuDelegate, PicLibraryTableViewDelegate, UIScrollViewDelegate>
 
-@property (nonatomic, weak) ColumnView *columnView;
+@property (weak, nonatomic) ColumnView *columnView;
 
-@property (nonatomic, weak) UIScrollView *scrollView;
+@property (weak, nonatomic) UIScrollView *scrollView;
 /** 已读数组 */
 @property (strong, nonatomic) NSMutableArray *readList;
 /** 今年年份 */
 @property (copy, nonatomic) NSString *thisYear;
+/** 当前期数 */
+@property (copy, nonatomic) NSString *curBQ;
 /** 下标 */
 @property (nonatomic) NSInteger index;
 
@@ -49,7 +51,7 @@
     
     self.index    = 0;
     self.thisYear = [SystemManager currentDateWithFormatter:@"yyyy"];
-    self.readList = [DatabaseManager readDataWithType:DATATYPE_TUKU];
+    self.curBQ    = [UserDefaults stringForKey:CURRENT_TUKU_BQ];
     
     // 初始化控件
     [self createView];
@@ -124,20 +126,32 @@
 {
     NSString *sid = notification.userInfo[@"sid"];
     PicLibraryTableView *tableView = [self getCurrentTableViewWithIndex:self.index];
-    NSMutableArray *list = [tableView.dataList mutableCopy];
-    for (int i = 0; i < list.count; i++) {
-        PicLibraryModel *model = [list objectAtIndex:i];
+    for (int i = 0; i < tableView.dataList.count; i++) {
+        PicLibraryModel *model = [tableView.dataList objectAtIndex:i];
         if ([sid isEqualToString:model.sid]) {
             model.isRead = 1;
             break;
         }
     }
-    [self.readList addObject:sid];
+    NSMutableArray *list = [self.readList objectAtIndex:self.index];
+    [list addObject:sid];
     [tableView.tableView reloadData];
 }
 #pragma mark end 已读通知
 
 #pragma mark - start 私有方法
+/** 获取当前的已读数据 */
+- (void)getReadData
+{
+    if (self.readList) return;
+    
+    self.readList = [NSMutableArray array];
+    for (NSInteger i = PLTableViewTypeColours; i <= PLTableViewTypeYear; i++) {
+        NSMutableArray *arr  = [DatabaseManager tuKuReadDataWithType:i];
+        [self.readList addObject:arr];
+    }
+}
+
 /** 获取当前的TableView */
 - (PicLibraryTableView *)getCurrentTableViewWithIndex:(NSInteger)index
 {
@@ -238,6 +252,7 @@
     }else {
         __weak typeof(self) ws  = self;
         NetworkManager *manager = [NetworkManager shareManager];
+        NSArray *list = [self.readList objectAtIndex:self.index];
         [manager picLibraryWithClassID:picLTableView.classID
                                   star:[NSString stringWithFormat:@"%zd", picLTableView.star]
                                success:^(NSArray *array) {
@@ -252,7 +267,7 @@
                                        NSDictionary *dict = array[i];
                                        PicLibraryModel *data = [PicLibraryModel picLibraryWithDict:dict];
                                        [ws dealWithModel:data tag:picLTableView.tag];
-                                       if ([ws.readList containsObject:data.sid]) {
+                                       if ([list containsObject:data.sid]) {
                                            data.isRead = 1;
                                        }
                                        [dataList addObject:data];
@@ -271,7 +286,7 @@
 - (void)picLTableView:(PicLibraryTableView *)picLTableView didSelectCellWithModel:(PicLibraryModel *)model
 {
     if (model.isRead != 1) {
-        [DatabaseManager addReadDataWithSid:model.sid type:DATATYPE_TUKU];
+        [DatabaseManager addTuKuReadDataWithSid:model.sid type:self.index + PLTableViewTypeColours];
     }
     PicDetailViewController *vc = [[PicDetailViewController alloc] init];
     vc.model   = model;
@@ -303,6 +318,7 @@
     NetworkManager *manager = [NetworkManager shareManager];
     __weak typeof(self) ws  = self;
     MBProgressHUD *hud      = nil;
+    NSInteger type          = self.index;
     if (needHUD) {
         hud = [MBProgressHUD hudView:self.view text:@"正在加載中..." removeOnHide:YES];
     }
@@ -315,14 +331,28 @@
                            }
                            NSMutableArray *dataList = [NSMutableArray array];
                            tableView.star = starBegin;
+                           BOOL flag = NO;
                            for (int i = 0; i < array.count; i++) {
                                NSDictionary *dict = array[i];
                                PicLibraryModel *data = [PicLibraryModel picLibraryWithDict:dict];
                                [ws dealWithModel:data tag:tableView.tag];
-                               if ([ws.readList containsObject:data.sid]) {
-                                   data.isRead = 1;
+                               if (data.qishu.intValue > ws.curBQ.intValue) {
+                                   ws.curBQ = data.qishu;
+                                   flag = YES;
                                }
                                [dataList addObject:data];
+                           }
+                           if (flag) {
+                               [UserDefaults setObject:ws.curBQ forKey:CURRENT_TUKU_BQ];
+                               [DatabaseManager deleteTuKuData];
+                           }
+                           [ws getReadData];
+                           NSArray *arr = [ws.readList objectAtIndex:type];
+                           for (int i = 0; i < dataList.count; i++) {
+                               PicLibraryModel *data = dataList[i];
+                               if ([arr containsObject:data.sid]) {
+                                   data.isRead = 1;
+                               }
                            }
                            tableView.dataList = dataList;
                            [tableView.tableView reloadData];
